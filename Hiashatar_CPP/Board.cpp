@@ -1,6 +1,6 @@
 #include"Board.h"
 
-std::map<int, std::string> Board::indextoMove
+const std::map<int, std::string> Board::indextoMove
 {
 	{0, "0001"},
 	{1, "0002"},
@@ -3519,7 +3519,7 @@ std::map<int, std::string> Board::indextoMove
 	{3514, "9978"},
 	{3515, "9987"},
 };
-std::map<std::string, int> Board::moveToIndex
+const std::map<std::string, int> Board::moveToIndex
 {
 	{"0001", 0},
 	{"0002", 1},

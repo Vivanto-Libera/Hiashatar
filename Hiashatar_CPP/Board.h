@@ -35,11 +35,15 @@ enum Color
 	NOTEND
 };
 
+const std::array<int, 8> QUEENMOVEROW{ -1, -1, 0, 1, 1, 1, 0, -1 };
+const std::array<int, 8> QUEENMOVECOL{ 0, 1, 1, 1, 0, -1, -1, -1 };
+
 class Board
 {
 public:
-	static std::map<int, std::string> indextoMove;
-	static std::map<std::string, int> moveToIndex;
+	//String "abcd" is mean from row a col b to row c col d.
+	const static std::map<int, std::string> indextoMove;
+	const static std::map<std::string, int> moveToIndex;
 
 	std::array<std::array<Square, 10>, 10> board;
 	Color turn;
