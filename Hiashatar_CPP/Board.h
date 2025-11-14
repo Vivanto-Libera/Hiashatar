@@ -7,6 +7,8 @@
 #include<array>
 #include<queue>
 #include<map>
+#include<unordered_set>
+#include<cstdint>
 #include"Pieces.h"
 
 namespace py = pybind11;
@@ -87,27 +89,27 @@ class Board
 {
 public:
 	//String "abcd" is mean from row a col b to row c col d.
-	const static std::map<int, std::string> indextoMove;
-	const static std::map<std::string, int> moveToIndex;
+	const static std::map<uint16_t, uint16_t> indextoMove;
+	const static std::map<uint16_t, uint16_t> moveToIndex;
 
 	std::array<std::array<Square, 10>, 10> board;
 	Color turn;
 	Pieces whitePieces = Pieces(Color::WHITE);
 	Pieces blackPieces = Pieces(Color::BLACK);
 
-	static std::string moveToString(int move)
+	std::vector<int> legalMoves();
+
+	static std::array<int, 4> NumToMove(int num)
 	{
-		std::string str = "0000";
-		for (int i = 3; i >= 0; i--)
+		std::array<int, 4> move;
+		for(int i = 3; i >= 0; i--)
 		{
-			str[i] = move % 10;
-			move /= 10;
+			move[i] = num % 10;
+			num /= 10;
 		}
-		return str;
-	}
-	static std::array<int, 4> stringToMove(std::string str)
-	{
-		return std::array<int, 4>{(int)(str[0] - '0'), (int)(str[1] - '0'), (int)(str[2] - '0'), (int)(str[3] - '0')};
+
+
+		return move;
 	}
 
 	Board();
@@ -115,5 +117,8 @@ private:
 	int noProcess;
 	int repeat;
 	std::queue<std::array<std::array<Square, 10>, 10>> preBoards;
+
+	//Input -1 is mean do nothing and just judge now is being checked or not
+	bool isChecked(int move);
 };
 #endif

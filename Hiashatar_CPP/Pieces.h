@@ -46,7 +46,7 @@ protected:
 	Square piece;
 };
 
-class Khan : Piece
+class Khan : public Piece
 {
 public:
 	Khan(int row, int col, Color color) : Piece(row, col, color) 
@@ -63,7 +63,7 @@ public:
 	Khan(){}
 };
 
-class Lion : Piece
+class Lion : public Piece
 {
 public:
 	Lion(int row, int col, Color color) : Piece(row, col, color)
@@ -80,7 +80,7 @@ public:
 	Lion(){}
 };
 
-class Guard : Piece
+class Guard : public Piece
 {
 public:
 	//Guard can protect neighbour's squares.
@@ -114,7 +114,7 @@ public:
 	Guard(){}
 };
 
-class Camel : Piece
+class Camel : public Piece
 {
 public:
 	Color getSquareColor()
@@ -154,7 +154,7 @@ private:
 	Color squareColor;
 };
 
-class Horse : Piece
+class Horse : public Piece
 {
 public:
 	Horse(int row, int col, Color color) : Piece(row, col, color)
@@ -171,7 +171,7 @@ public:
 	Horse(){}
 };
 
-class Terge : Piece
+class Terge : public Piece
 {
 public:
 	Terge(int row, int col, Color color) : Piece(row, col, color)
@@ -188,7 +188,7 @@ public:
 	Terge(){}
 };
 
-class Hound : Piece
+class Hound : public Piece
 {
 public:
 	bool isPromoted()
