@@ -101,6 +101,7 @@ public:
 	Pieces blackPieces = Pieces(Color::BLACK);
 
 	std::vector<int> legalMoves();
+	bool hasLegalMoves();
 
 	static std::array<int, 4> NumToMove(int num)
 	{

@@ -250,14 +250,14 @@ std::vector<int> Board::legalMoves()
 			continue;
 		}
 		fromPos = horse.getPosition();
-		for (int j = 0; j < 8; j ++)
+		for (int j = 0; j < 8; j++)
 		{
 			int newRow = fromPos[0];
 			int newCol = fromPos[1];
 			newRow += HORSEMOVEROW[j];
 			newCol += HORSEMOVECOL[j];
 			if (newRow < 0 || newRow > 9 || newCol < 0 || newCol > 9)
-			{					
+			{
 				continue;
 			}
 			if (board[newRow][newCol] != turn)
@@ -269,7 +269,6 @@ std::vector<int> Board::legalMoves()
 				}
 			}
 		}
-		return moves;
 	}
 
 	//Hounds' move
@@ -336,6 +335,341 @@ std::vector<int> Board::legalMoves()
 			}
 		}
 	}
+	return moves;
+}
+bool Board::hasLegalMoves()
+{
+	Pieces* pieces;
+	std::unordered_set<int> guardZone;
+	if (turn == WHITE)
+	{
+		pieces = &whitePieces;
+		for (int i = 0; i < 2; i++)
+		{
+			if (!blackPieces.guards[i].isCaptured())
+			{
+				std::vector<int> zone = blackPieces.guards[i].getZone();
+				guardZone.insert(zone.begin(), zone.end());
+			}
+		}
+	}
+	else
+	{
+		pieces = &blackPieces;
+	}
+	std::array<int, 2> fromPos;
+
+	//Khan's move
+	fromPos = pieces->khan.getPosition();
+	for (int i = 0; i < 8; i++)
+	{
+		int newRow = fromPos[0] + QUEENMOVEROW[i];
+		int newCol = fromPos[1] + QUEENMOVECOL[i];
+		if (newRow < 0 || newRow > 9 || newCol < 0 || newCol > 9)
+		{
+			continue;
+		}
+		if (colorOfSquare(newRow, newCol) != turn)
+		{
+			int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
+			if (isChecked(num))
+			{
+				return true;
+			}
+		}
+	}
+
+	//Lion's move
+	for (int i = 0; i < 11; i++)
+	{
+		if (i == 0 && !pieces->lion.isCaptured())
+		{
+			fromPos = pieces->lion.getPosition();
+		}
+		else if (i != 0)
+		{
+			if (pieces->hounds[i - 1].isPromoted() && !pieces->hounds[i - 1].isCaptured())
+			{
+				fromPos = pieces->hounds[i - 1].getPosition();
+			}
+			else
+			{
+				continue;
+			}
+		}
+		else
+		{
+			continue;
+		}
+		for (int j = 0; j < 8; j++)
+		{
+			int newRow = fromPos[0];
+			int newCol = fromPos[1];
+			while (true)
+			{
+				newRow += QUEENMOVEROW[j];
+				newCol += QUEENMOVECOL[j];
+				if (newRow < 0 || newRow > 9 || newCol < 0 || newCol > 9)
+				{
+					break;
+				}
+				if (board[newRow][newCol] != turn)
+				{
+					int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
+					if (isChecked(num))
+					{
+						return true;
+					}
+					if (board[newRow][newCol] != EMPTY)
+					{
+						break;
+					}
+				}
+				else
+				{
+					break;
+				}
+				if (std::find(guardZone.begin(), guardZone.end(), newRow * 10 + newCol) != guardZone.end())
+				{
+					break;
+				}
+			}
+		}
+	}
+
+	//Guards' move
+	for (auto& guard : pieces->guards)
+	{
+		if (guard.isCaptured())
+		{
+			continue;
+		}
+		fromPos = guard.getPosition();
+		for (int j = 0; j < 8; j++)
+		{
+			int newRow = fromPos[0];
+			int newCol = fromPos[1];
+			for (int k = 1; k < 3; k++)
+			{
+				newRow += QUEENMOVEROW[j];
+				newCol += QUEENMOVECOL[j];
+				if (board[newRow][newCol] == EMPTY)
+				{
+					int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
+					if (isChecked(num))
+					{
+						return true;
+					}
+				}
+				else if (colorOfSquare(newRow, newCol) != turn)
+				{
+					if (j % 2 == 1 && k == 1)
+					{
+						int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
+						if (isChecked(num))
+						{
+							return true;
+						}
+					}
+					else
+					{
+						break;
+					}
+				}
+				else
+				{
+					break;
+				}
+				if (std::find(guardZone.begin(), guardZone.end(), newRow * 10 + newCol) != guardZone.end())
+				{
+					break;
+				}
+			}
+		}
+	}
+
+	//Camels' move
+	for (auto& camel : pieces->camels)
+	{
+		if (camel.isCaptured())
+		{
+			continue;
+		}
+		fromPos = camel.getPosition();
+		for (int j = 1; j < 8; j += 2)
+		{
+			int newRow = fromPos[0];
+			int newCol = fromPos[1];
+			while (true)
+			{
+				newRow += QUEENMOVEROW[j];
+				newCol += QUEENMOVECOL[j];
+				if (newRow < 0 || newRow > 9 || newCol < 0 || newCol > 9)
+				{
+					break;
+				}
+				if (board[newRow][newCol] != turn)
+				{
+					int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
+					if (isChecked(num))
+					{
+						return true;
+					}
+					if (board[newRow][newCol] != EMPTY)
+					{
+						break;
+					}
+				}
+				else
+				{
+					break;
+				}
+				if (std::find(guardZone.begin(), guardZone.end(), newRow * 10 + newCol) != guardZone.end())
+				{
+					break;
+				}
+			}
+		}
+	}
+
+	//Terges' move
+	for (auto& terge : pieces->terges)
+	{
+		if (terge.isCaptured())
+		{
+			continue;
+		}
+		fromPos = terge.getPosition();
+		for (int j = 0; j < 8; j += 2)
+		{
+			int newRow = fromPos[0];
+			int newCol = fromPos[1];
+			while (true)
+			{
+				newRow += QUEENMOVEROW[j];
+				newCol += QUEENMOVECOL[j];
+				if (newRow < 0 || newRow > 9 || newCol < 0 || newCol > 9)
+				{
+					break;
+				}
+				if (board[newRow][newCol] != turn)
+				{
+					int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
+					if (isChecked(num))
+					{
+						return true;
+					}
+					if (board[newRow][newCol] != EMPTY)
+					{
+						break;
+					}
+				}
+				else
+				{
+					break;
+				}
+				if (std::find(guardZone.begin(), guardZone.end(), newRow * 10 + newCol) != guardZone.end())
+				{
+					break;
+				}
+			}
+		}
+	}
+
+	//Horses' move
+	for (auto& horse : pieces->horses)
+	{
+		if (horse.isCaptured())
+		{
+			continue;
+		}
+		fromPos = horse.getPosition();
+		for (int j = 0; j < 8; j++)
+		{
+			int newRow = fromPos[0];
+			int newCol = fromPos[1];
+			newRow += HORSEMOVEROW[j];
+			newCol += HORSEMOVECOL[j];
+			if (newRow < 0 || newRow > 9 || newCol < 0 || newCol > 9)
+			{
+				continue;
+			}
+			if (board[newRow][newCol] != turn)
+			{
+				int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
+				if (isChecked(num))
+				{
+					return true;
+				}
+			}
+		}
+	}
+
+	//Hounds' move
+	int houndDiection;
+	if (turn == Color::WHITE)
+	{
+		houndDiection = -1;
+	}
+	else
+	{
+		houndDiection = 1;
+	}
+	for (auto& hound : pieces->hounds)
+	{
+		if (hound.isCaptured() || hound.isPromoted())
+		{
+			continue;
+		}
+		fromPos = hound.getPosition();
+		int moveDistance = 1;
+		if ((fromPos[0] == 8 && turn == WHITE) || (fromPos[0] == 1 && turn == BLACK))
+		{
+			moveDistance = 3;
+		}
+		for (int i = 1; i <= moveDistance; i++)
+		{
+			int newRow = fromPos[0] + houndDiection * i;
+			if (newRow < 0 || newRow > 9)
+			{
+				continue;
+			}
+			if (board[newRow][fromPos[1]] == EMPTY)
+			{
+				int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, fromPos[1]});
+				if (isChecked(num))
+				{
+					return true;
+				}
+			}
+			else
+			{
+				continue;
+			}
+			if (std::find(guardZone.begin(), guardZone.end(), newRow * 10 + fromPos[1]) != guardZone.end())
+			{
+				break;
+			}
+		}
+		int newRow = fromPos[0] + houndDiection;
+		for (int i = -1; i <= 1; i += 2)
+		{
+			int newCol = fromPos[1] + i;
+			if (newRow < 0 || newRow > 9 || newCol < 0 || newCol > 9)
+			{
+				continue;
+			}
+			if (colorOfSquare(newRow, newCol) != turn && board[newRow][newCol] != EMPTY)
+			{
+				int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
+				if (isChecked(num))
+				{
+					return true;
+				}
+			}
+		}
+	}
+	return false;
 }
 
 bool Board::isChecked(int move)
