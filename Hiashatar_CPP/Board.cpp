@@ -672,6 +672,108 @@ bool Board::hasLegalMoves()
 	return false;
 }
 
+Color Board::isTerminal()
+{
+	if (repeatCount() == 3 || noProcess == 50)
+	{
+		return DRAW;
+	}
+	if (!hasLegalMoves())
+	{
+		if(isChecked(-1))
+		{
+			if (turn == BLACK)
+			{
+				return WHITE;
+			}
+			else
+			{
+				return BLACK;
+			}
+		}
+		else
+		{
+			return DRAW;
+		}
+	}
+
+	//Insuficient Material
+	if (blackPieces.lion.isCaptured() && whitePieces.lion.isCaptured())
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			if (!blackPieces.guards[i].isCaptured() || !whitePieces.guards[i].isCaptured())
+			{
+				return NOTEND;
+			}
+			if (!blackPieces.terges[i].isCaptured() || !whitePieces.terges[i].isCaptured())
+			{
+				return NOTEND;
+			}
+		}
+		for (int i = 0; i < 10; i++)
+		{
+			if (!blackPieces.hounds[i].isCaptured() || !whitePieces.hounds[i].isCaptured())
+			{
+				return NOTEND;
+			}
+		}
+		Color camelColor = DRAW;
+		int materia = 0;
+		for (int i = 0; i < 2; i++)
+		{
+			if (materia > 1)
+			{
+				return NOTEND;
+			}
+			if (!blackPieces.horses[i].isCaptured())
+			{
+				materia++;
+			}
+			if (!whitePieces.horses[i].isCaptured())
+			{
+				materia++;
+			}
+			if (!blackPieces.camels[i].isCaptured())
+			{
+				if (camelColor != DRAW)
+				{
+					if (camelColor != blackPieces.camels[i].getSquareColor())
+					{
+						return NOTEND;
+					}
+				}
+				else
+				{
+					camelColor = blackPieces.camels[i].getSquareColor();
+					materia++;
+				}
+			}
+			if (!whitePieces.camels[i].isCaptured())
+			{
+				if (camelColor != DRAW)
+				{
+					if (camelColor != whitePieces.camels[i].getSquareColor())
+					{
+						return NOTEND;
+					}
+				}
+				else
+				{
+					camelColor = whitePieces.camels[i].getSquareColor();
+					materia++;
+				}
+			}
+		}
+		if (materia > 1)
+		{
+			return NOTEND;
+		}
+		return DRAW;
+	}
+	return NOTEND;
+}
+
 bool Board::isChecked(int move)
 {
 	std::array<std::array<Square, 10>, 10> newBoard = board;

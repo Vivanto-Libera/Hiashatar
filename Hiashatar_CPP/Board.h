@@ -100,6 +100,7 @@ public:
 
 	std::vector<int> legalMoves();
 	bool hasLegalMoves();
+	Color isTerminal();
 
 	static std::array<int, 4> NumToMove(int num)
 	{
