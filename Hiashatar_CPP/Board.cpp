@@ -269,6 +269,7 @@ std::vector<int> Board::legalMoves()
 				}
 			}
 		}
+		return moves;
 	}
 
 	//Hounds' move
