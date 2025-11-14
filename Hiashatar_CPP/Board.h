@@ -90,7 +90,7 @@ const std::array<int, 8> QUEENMOVECOL{ 0, 1, 1, 1, 0, -1, -1, -1 };
 const std::array<int, 8> HORSEMOVEROW{ 2, 2, -2, -2, 1, 1, -1, -1 };
 const std::array<int, 8> HORSEMOVECOL{ 1, -1, 1, -1, 2, -2, 2, -2 };
 //Move "abcd" is mean from row a col b to row c col d.
-const std::map<uint16_t, uint16_t> indextoMove;
+const std::array<uint16_t, 3516> indextoMove;
 
 class Board
 {
@@ -110,9 +110,11 @@ public:
 			move[i] = num % 10;
 			num /= 10;
 		}
-
-
 		return move;
+	}
+	static int moveToNum(std::array<int, 4> move)
+	{
+		return move[0] * 1000 + move[1] * 100 + move[2] * 10 + move[3];
 	}
 
 	Board();
@@ -124,5 +126,6 @@ private:
 	//If move == -1 is mean do nothing and just judge now is being checked or not
 	//And if move != -1 is mean check after this move Khan is being checked or not
 	bool isChecked(int move);
+	Color colorOfSquare(int row, int col);
 };
 #endif
