@@ -13,7 +13,7 @@ public:
 	{
 		return std::array<int, 2>{row, col};
 	}
-	void move(int row, int col)
+	virtual void move(int row, int col)
 	{
 		this->row = row;
 		this->col = col;
@@ -110,5 +110,81 @@ public:
 	}
 };
 
+class Camel : Piece
+{
+public:
+	Camel(int row, int col, Color color) : Piece(row, col, color)
+	{
+		if (color == Color::WHITE)
+		{
+			piece = Square::WHITECAMEL;
+		}
+		else
+		{
+			piece = Square::BLACKCAMEL;
+		}
+	}
+};
+
+class Horse : Piece
+{
+public:
+	Horse(int row, int col, Color color) : Piece(row, col, color)
+	{
+		if (color == Color::WHITE)
+		{
+			piece = Square::WHITEHORSE;
+		}
+		else
+		{
+			piece = Square::BLACKHORSE;
+		}
+	}
+};
+
+class Terge : Piece
+{
+public:
+	Terge(int row, int col, Color color) : Piece(row, col, color)
+	{
+		if (color == Color::WHITE)
+		{
+			piece = Square::WHITETERGE;
+		}
+		else
+		{
+			piece = Square::BLACKTERGE;
+		}
+	}
+};
+
+class Hound : Piece
+{
+public:
+	bool isPromoted()
+	{
+		return promoted;
+	}
+	bool canEnPassent()
+	{
+		return EnPassent;
+	}
+	void move(int row, int col) override;
+
+	Hound(int row, int col, Color color) : Piece(row, col, color)
+	{
+		if (color == Color::WHITE)
+		{
+			piece = Square::WHITEHOUND;
+		}
+		else
+		{
+			piece = Square::BLACKHOUND;
+		}
+	}
+private:
+	bool promoted = false;
+	bool EnPassent = false;
+};
 
 #endif

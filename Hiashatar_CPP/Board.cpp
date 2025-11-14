@@ -7059,6 +7059,12 @@ Board::Board()
 	board[9][5] = Square::WHITELION;
 	board[9][4] = Square::WHITEKHAN;
 
+	for (int i = 0; i < 10; i++)
+	{
+		board[1][i] = Square::BLACKHOUND;
+		baord[8][i] = Square::WHITEHOUND;
+	}
+
 	turn = Color::WHITE;
 	noProcess = 0;
 	repeat = 0;
