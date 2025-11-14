@@ -37,6 +37,7 @@ public:
 	}
 
 	Piece(int row, int col, Color color) : row(row), col(col), color(color){}
+	Piece(){}
 protected:
 	//When row and col are -1, its mean this piece has been captured.
 	int row;
@@ -59,6 +60,7 @@ public:
 			piece = Square::BLACKKHAN;
 		}
 	}
+	Khan(){}
 };
 
 class Lion : Piece
@@ -75,6 +77,7 @@ public:
 			piece = Square::BLACKLION;
 		}
 	}
+	Lion(){}
 };
 
 class Guard : Piece
@@ -108,6 +111,7 @@ public:
 			piece = Square::BLACKGUARD;
 		}
 	}
+	Guard(){}
 };
 
 class Camel : Piece
@@ -145,6 +149,7 @@ public:
 			}
 		}
 	}
+	Camel(){}
 private:
 	Color squareColor;
 };
@@ -163,6 +168,7 @@ public:
 			piece = Square::BLACKHORSE;
 		}
 	}
+	Horse(){}
 };
 
 class Terge : Piece
@@ -179,6 +185,7 @@ public:
 			piece = Square::BLACKTERGE;
 		}
 	}
+	Terge(){}
 };
 
 class Hound : Piece
@@ -205,6 +212,7 @@ public:
 			piece = Square::BLACKHOUND;
 		}
 	}
+	Hound(){}
 private:
 	bool promoted = false;
 	bool EnPassent = false;
