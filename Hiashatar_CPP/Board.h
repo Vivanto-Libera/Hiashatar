@@ -5,8 +5,6 @@
 #include<iostream>
 #include<pybind11/pybind11.h>
 #include<array>
-#include<queue>
-#include<map>
 #include<unordered_set>
 #include<cstdint>
 #include"Pieces.h"
@@ -121,12 +119,12 @@ public:
 	Board();
 private:
 	int noProcess;
-	int repeat;
-	std::queue<std::array<std::array<Square, 10>, 10>> preBoards;
+	std::vector<std::array<std::array<Square, 10>, 10>> preBoards;
 
 	//If move == -1 is mean do nothing and just judge now is being checked or not
 	//And if move != -1 is mean check after this move Khan is being checked or not
 	bool isChecked(int move);
 	Color colorOfSquare(int row, int col);
+	int repeatCount();
 };
 #endif

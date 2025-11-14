@@ -852,6 +852,22 @@ Color Board::colorOfSquare(int row, int col)
 			return BLACK;
 	}
 }
+int Board::repeatCount()
+{
+	int repeats = 0;
+	for (int i = preBoards.size(); i >= 0; i--)
+	{
+		if (i % 2 == 1)
+		{
+			continue;
+		}
+		if (preBoards[i] == board)
+		{
+			repeats++;
+		}
+	}
+	return repeats;
+}
 
 Board::Board()
 {
@@ -881,5 +897,4 @@ Board::Board()
 
 	turn = WHITE;
 	noProcess = 0;
-	repeat = 0;
 }
