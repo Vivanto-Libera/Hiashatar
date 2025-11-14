@@ -82,16 +82,19 @@ struct Pieces
 	}
 };
 
+//Up, Up-Right, Right, Down-Right, Down, Down-left, Left, Up-Left
+//Even index is vertical, and odd index is diagonal
 const std::array<int, 8> QUEENMOVEROW{ -1, -1, 0, 1, 1, 1, 0, -1 };
 const std::array<int, 8> QUEENMOVECOL{ 0, 1, 1, 1, 0, -1, -1, -1 };
+//Down-Right, Down-Left, Up-Right, Up-Left, Right-Down, Left-Down, Right-Up, Right-Down
+const std::array<int, 8> HORSEMOVEROW{ 2, 2, -2, -2, 1, 1, -1, -1 };
+const std::array<int, 8> HORSEMOVECOL{ 1, -1, 1, -1, 2, -2, 2, -2 };
+//Move "abcd" is mean from row a col b to row c col d.
+const std::map<uint16_t, uint16_t> indextoMove;
 
 class Board
 {
 public:
-	//String "abcd" is mean from row a col b to row c col d.
-	const static std::map<uint16_t, uint16_t> indextoMove;
-	const static std::map<uint16_t, uint16_t> moveToIndex;
-
 	std::array<std::array<Square, 10>, 10> board;
 	Color turn;
 	Pieces whitePieces = Pieces(Color::WHITE);
@@ -118,7 +121,8 @@ private:
 	int repeat;
 	std::queue<std::array<std::array<Square, 10>, 10>> preBoards;
 
-	//Input -1 is mean do nothing and just judge now is being checked or not
+	//If move == -1 is mean do nothing and just judge now is being checked or not
+	//And if move != -1 is mean check after this move Khan is being checked or not
 	bool isChecked(int move);
 };
 #endif
