@@ -36,7 +36,7 @@ public:
 		return piece;
 	}
 
-	Piece(int row, int col, Color color, Square piece) : row(row), col(col), color(color){}
+	Piece(int row, int col, Color color) : row(row), col(col), color(color){}
 protected:
 	//When row and col are -1, its mean this piece has been captured.
 	int row;
@@ -113,17 +113,40 @@ public:
 class Camel : Piece
 {
 public:
+	Color getSquareColor()
+	{
+		return squareColor;
+	}
+
 	Camel(int row, int col, Color color) : Piece(row, col, color)
 	{
 		if (color == Color::WHITE)
 		{
 			piece = Square::WHITECAMEL;
+			if (col == 2)
+			{
+				squareColor = Color::BLACK;
+			}
+			else
+			{
+				squareColor = Color::WHITE;
+			}
 		}
 		else
 		{
 			piece = Square::BLACKCAMEL;
+			if (col == 2)
+			{
+				squareColor = Color::WHITE;
+			}
+			else
+			{
+				squareColor = Color::BLACK;
+			}
 		}
 	}
+private:
+	Color squareColor;
 };
 
 class Horse : Piece
