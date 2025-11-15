@@ -4,12 +4,12 @@
 #ifndef PIECES_H
 #define PIECES_H
 #include<iostream>
-#include "Board.h"
+#include"Enum.h"
 
 class Piece
 {
 public:
-	std::array<int, 2> getPosition()
+	std::array<int, 2> getPosition() const
 	{
 		return std::array<int, 2>{row, col};
 	}
@@ -18,11 +18,11 @@ public:
 		this->row = row;
 		this->col = col;
 	}
-	bool isCaptured()
+	bool isCaptured() const
 	{
 		return row == -1;
 	}
-	Color getColor()
+	Color getColor() const
 	{
 		return color;
 	}
@@ -31,7 +31,7 @@ public:
 		row = -1;
 		col = -1;
 	}
-	Square getPiece()
+	Square getPiece() const
 	{
 		return piece;
 	}
@@ -51,13 +51,13 @@ class Khan : public Piece
 public:
 	Khan(int row, int col, Color color) : Piece(row, col, color) 
 	{
-		if (color == Color::WHITE)
+		if (color == WHITE)
 		{
-			piece = Square::WHITEKHAN;
+			piece = WHITEKHAN;
 		}
 		else
 		{
-			piece = Square::BLACKKHAN;
+			piece = BLACKKHAN;
 		}
 	}
 	Khan(){}
@@ -68,13 +68,13 @@ class Lion : public Piece
 public:
 	Lion(int row, int col, Color color) : Piece(row, col, color)
 	{
-		if (color == Color::WHITE)
+		if (color == WHITE)
 		{
-			piece = Square::WHITELION;
+			piece = WHITELION;
 		}
 		else
 		{
-			piece = Square::BLACKLION;
+			piece = BLACKLION;
 		}
 	}
 	Lion(){}
@@ -86,6 +86,8 @@ public:
 	//Guard can protect neighbour's squares.
 	std::vector<int> getZone()
 	{
+		const std::array<int, 8> QUEENMOVEROW{ -1, -1, 0, 1, 1, 1, 0, -1 };
+		const std::array<int, 8> QUEENMOVECOL{ 0, 1, 1, 1, 0, -1, -1, -1 };
 		std::vector<int> zone;
 		for (int i = 0; i < 8; i++)
 		{
@@ -102,13 +104,13 @@ public:
 
 	Guard(int row, int col, Color color) : Piece(row, col, color)
 	{
-		if (color == Color::WHITE)
+		if (color == WHITE)
 		{
-			piece = Square::WHITEGUARD;
+			piece = WHITEGUARD;
 		}
 		else
 		{
-			piece = Square::BLACKGUARD;
+			piece = BLACKGUARD;
 		}
 	}
 	Guard(){}
@@ -124,28 +126,28 @@ public:
 
 	Camel(int row, int col, Color color) : Piece(row, col, color)
 	{
-		if (color == Color::WHITE)
+		if (color == WHITE)
 		{
-			piece = Square::WHITECAMEL;
+			piece = WHITECAMEL;
 			if (col == 2)
 			{
-				squareColor = Color::BLACK;
+				squareColor = BLACK;
 			}
 			else
 			{
-				squareColor = Color::WHITE;
+				squareColor = WHITE;
 			}
 		}
 		else
 		{
-			piece = Square::BLACKCAMEL;
+			piece = BLACKCAMEL;
 			if (col == 2)
 			{
-				squareColor = Color::WHITE;
+				squareColor = WHITE;
 			}
 			else
 			{
-				squareColor = Color::BLACK;
+				squareColor = BLACK;
 			}
 		}
 	}
@@ -159,13 +161,13 @@ class Horse : public Piece
 public:
 	Horse(int row, int col, Color color) : Piece(row, col, color)
 	{
-		if (color == Color::WHITE)
+		if (color == WHITE)
 		{
-			piece = Square::WHITEHORSE;
+			piece = WHITEHORSE;
 		}
 		else
 		{
-			piece = Square::BLACKHORSE;
+			piece = BLACKHORSE;
 		}
 	}
 	Horse(){}
@@ -176,13 +178,13 @@ class Terge : public Piece
 public:
 	Terge(int row, int col, Color color) : Piece(row, col, color)
 	{
-		if (color == Color::WHITE)
+		if (color == WHITE)
 		{
-			piece = Square::WHITETERGE;
+			piece = WHITETERGE;
 		}
 		else
 		{
-			piece = Square::BLACKTERGE;
+			piece = BLACKTERGE;
 		}
 	}
 	Terge(){}
@@ -199,17 +201,39 @@ public:
 	{
 		return EnPassent;
 	}
-	void move(int row, int col) override;
+	void move(int row, int col)
+	{
+		if (canEnPassent())
+		{
+			EnPassent = false;
+		}
+		if (!isPromoted() && ((this->row == 8 && color == Color::WHITE) || (this->row == 1 && color == Color::BLACK)))
+		{
+			if (((row == 5 || row == 6) && color == Color::WHITE) || ((row == 3 || row == 4) && color == Color::BLACK))
+			{
+				EnPassent = true;
+			}
+		}
+		this->row = row;
+		this->col = col;
+		if (!isPromoted())
+		{
+			if (row == 0 || row == 9)
+			{
+				promoted = true;
+			}
+		}
+	}
 
 	Hound(int row, int col, Color color) : Piece(row, col, color)
 	{
-		if (color == Color::WHITE)
+		if (color == WHITE)
 		{
-			piece = Square::WHITEHOUND;
+			piece = WHITEHOUND;
 		}
 		else
 		{
-			piece = Square::BLACKHOUND;
+			piece = BLACKHOUND;
 		}
 	}
 	Hound(){}

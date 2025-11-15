@@ -27,5 +27,14 @@ PYBIND11_MODULE(Hiashatar, m)
 		.value("NOTEND", Color::NOTEND)
 		.export_values();
 
-		
+	py::class_<Board>(m, "Board")
+		.def(py::init<>())
+		.def(py::init<const Board&>())
+		.def("isTerminal", &Board::isTerminal)
+		.def("legalMoves", &Board::legalMoves)
+		.def("neuralworkInput", &Board::neuralworkInput)
+		.def("applyMove", &Board::applyMove)
+		.def_static("indexToMove", &Board::indexTransToMove)
+		.def_readwrite("board", &Board::board)
+		.def_readwrite("turn", &Board::turn);
 };
