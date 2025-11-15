@@ -125,7 +125,7 @@ private:
 
 	//If move == -1 is mean do nothing and just judge now is being checked or not
 	//And if move != -1 is mean check after this move Khan is being checked or not
-	bool isChecked(int move);
+	bool isChecked(int move) const;
 	Color colorOfSquare(int row, int col);
 	int repeatCount();
 	Piece* findPiece(int row, int col);

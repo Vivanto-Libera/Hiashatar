@@ -335,6 +335,21 @@ std::vector<int> Board::legalMoves()
 					moves.emplace_back(num);
 				}
 			}
+			//En passent
+			if (board[newRow][newCol] == EMPTY)
+			{
+				if ((board[fromPos[0]][newCol] == WHITEHOUND && turn == BLACK) || (board[fromPos[0]][newCol] == BLACKHOUND && turn == WHITE))
+				{
+					if (static_cast<Hound*>(findPiece(fromPos[0], newCol))->canEnPassent())
+					{
+						int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
+						if (isChecked(num))
+						{
+							moves.emplace_back(num);
+						}
+					}
+				}
+			}
 		}
 	}
 	return moves;
@@ -373,8 +388,7 @@ bool Board::hasLegalMoves()
 		}
 		if (colorOfSquare(newRow, newCol) != turn)
 		{
-			int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
-			if (isChecked(num))
+			if (isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 			{
 				return true;
 			}
@@ -417,8 +431,7 @@ bool Board::hasLegalMoves()
 				}
 				if (board[newRow][newCol] != turn)
 				{
-					int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
-					if (isChecked(num))
+					if (isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 					{
 						return true;
 					}
@@ -467,8 +480,7 @@ bool Board::hasLegalMoves()
 				{
 					if (j % 2 == 1 && k == 1)
 					{
-						int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
-						if (isChecked(num))
+						if (isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 						{
 							return true;
 						}
@@ -512,8 +524,7 @@ bool Board::hasLegalMoves()
 				}
 				if (board[newRow][newCol] != turn)
 				{
-					int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
-					if (isChecked(num))
+					if (isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 					{
 						return true;
 					}
@@ -556,8 +567,7 @@ bool Board::hasLegalMoves()
 				}
 				if (board[newRow][newCol] != turn)
 				{
-					int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
-					if (isChecked(num))
+					if (isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 					{
 						return true;
 					}
@@ -598,8 +608,7 @@ bool Board::hasLegalMoves()
 			}
 			if (board[newRow][newCol] != turn)
 			{
-				int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
-				if (isChecked(num))
+				if (isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 				{
 					return true;
 				}
@@ -638,8 +647,7 @@ bool Board::hasLegalMoves()
 			}
 			if (board[newRow][fromPos[1]] == EMPTY)
 			{
-				int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, fromPos[1]});
-				if (isChecked(num))
+				if (isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, fromPos[1]})))
 				{
 					return true;
 				}
@@ -663,10 +671,23 @@ bool Board::hasLegalMoves()
 			}
 			if (colorOfSquare(newRow, newCol) != turn && board[newRow][newCol] != EMPTY)
 			{
-				int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
-				if (isChecked(num))
+				if (isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 				{
 					return true;
+				}
+			}
+			//En passent
+			if (board[newRow][newCol] == EMPTY)
+			{
+				if ((board[fromPos[0]][newCol] == WHITEHOUND && turn == BLACK) || (board[fromPos[0]][newCol] == BLACKHOUND && turn == WHITE))
+				{
+					if (static_cast<Hound*>(findPiece(fromPos[0], newCol))->canEnPassent())
+					{
+						if (isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
+						{
+							return true;
+						}
+					}
 				}
 			}
 		}
@@ -782,7 +803,7 @@ void Board::applyMove(int moveIndex)
 	// TODO: Need to finish this function
 }
 
-bool Board::isChecked(int move)
+bool Board::isChecked(int move) const
 {
 	std::array<std::array<Square, 10>, 10> newBoard = board;
 	if(move > 0)
@@ -790,6 +811,17 @@ bool Board::isChecked(int move)
 		std::array<int, 4> moveArray = NumToMove(move);
 		newBoard[moveArray[2]][moveArray[3]] = newBoard[moveArray[0]][moveArray[1]];
 		newBoard[moveArray[0]][moveArray[1]] = EMPTY;
+		//Check en passent
+		if (board[moveArray[0]][moveArray[1]] == WHITEHOUND || board[moveArray[0]][moveArray[1]] == BLACKHOUND)
+		{
+			if (moveArray[3] - moveArray[1] != 0)
+			{
+				if (board[moveArray[2]][moveArray[3]] == EMPTY)
+				{
+					newBoard[moveArray[0]][moveArray[3]] = EMPTY;
+				}
+			}
+		}
 	}
 
 	//Find the guard Zone
