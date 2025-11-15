@@ -697,7 +697,7 @@ bool Board::hasLegalMoves()
 
 Color Board::isTerminal()
 {
-	if (repeatCount() == 3 || noProcess == 50)
+	if (repeatCount() == 3 || noProgress == 50)
 	{
 		return DRAW;
 	}
@@ -809,11 +809,11 @@ void Board::applyMove(int moveIndex)
 	if (board[move[2]][move[3]] != EMPTY)
 	{
 		findPiece(move[2], move[3])->capture();
-		noProcess = 0;
+		noProgress = 0;
 	}
 	if (board[move[0]][move[1]] == WHITEHOUND || board[move[0]][move[1]] == BLACKHOUND)
 	{
-		noProcess = 0;
+		noProgress = 0;
 		if (move[3] - move[1] != 0 && board[move[2]][move[3]] == EMPTY)
 		{
 			findPiece(move[0], move[3])->capture();
@@ -830,6 +830,46 @@ void Board::applyMove(int moveIndex)
 		board[move[2]][move[3]] = turn == WHITE ? WHITELION : BLACKLION;
 	}
 	turn = turn == WHITE ? BLACK : WHITE;
+}
+
+std::vector<std::array<std::array<float, 10>, 10>> Board::neuralworkInput()
+{
+	std::vector<std::array<std::array<float, 10>, 10>> inputs;
+	std::vector<std::array<std::array<float, 10>, 10>> input1 = inputFormBoard(board);
+	inputs.insert(inputs.end(), std::make_move_iterator(input1.begin()), std::make_move_iterator(input1.end()));
+	for (int i = 5; i >= 0; i--)
+	{
+		std::vector<std::array<std::array<float, 10>, 10>> input2;
+		if ( i > preBoards.size() - 1)
+		{
+			input2 = inputEmptyBoard();
+		}
+		else
+		{
+			input2 = inputFormBoard(preBoards[i]);
+		}
+		inputs.insert(inputs.end(), std::make_move_iterator(input2.begin()), std::make_move_iterator(input2.end()));
+	}
+	int repeat = repeatCount();
+	for (int i = 1; i <= 2; i++)
+	{
+		std::array<std::array<float, 10>, 10> input3{};
+		if (i <= repeat)
+		{
+			for (auto& input : input3)
+			{
+				input.fill(1);
+			}
+		}
+		inputs.emplace_back(input3);
+	}
+	std::array<std::array<float, 10>, 10> input4{};
+	for (auto& input : input4)
+	{
+		input.fill( 1.0 * noProgress / 50);
+	}
+	inputs.emplace_back(input4);
+	return inputs;
 }
 
 bool Board::isChecked(int move) const
@@ -1191,6 +1231,99 @@ Piece* Board::findPiece(int row, int col)
 	}
 }
 
+std::vector<std::array<std::array<float, 10>, 10>> Board::inputFormBoard(const std::array<std::array<Square, 10>, 10>& aBoard) const
+{
+	std::array<std::array<float, 10>, 10> pKhan{};
+	std::array<std::array<float, 10>, 10> pLion{};
+	std::array<std::array<float, 10>, 10> pGuard{};
+	std::array<std::array<float, 10>, 10> pCamel{};
+	std::array<std::array<float, 10>, 10> pHorse{};
+	std::array<std::array<float, 10>, 10> pTerge{};
+	std::array<std::array<float, 10>, 10> pHound{};
+	std::array<std::array<float, 10>, 10> oKhan{};
+	std::array<std::array<float, 10>, 10> oLion{};
+	std::array<std::array<float, 10>, 10> oGuard{};
+	std::array<std::array<float, 10>, 10> oCamel{};
+	std::array<std::array<float, 10>, 10> oHorse{};
+	std::array<std::array<float, 10>, 10> oTerge{};
+	std::array<std::array<float, 10>, 10> oHound{};
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 10; j++)
+		{
+			switch (aBoard[i][j])
+			{
+				case WHITEKHAN:
+					pKhan[i][j] = turn == WHITE ? 1 : 0;
+					oKhan[i][j] = turn == WHITE ? 0 : 1;
+					break;
+				case WHITELION:
+					pLion[i][j] = turn == WHITE ? 1 : 0;
+					oLion[i][j] = turn == WHITE ? 0 : 1;
+					break;
+				case WHITEGUARD:
+					pGuard[i][j] = turn == WHITE ? 1 : 0;
+					oGuard[i][j] = turn == WHITE ? 0 : 1;
+					break;
+				case WHITECAMEL:
+					pCamel[i][j] = turn == WHITE ? 1 : 0;
+					oCamel[i][j] = turn == WHITE ? 0 : 1;
+					break;
+				case WHITEHORSE:
+					pHorse[i][j] = turn == WHITE ? 1 : 0;
+					oHorse[i][j] = turn == WHITE ? 0 : 1;
+					break;
+				case WHITETERGE:
+					pTerge[i][j] = turn == WHITE ? 1 : 0;
+					oTerge[i][j] = turn == WHITE ? 0 : 1;
+					break;
+				case WHITEHOUND:
+					pHound[i][j] = turn == WHITE ? 1 : 0;
+					oHound[i][j] = turn == WHITE ? 0 : 1;
+					break;
+				case BLACKKHAN:
+					pKhan[i][j] = turn == BLACK ? 1 : 0;
+					oKhan[i][j] = turn == BLACK ? 0 : 1;
+					break;
+				case BLACKLION:
+					pLion[i][j] = turn == BLACK ? 1 : 0;
+					oLion[i][j] = turn == BLACK ? 0 : 1;
+					break;
+				case BLACKGUARD:
+					pGuard[i][j] = turn == BLACK ? 1 : 0;
+					oGuard[i][j] = turn == BLACK ? 0 : 1;
+					break;
+				case BLACKCAMEL:
+					pCamel[i][j] = turn == BLACK ? 1 : 0;
+					oCamel[i][j] = turn == BLACK ? 0 : 1;
+					break;
+				case BLACKHORSE:
+					pHorse[i][j] = turn == BLACK ? 1 : 0;
+					oHorse[i][j] = turn == BLACK ? 0 : 1;
+					break;
+				case BLACKTERGE:
+					pTerge[i][j] = turn == BLACK ? 1 : 0;
+					oTerge[i][j] = turn == BLACK ? 0 : 1;
+					break;
+				case BLACKHOUND:
+					pHound[i][j] = turn == BLACK ? 1 : 0;
+					oHound[i][j] = turn == BLACK ? 0 : 1;
+					break;
+				default:
+					break;
+			}
+		}
+	}
+	return std::vector<std::array<std::array<float, 10>, 10>>
+			{pKhan, pLion, pGuard, pCamel, pHorse, pTerge, pHound,
+			oKhan, oLion, oGuard, oCamel, oHorse, oTerge, oHound};
+}
+
+std::vector<std::array<std::array<float, 10>, 10>> Board::inputEmptyBoard() const
+{
+	return std::vector<std::array<std::array<float, 10>, 10>>{{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}};
+}
+
 Board::Board()
 {
 	for (int i = 2; i < 8; i++)
@@ -1218,5 +1351,5 @@ Board::Board()
 	}
 
 	turn = WHITE;
-	noProcess = 0;
+	noProgress = 0;
 }

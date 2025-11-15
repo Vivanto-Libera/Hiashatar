@@ -102,6 +102,7 @@ public:
 	bool hasLegalMoves();
 	Color isTerminal();
 	void applyMove(int moveIndex);
+	std::vector<std::array<std::array<float, 10>, 10>> neuralworkInput();
 
 	static std::array<int, 4> NumToMove(int num)
 	{
@@ -120,7 +121,7 @@ public:
 
 	Board();
 private:
-	int noProcess;
+	int noProgress;
 	std::vector<std::array<std::array<Square, 10>, 10>> preBoards;
 
 	//If move == -1 is mean do nothing and just judge now is being checked or not
@@ -129,5 +130,7 @@ private:
 	Color colorOfSquare(int row, int col);
 	int repeatCount();
 	Piece* findPiece(int row, int col);
+	std::vector<std::array<std::array<float, 10>, 10>> inputFormBoard(const std::array<std::array<Square, 10>, 10>& aBoard) const;
+	std::vector<std::array<std::array<float, 10>, 10>> inputEmptyBoard() const;
 };
 #endif
