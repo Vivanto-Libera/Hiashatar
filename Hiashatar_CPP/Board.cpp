@@ -20,6 +20,14 @@ std::vector<int> Board::legalMoves()
 	else
 	{
 		pieces = &blackPieces;
+		for (int i = 0; i < 2; i++)
+		{
+			if (!whitePieces.guards[i].isCaptured())
+			{
+				std::vector<int> zone = whitePieces.guards[i].getZone();
+				guardZone.insert(zone.begin(), zone.end());
+			}
+		}
 	}
 	std::array<int, 2> fromPos;
 
@@ -313,7 +321,7 @@ std::vector<int> Board::legalMoves()
 			}
 			else
 			{
-				continue;
+				break;
 			}
 			if (std::find(guardZone.begin(), guardZone.end(), newRow * 10 + fromPos[1]) != guardZone.end())
 			{
@@ -377,6 +385,14 @@ bool Board::hasLegalMoves()
 	else
 	{
 		pieces = &blackPieces;
+		for (int i = 0; i < 2; i++)
+		{
+			if (!whitePieces.guards[i].isCaptured())
+			{
+				std::vector<int> zone = whitePieces.guards[i].getZone();
+				guardZone.insert(zone.begin(), zone.end());
+			}
+		}
 	}
 	std::array<int, 2> fromPos;
 
@@ -665,7 +681,7 @@ bool Board::hasLegalMoves()
 			}
 			else
 			{
-				continue;
+				break;
 			}
 			if (std::find(guardZone.begin(), guardZone.end(), newRow * 10 + fromPos[1]) != guardZone.end())
 			{
@@ -955,7 +971,7 @@ bool Board::isChecked(int move) const
 			}
 		}
 		newCol += 2;
-		if(newCol >=0 && newCol <=9)
+		if(!(newRow < 0 || newRow > 9 || newCol < 0 || newCol > 9))
 		{
 			if (newBoard[newRow][newCol] == BLACKHOUND)
 			{
@@ -975,7 +991,7 @@ bool Board::isChecked(int move) const
 			}
 		}
 		newCol += 2;
-		if (newCol >= 0 && newCol <= 9)
+		if (!(newRow < 0 || newRow > 9 || newCol < 0 || newCol > 9))
 		{
 			if (newBoard[newRow][newCol] == WHITEHOUND)
 			{
@@ -1096,7 +1112,6 @@ int Board::repeatCount()
 
 Piece* Board::findPiece(int row, int col)
 {
-	py::object print = py::module_::import("builtins").attr("print");
 	switch (board[row][col])
 	{
 		case WHITEKHAN:
@@ -1120,7 +1135,6 @@ Piece* Board::findPiece(int row, int col)
 					}
 				}
 			}
-			print("err1", row, col);
 			return nullptr;
 		case WHITEGUARD:
 			for (auto& guard : whitePieces.guards)
@@ -1130,7 +1144,6 @@ Piece* Board::findPiece(int row, int col)
 					return &guard;
 				}
 			}
-			print("err2", row, col);
 			return nullptr;
 		case WHITECAMEL:
 			for (auto& camel : whitePieces.camels)
@@ -1140,7 +1153,6 @@ Piece* Board::findPiece(int row, int col)
 					return &camel;
 				}
 			}
-			print("err3", row, col);
 			return nullptr;
 		case WHITEHORSE:
 			for (auto& horse : whitePieces.horses)
@@ -1150,7 +1162,6 @@ Piece* Board::findPiece(int row, int col)
 					return &horse;
 				}
 			}
-			print("err4", row, col);
 			return nullptr;
 		case WHITETERGE:
 			for (auto& terge : whitePieces.terges)
@@ -1160,7 +1171,6 @@ Piece* Board::findPiece(int row, int col)
 					return &terge;
 				}
 			}
-			print("err5", row, col);
 			return nullptr;
 		case WHITEHOUND:
 			for (auto& hound : whitePieces.hounds)
@@ -1174,7 +1184,6 @@ Piece* Board::findPiece(int row, int col)
 					return &hound;
 				}
 			}
-			print("err6", row, col);
 			return nullptr;
 		case BLACKKHAN:
 			return &blackPieces.khan;
@@ -1197,7 +1206,6 @@ Piece* Board::findPiece(int row, int col)
 					}
 				}
 			}
-			print("err7", row, col);
 			return nullptr;
 		case BLACKGUARD:
 			for (auto& guard : blackPieces.guards)
@@ -1207,7 +1215,6 @@ Piece* Board::findPiece(int row, int col)
 					return &guard;
 				}
 			}
-			print("err8", row, col);
 			return nullptr;
 		case BLACKCAMEL:
 			for (auto& camel : blackPieces.camels)
@@ -1217,7 +1224,6 @@ Piece* Board::findPiece(int row, int col)
 					return &camel;
 				}
 			}
-			print("err9", row, col);
 			return nullptr;
 		case BLACKHORSE:
 			for (auto& horse : blackPieces.horses)
@@ -1227,7 +1233,6 @@ Piece* Board::findPiece(int row, int col)
 					return &horse;
 				}
 			}
-			print("err10", row, col);
 			return nullptr;
 		case BLACKTERGE:
 			for (auto& terge : blackPieces.terges)
@@ -1237,7 +1242,6 @@ Piece* Board::findPiece(int row, int col)
 					return &terge;
 				}
 			}
-			print("err11", row, col);
 			return nullptr;
 		case BLACKHOUND:
 			for (auto& hound : blackPieces.hounds)
@@ -1251,10 +1255,8 @@ Piece* Board::findPiece(int row, int col)
 					return &hound;
 				}
 			}
-			print("err12", row, col);
 			return nullptr;
 		default:
-			print("err13", row, col);
 			return nullptr;
 	}
 }
