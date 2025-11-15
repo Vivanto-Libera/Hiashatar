@@ -36,7 +36,7 @@ std::vector<int> Board::legalMoves()
 		if (colorOfSquare(newRow, newCol) != turn)
 		{
 			int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
-			if (isChecked(num))
+			if (!isChecked(num))
 			{
 				moves.emplace_back(num);
 			}
@@ -80,7 +80,7 @@ std::vector<int> Board::legalMoves()
 				if (board[newRow][newCol] != turn)
 				{
 					int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
-					if (isChecked(num))
+					if (!isChecked(num))
 					{
 						moves.emplace_back(num);
 					}
@@ -117,10 +117,14 @@ std::vector<int> Board::legalMoves()
 			{
 				newRow += QUEENMOVEROW[j];
 				newCol += QUEENMOVECOL[j];
+				if (newRow < 0 || newRow > 9 || newCol < 0 || newCol > 9)
+				{
+					break;
+				}
 				if (board[newRow][newCol] == EMPTY)
 				{
 					int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
-					if (isChecked(num))
+					if (!isChecked(num))
 					{
 						moves.emplace_back(num);
 					}
@@ -130,7 +134,7 @@ std::vector<int> Board::legalMoves()
 					if (j % 2 == 1 && k == 1)
 					{
 						int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
-						if (isChecked(num))
+						if (!isChecked(num))
 						{
 							moves.emplace_back(num);
 						}
@@ -175,7 +179,7 @@ std::vector<int> Board::legalMoves()
 				if (board[newRow][newCol] != turn)
 				{
 					int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
-					if (isChecked(num))
+					if (!isChecked(num))
 					{
 						moves.emplace_back(num);
 					}
@@ -219,7 +223,7 @@ std::vector<int> Board::legalMoves()
 				if (board[newRow][newCol] != turn)
 				{
 					int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
-					if (isChecked(num))
+					if (!isChecked(num))
 					{
 						moves.emplace_back(num);
 					}
@@ -261,7 +265,7 @@ std::vector<int> Board::legalMoves()
 			if (board[newRow][newCol] != turn)
 			{
 				int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
-				if (isChecked(num))
+				if (!isChecked(num))
 				{
 					moves.emplace_back(num);
 				}
@@ -302,7 +306,7 @@ std::vector<int> Board::legalMoves()
 			if (board[newRow][fromPos[1]] == EMPTY)
 			{
 				int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, fromPos[1]});
-				if (isChecked(num))
+				if (!isChecked(num))
 				{
 					moves.emplace_back(num);
 				}
@@ -328,7 +332,7 @@ std::vector<int> Board::legalMoves()
 			if (colorOfSquare(newRow, newCol) != turn && board[newRow][newCol] != EMPTY)
 			{
 				int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
-				if (isChecked(num))
+				if (!isChecked(num))
 				{
 					moves.emplace_back(num);
 				}
@@ -341,7 +345,7 @@ std::vector<int> Board::legalMoves()
 					if (static_cast<Hound*>(findPiece(fromPos[0], newCol))->canEnPassent())
 					{
 						int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
-						if (isChecked(num))
+						if (!isChecked(num))
 						{
 							moves.emplace_back(num);
 						}
@@ -350,12 +354,14 @@ std::vector<int> Board::legalMoves()
 			}
 		}
 	}
+
 	return moves;
 }
 bool Board::hasLegalMoves()
 {
 	Pieces* pieces;
 	std::unordered_set<int> guardZone;
+
 	if (turn == WHITE)
 	{
 		pieces = &whitePieces;
@@ -386,14 +392,14 @@ bool Board::hasLegalMoves()
 		}
 		if (colorOfSquare(newRow, newCol) != turn)
 		{
-			if (isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
+			if (!isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 			{
 				return true;
 			}
 		}
 	}
 
-	//Lion's move
+	//Lions' move
 	for (int i = 0; i < 11; i++)
 	{
 		if (i == 0 && !pieces->lion.isCaptured())
@@ -415,6 +421,7 @@ bool Board::hasLegalMoves()
 		{
 			continue;
 		}
+
 		for (int j = 0; j < 8; j++)
 		{
 			int newRow = fromPos[0];
@@ -427,9 +434,10 @@ bool Board::hasLegalMoves()
 				{
 					break;
 				}
+
 				if (board[newRow][newCol] != turn)
 				{
-					if (isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
+					if (!isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 					{
 						return true;
 					}
@@ -442,6 +450,7 @@ bool Board::hasLegalMoves()
 				{
 					break;
 				}
+
 				if (std::find(guardZone.begin(), guardZone.end(), newRow * 10 + newCol) != guardZone.end())
 				{
 					break;
@@ -466,10 +475,14 @@ bool Board::hasLegalMoves()
 			{
 				newRow += QUEENMOVEROW[j];
 				newCol += QUEENMOVECOL[j];
+				if (newRow < 0 || newRow > 9 || newCol < 0 || newCol > 9)
+				{
+					break;
+				}
 				if (board[newRow][newCol] == EMPTY)
 				{
 					int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
-					if (isChecked(num))
+					if (!isChecked(num))
 					{
 						return true;
 					}
@@ -478,7 +491,7 @@ bool Board::hasLegalMoves()
 				{
 					if (j % 2 == 1 && k == 1)
 					{
-						if (isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
+						if (!isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 						{
 							return true;
 						}
@@ -522,7 +535,7 @@ bool Board::hasLegalMoves()
 				}
 				if (board[newRow][newCol] != turn)
 				{
-					if (isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
+					if (!isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 					{
 						return true;
 					}
@@ -565,7 +578,7 @@ bool Board::hasLegalMoves()
 				}
 				if (board[newRow][newCol] != turn)
 				{
-					if (isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
+					if (!isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 					{
 						return true;
 					}
@@ -606,7 +619,7 @@ bool Board::hasLegalMoves()
 			}
 			if (board[newRow][newCol] != turn)
 			{
-				if (isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
+				if (!isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 				{
 					return true;
 				}
@@ -645,7 +658,7 @@ bool Board::hasLegalMoves()
 			}
 			if (board[newRow][fromPos[1]] == EMPTY)
 			{
-				if (isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, fromPos[1]})))
+				if (!isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, fromPos[1]})))
 				{
 					return true;
 				}
@@ -669,11 +682,12 @@ bool Board::hasLegalMoves()
 			}
 			if (colorOfSquare(newRow, newCol) != turn && board[newRow][newCol] != EMPTY)
 			{
-				if (isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
+				if (!isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 				{
 					return true;
 				}
 			}
+
 			//En passent
 			if (board[newRow][newCol] == EMPTY)
 			{
@@ -681,7 +695,7 @@ bool Board::hasLegalMoves()
 				{
 					if (static_cast<Hound*>(findPiece(fromPos[0], newCol))->canEnPassent())
 					{
-						if (isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
+						if (!isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 						{
 							return true;
 						}
@@ -797,6 +811,7 @@ Color Board::isTerminal()
 
 void Board::applyMove(int moveIndex)
 {
+	noProgress++;
 	if (preBoards.size() == 6)
 	{
 		preBoards.erase(preBoards.begin());
@@ -818,9 +833,10 @@ void Board::applyMove(int moveIndex)
 			board[move[0]][move[3]] = EMPTY;
 		}
 	}
+
+	findPiece(move[0], move[1])->move(move[2], move[3]);
 	board[move[2]][move[3]] = board[move[0]][move[1]];
 	board[move[0]][move[1]] = EMPTY;
-	findPiece(move[0], move[1])->move(move[2], move[3]);
 
 	//Promote
 	if((board[move[2]][move[3]] == BLACKHOUND || board[move[2]][move[3]] == WHITEHOUND) && (move[2] == 9 || move[2] == 0))
@@ -838,7 +854,7 @@ std::vector<std::array<std::array<float, 10>, 10>> Board::neuralworkInput()
 	for (int i = 5; i >= 0; i--)
 	{
 		std::vector<std::array<std::array<float, 10>, 10>> input2;
-		if ( i > preBoards.size() - 1)
+		if ( i > ((int)preBoards.size() - 1))
 		{
 			input2 = inputEmptyBoard();
 		}
@@ -1064,7 +1080,7 @@ Color Board::colorOfSquare(int row, int col)
 int Board::repeatCount()
 {
 	int repeats = 0;
-	for (int i = preBoards.size(); i >= 0; i--)
+	for (int i = preBoards.size() - 1; i >= 0; i--)
 	{
 		if (i % 2 == 1)
 		{
@@ -1080,6 +1096,7 @@ int Board::repeatCount()
 
 Piece* Board::findPiece(int row, int col)
 {
+	py::object print = py::module_::import("builtins").attr("print");
 	switch (board[row][col])
 	{
 		case WHITEKHAN:
@@ -1103,6 +1120,7 @@ Piece* Board::findPiece(int row, int col)
 					}
 				}
 			}
+			print("err1", row, col);
 			return nullptr;
 		case WHITEGUARD:
 			for (auto& guard : whitePieces.guards)
@@ -1112,6 +1130,7 @@ Piece* Board::findPiece(int row, int col)
 					return &guard;
 				}
 			}
+			print("err2", row, col);
 			return nullptr;
 		case WHITECAMEL:
 			for (auto& camel : whitePieces.camels)
@@ -1121,6 +1140,7 @@ Piece* Board::findPiece(int row, int col)
 					return &camel;
 				}
 			}
+			print("err3", row, col);
 			return nullptr;
 		case WHITEHORSE:
 			for (auto& horse : whitePieces.horses)
@@ -1130,6 +1150,7 @@ Piece* Board::findPiece(int row, int col)
 					return &horse;
 				}
 			}
+			print("err4", row, col);
 			return nullptr;
 		case WHITETERGE:
 			for (auto& terge : whitePieces.terges)
@@ -1139,6 +1160,7 @@ Piece* Board::findPiece(int row, int col)
 					return &terge;
 				}
 			}
+			print("err5", row, col);
 			return nullptr;
 		case WHITEHOUND:
 			for (auto& hound : whitePieces.hounds)
@@ -1152,6 +1174,7 @@ Piece* Board::findPiece(int row, int col)
 					return &hound;
 				}
 			}
+			print("err6", row, col);
 			return nullptr;
 		case BLACKKHAN:
 			return &blackPieces.khan;
@@ -1174,6 +1197,7 @@ Piece* Board::findPiece(int row, int col)
 					}
 				}
 			}
+			print("err7", row, col);
 			return nullptr;
 		case BLACKGUARD:
 			for (auto& guard : blackPieces.guards)
@@ -1183,6 +1207,7 @@ Piece* Board::findPiece(int row, int col)
 					return &guard;
 				}
 			}
+			print("err8", row, col);
 			return nullptr;
 		case BLACKCAMEL:
 			for (auto& camel : blackPieces.camels)
@@ -1192,6 +1217,7 @@ Piece* Board::findPiece(int row, int col)
 					return &camel;
 				}
 			}
+			print("err9", row, col);
 			return nullptr;
 		case BLACKHORSE:
 			for (auto& horse : blackPieces.horses)
@@ -1201,6 +1227,7 @@ Piece* Board::findPiece(int row, int col)
 					return &horse;
 				}
 			}
+			print("err10", row, col);
 			return nullptr;
 		case BLACKTERGE:
 			for (auto& terge : blackPieces.terges)
@@ -1210,6 +1237,7 @@ Piece* Board::findPiece(int row, int col)
 					return &terge;
 				}
 			}
+			print("err11", row, col);
 			return nullptr;
 		case BLACKHOUND:
 			for (auto& hound : blackPieces.hounds)
@@ -1223,8 +1251,10 @@ Piece* Board::findPiece(int row, int col)
 					return &hound;
 				}
 			}
+			print("err12", row, col);
 			return nullptr;
 		default:
+			print("err13", row, col);
 			return nullptr;
 	}
 }
@@ -1319,7 +1349,13 @@ std::vector<std::array<std::array<float, 10>, 10>> Board::inputFormBoard(const s
 
 std::vector<std::array<std::array<float, 10>, 10>> Board::inputEmptyBoard() const
 {
-	return std::vector<std::array<std::array<float, 10>, 10>>{{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}};
+	std::array<std::array<float, 10>, 10> empty{};
+	std::vector<std::array<std::array<float, 10>, 10>> inputs;
+	for (int i = 0; i < 14; i++)
+	{
+		inputs.emplace_back(empty);
+	}
+	return inputs;
 }
 
 Board::Board()

@@ -4,6 +4,7 @@
 #define BOARD_H
 #include<iostream>
 #include<pybind11/pybind11.h>
+#include<pybind11/stl.h>
 #include<array>
 #include<unordered_set>
 #include<cstdint>
@@ -98,6 +99,11 @@ public:
 	static int indexTransToMove (int index)
 	{
 		return indexToMove[index];
+	}
+	static int moveToIndex (int move)
+	{
+		auto it = std::find(indexToMove.begin(), indexToMove.end(), move);
+		return static_cast<int>(it - indexToMove.begin());
 	}
 
 	Board();
