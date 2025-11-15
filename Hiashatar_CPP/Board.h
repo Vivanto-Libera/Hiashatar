@@ -101,6 +101,7 @@ public:
 	std::vector<int> legalMoves();
 	bool hasLegalMoves();
 	Color isTerminal();
+	void applyMove(int moveIndex);
 
 	static std::array<int, 4> NumToMove(int num)
 	{
@@ -127,5 +128,6 @@ private:
 	bool isChecked(int move);
 	Color colorOfSquare(int row, int col);
 	int repeatCount();
+	Piece* findPiece(int row, int col);
 };
 #endif

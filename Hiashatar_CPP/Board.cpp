@@ -293,6 +293,7 @@ std::vector<int> Board::legalMoves()
 		{
 			moveDistance = 3;
 		}
+		//Move Forward
 		for (int i = 1; i <= moveDistance; i++)
 		{
 			int newRow = fromPos[0] + houndDiection * i;
@@ -317,6 +318,7 @@ std::vector<int> Board::legalMoves()
 				break;
 			}
 		}
+		//Capure
 		int newRow = fromPos[0] + houndDiection;
 		for (int i = -1; i <= 1; i += 2)
 		{
@@ -774,6 +776,12 @@ Color Board::isTerminal()
 	return NOTEND;
 }
 
+void Board::applyMove(int moveIndex)
+{
+	int move = indextoMove[moveIndex];
+	// TODO: Need to finish this function
+}
+
 bool Board::isChecked(int move)
 {
 	std::array<std::array<Square, 10>, 10> newBoard = board;
@@ -969,6 +977,157 @@ int Board::repeatCount()
 		}
 	}
 	return repeats;
+}
+
+Piece* Board::findPiece(int row, int col)
+{
+	switch (board[row][col])
+	{
+		case WHITEKHAN:
+			return &whitePieces.khan;
+		case WHITELION:
+			if (whitePieces.lion.getPosition()[0] == row && whitePieces.lion.getPosition()[1] == col)
+			{
+				return &whitePieces.lion;
+			}
+			else
+			{
+				for (auto& hound : whitePieces.hounds)
+				{
+					if (!hound.isPromoted())
+					{
+						continue;
+					}
+					if (hound.getPosition()[0] == row && hound.getPosition()[1] == col)
+					{
+						return &hound;
+					}
+				}
+			}
+			return nullptr;
+		case WHITEGUARD:
+			for (auto& guard : whitePieces.guards)
+			{
+				if (guard.getPosition()[0] == row && guard.getPosition()[1] == col)
+				{
+					return &guard;
+				}
+			}
+			return nullptr;
+		case WHITECAMEL:
+			for (auto& camel : whitePieces.camels)
+			{
+				if (camel.getPosition()[0] == row && camel.getPosition()[1] == col)
+				{
+					return &camel;
+				}
+			}
+			return nullptr;
+		case WHITEHORSE:
+			for (auto& horse : whitePieces.horses)
+			{
+				if (horse.getPosition()[0] == row && horse.getPosition()[1] == col)
+				{
+					return &horse;
+				}
+			}
+			return nullptr;
+		case WHITETERGE:
+			for (auto& terge : whitePieces.terges)
+			{
+				if (terge.getPosition()[0] == row && terge.getPosition()[1] == col)
+				{
+					return &terge;
+				}
+			}
+			return nullptr;
+		case WHITEHOUND:
+			for (auto& hound : whitePieces.hounds)
+			{
+				if (hound.isPromoted())
+				{
+					continue;
+				}
+				if (hound.getPosition()[0] == row && hound.getPosition()[1] == col)
+				{
+					return &hound;
+				}
+			}
+			return nullptr;
+		case BLACKKHAN:
+			return &blackPieces.khan;
+		case BLACKLION:
+			if (blackPieces.lion.getPosition()[0] == row && blackPieces.lion.getPosition()[1] == col)
+			{
+				return &blackPieces.lion;
+			}
+			else
+			{
+				for (auto& hound : blackPieces.hounds)
+				{
+					if (!hound.isPromoted())
+					{
+						continue;
+					}
+					if (hound.getPosition()[0] == row && hound.getPosition()[1] == col)
+					{
+						return &hound;
+					}
+				}
+			}
+			return nullptr;
+		case BLACKGUARD:
+			for (auto& guard : blackPieces.guards)
+			{
+				if (guard.getPosition()[0] == row && guard.getPosition()[1] == col)
+				{
+					return &guard;
+				}
+			}
+			return nullptr;
+		case BLACKCAMEL:
+			for (auto& camel : blackPieces.camels)
+			{
+				if (camel.getPosition()[0] == row && camel.getPosition()[1] == col)
+				{
+					return &camel;
+				}
+			}
+			return nullptr;
+		case BLACKHORSE:
+			for (auto& horse : blackPieces.horses)
+			{
+				if (horse.getPosition()[0] == row && horse.getPosition()[1] == col)
+				{
+					return &horse;
+				}
+			}
+			return nullptr;
+		case BLACKTERGE:
+			for (auto& terge : blackPieces.terges)
+			{
+				if (terge.getPosition()[0] == row && terge.getPosition()[1] == col)
+				{
+					return &terge;
+				}
+			}
+			return nullptr;
+		case BLACKHOUND:
+			for (auto& hound : blackPieces.hounds)
+			{
+				if (hound.isPromoted())
+				{
+					continue;
+				}
+				if (hound.getPosition()[0] == row && hound.getPosition()[1] == col)
+				{
+					return &hound;
+				}
+			}
+			return nullptr;
+		default:
+			return nullptr;
+	}
 }
 
 Board::Board()
