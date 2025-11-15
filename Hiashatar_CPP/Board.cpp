@@ -77,7 +77,7 @@ std::vector<int> Board::legalMoves()
 				{
 					break;
 				}
-				if (board[newRow][newCol] != turn)
+				if (colorOfSquare(newRow, newCol) != turn)
 				{
 					int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
 					if (!isChecked(num))
@@ -176,7 +176,7 @@ std::vector<int> Board::legalMoves()
 				{
 					break;
 				}
-				if (board[newRow][newCol] != turn)
+				if (colorOfSquare(newRow, newCol) != turn)
 				{
 					int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
 					if (!isChecked(num))
@@ -220,7 +220,7 @@ std::vector<int> Board::legalMoves()
 				{
 					break;
 				}
-				if (board[newRow][newCol] != turn)
+				if (colorOfSquare(newRow, newCol) != turn)
 				{
 					int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
 					if (!isChecked(num))
@@ -262,7 +262,7 @@ std::vector<int> Board::legalMoves()
 			{
 				continue;
 			}
-			if (board[newRow][newCol] != turn)
+			if (colorOfSquare(newRow, newCol) != turn)
 			{
 				int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
 				if (!isChecked(num))
@@ -435,7 +435,7 @@ bool Board::hasLegalMoves()
 					break;
 				}
 
-				if (board[newRow][newCol] != turn)
+				if (colorOfSquare(newRow, newCol) != turn)
 				{
 					if (!isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 					{
@@ -533,7 +533,7 @@ bool Board::hasLegalMoves()
 				{
 					break;
 				}
-				if (board[newRow][newCol] != turn)
+				if (colorOfSquare(newRow, newCol) != turn)
 				{
 					if (!isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 					{
@@ -576,7 +576,7 @@ bool Board::hasLegalMoves()
 				{
 					break;
 				}
-				if (board[newRow][newCol] != turn)
+				if (colorOfSquare(newRow, newCol) != turn)
 				{
 					if (!isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 					{
@@ -617,7 +617,7 @@ bool Board::hasLegalMoves()
 			{
 				continue;
 			}
-			if (board[newRow][newCol] != turn)
+			if (colorOfSquare(newRow, newCol) != turn)
 			{
 				if (!isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 				{
