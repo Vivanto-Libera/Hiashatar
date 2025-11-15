@@ -799,8 +799,37 @@ Color Board::isTerminal()
 
 void Board::applyMove(int moveIndex)
 {
-	int move = indextoMove[moveIndex];
-	// TODO: Need to finish this function
+	if (preBoards.size() == 6)
+	{
+		preBoards.erase(preBoards.begin());
+	}
+	preBoards.emplace_back(board);
+
+	std::array<int, 4> move = NumToMove(indextoMove[moveIndex]);
+	if (board[move[2]][move[3]] != EMPTY)
+	{
+		findPiece(move[2], move[3])->capture();
+		noProcess = 0;
+	}
+	if (board[move[0]][move[1]] == WHITEHOUND || board[move[0]][move[1]] == BLACKHOUND)
+	{
+		noProcess = 0;
+		if (move[3] - move[1] != 0 && board[move[2]][move[3]] == EMPTY)
+		{
+			findPiece(move[0], move[3])->capture();
+			board[move[0]][move[3]] = EMPTY;
+		}
+	}
+	board[move[2]][move[3]] = board[move[0]][move[1]];
+	board[move[0]][move[1]] = EMPTY;
+	findPiece(move[0], move[1])->move(move[2], move[3]);
+
+	//Promote
+	if((board[move[2]][move[3]] == BLACKHOUND || board[move[2]][move[3]] == WHITEHOUND) && (move[2] == 9 || move[2] == 0))
+	{
+		board[move[2]][move[3]] = turn == WHITE ? WHITELION : BLACKLION;
+	}
+	turn = turn == WHITE ? BLACK : WHITE;
 }
 
 bool Board::isChecked(int move) const
