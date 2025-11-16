@@ -197,21 +197,21 @@ public:
 	{
 		return promoted;
 	}
-	bool canEnPassent()
+	bool canEnPassant()
 	{
-		return EnPassent;
+		return EnPassant;
+	}
+	void resetEnPassant()
+	{
+		EnPassant = false;
 	}
 	void move(int row, int col)
 	{
-		if (canEnPassent())
-		{
-			EnPassent = false;
-		}
 		if (!isPromoted() && ((this->row == 8 && color == Color::WHITE) || (this->row == 1 && color == Color::BLACK)))
 		{
 			if (((row == 5 || row == 6) && color == Color::WHITE) || ((row == 3 || row == 4) && color == Color::BLACK))
 			{
-				EnPassent = true;
+				EnPassant = true;
 			}
 		}
 		this->row = row;
@@ -239,7 +239,7 @@ public:
 	Hound(){}
 private:
 	bool promoted = false;
-	bool EnPassent = false;
+	bool EnPassant = false;
 };
 
 #endif

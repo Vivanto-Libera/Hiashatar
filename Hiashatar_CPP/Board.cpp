@@ -345,12 +345,12 @@ std::vector<int> Board::legalMoves()
 					moves.emplace_back(num);
 				}
 			}
-			//En passent
+			//En passant
 			if (board[newRow][newCol] == EMPTY)
 			{
 				if ((board[fromPos[0]][newCol] == WHITEHOUND && turn == BLACK) || (board[fromPos[0]][newCol] == BLACKHOUND && turn == WHITE))
 				{
-					if (static_cast<Hound*>(findPiece(fromPos[0], newCol))->canEnPassent())
+					if (static_cast<Hound*>(findPiece(fromPos[0], newCol))->canEnPassant())
 					{
 						int num = moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol});
 						if (!isChecked(num))
@@ -704,12 +704,12 @@ bool Board::hasLegalMoves()
 				}
 			}
 
-			//En passent
+			//En passant
 			if (board[newRow][newCol] == EMPTY)
 			{
 				if ((board[fromPos[0]][newCol] == WHITEHOUND && turn == BLACK) || (board[fromPos[0]][newCol] == BLACKHOUND && turn == WHITE))
 				{
-					if (static_cast<Hound*>(findPiece(fromPos[0], newCol))->canEnPassent())
+					if (static_cast<Hound*>(findPiece(fromPos[0], newCol))->canEnPassant())
 					{
 						if (!isChecked(moveToNum(std::array<int, 4>{fromPos[0], fromPos[1], newRow, newCol})))
 						{
@@ -859,6 +859,22 @@ void Board::applyMove(int moveIndex)
 	{
 		board[move[2]][move[3]] = turn == WHITE ? WHITELION : BLACKLION;
 	}
+
+	//Reset En Passant Right
+	Pieces* pieces;
+	if (turn == WHITE)
+	{
+		pieces = &blackPieces;
+	}
+	else
+	{
+		pieces = &whitePieces;
+	}
+	for (int i = 0; i < 10; i++)
+	{
+		pieces->hounds[i].resetEnPassant();
+	}
+
 	turn = turn == WHITE ? BLACK : WHITE;
 }
 
@@ -910,7 +926,7 @@ bool Board::isChecked(int move) const
 		std::array<int, 4> moveArray = NumToMove(move);
 		newBoard[moveArray[2]][moveArray[3]] = newBoard[moveArray[0]][moveArray[1]];
 		newBoard[moveArray[0]][moveArray[1]] = EMPTY;
-		//Check en passent
+		//Check en passant
 		if (board[moveArray[0]][moveArray[1]] == WHITEHOUND || board[moveArray[0]][moveArray[1]] == BLACKHOUND)
 		{
 			if (moveArray[3] - moveArray[1] != 0)
