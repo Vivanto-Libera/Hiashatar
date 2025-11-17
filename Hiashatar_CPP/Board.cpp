@@ -1081,6 +1081,10 @@ bool Board::isChecked(int move) const
 					return true;
 				}
 			}
+			if (newBoard[newRow][newCol] != EMPTY)
+			{
+				break;
+			}
 			if (std::find(guardZone.begin(), guardZone.end(), newRow * 10 + newCol) != guardZone.end())
 			{
 				break;
