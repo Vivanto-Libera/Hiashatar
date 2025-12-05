@@ -116,6 +116,5 @@ private:
 	int repeatCount();
 	Piece* findPiece(int row, int col);
 	std::vector<std::array<std::array<float, 10>, 10>> inputFormBoard(const std::array<std::array<Square, 10>, 10>& aBoard) const;
-	std::vector<std::array<std::array<float, 10>, 10>> inputEmptyBoard() const;
 };
 #endif

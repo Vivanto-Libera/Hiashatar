@@ -725,7 +725,7 @@ bool Board::hasLegalMoves()
 
 Color Board::isTerminal()
 {
-	if (repeatCount() == 3 || noProgress == 50)
+    if (repeatCount() == 2 || noProgress == 50)
 	{
 		return DRAW;
 	}
@@ -828,7 +828,7 @@ Color Board::isTerminal()
 void Board::applyMove(int moveIndex)
 {
 	noProgress++;
-	if (preBoards.size() == 6)
+	if (preBoards.size() == 8)
 	{
 		preBoards.erase(preBoards.begin());
 	}
@@ -883,36 +883,21 @@ std::vector<std::array<std::array<float, 10>, 10>> Board::neuralworkInput()
 	std::vector<std::array<std::array<float, 10>, 10>> inputs;
 	std::vector<std::array<std::array<float, 10>, 10>> input1 = inputFormBoard(board);
 	inputs.insert(inputs.end(), std::make_move_iterator(input1.begin()), std::make_move_iterator(input1.end()));
-	for (int i = 5; i >= 0; i--)
-	{
-		std::vector<std::array<std::array<float, 10>, 10>> input2;
-		if ( i > ((int)preBoards.size() - 1))
-		{
-			input2 = inputEmptyBoard();
-		}
-		else
-		{
-			input2 = inputFormBoard(preBoards[i]);
-		}
-		inputs.insert(inputs.end(), std::make_move_iterator(input2.begin()), std::make_move_iterator(input2.end()));
-	}
 	int repeat = repeatCount();
-	for (int i = 1; i <= 2; i++)
-	{
-		std::array<std::array<float, 10>, 10> input3{};
-		if (i <= repeat)
-		{
-			for (auto& input : input3)
-			{
-				input.fill(1);
-			}
-		}
-		inputs.emplace_back(input3);
-	}
+    std::array<std::array<float, 10>, 10> input3{};
+    if (repeat == 1)
+    {
+        for (auto& input : input3)
+        {
+            input.fill(1);
+        }
+    }
+    inputs.emplace_back(input3);
 	std::array<std::array<float, 10>, 10> input4{};
+    float np = 1.0 * noProgress / 50;
 	for (auto& input : input4)
 	{
-		input.fill( 1.0 * noProgress / 50);
+        input.fill(np);
 	}
 	inputs.emplace_back(input4);
 	return inputs;
@@ -1116,17 +1101,29 @@ Color Board::colorOfSquare(int row, int col)
 int Board::repeatCount()
 {
 	int repeats = 0;
-	for (int i = preBoards.size() - 1; i >= 0; i--)
-	{
-		if (i % 2 == 1)
-		{
-			continue;
-		}
-		if (preBoards[i] == board)
-		{
-			repeats++;
-		}
-	}
+    int preCount = preBoards.size();
+    if (preCount - 4 >= 0)
+    {
+        if (preBoards[preCount - 4] == board)
+        {
+            repeats++;
+        }
+        else
+        {
+            return repeats;
+        }
+    }
+    if (preCount - 8 >= 0)
+    {
+        if (preBoards[preCount - 8] == board)
+        {
+            repeats++;
+        }
+        else
+        {
+            return repeats;
+        }
+    }
 	return repeats;
 }
 
@@ -1369,16 +1366,6 @@ std::vector<std::array<std::array<float, 10>, 10>> Board::inputFormBoard(const s
 			oKhan, oLion, oGuard, oCamel, oHorse, oTerge, oHound};
 }
 
-std::vector<std::array<std::array<float, 10>, 10>> Board::inputEmptyBoard() const
-{
-	std::array<std::array<float, 10>, 10> empty{};
-	std::vector<std::array<std::array<float, 10>, 10>> inputs;
-	for (int i = 0; i < 14; i++)
-	{
-		inputs.emplace_back(empty);
-	}
-	return inputs;
-}
 
 Board::Board()
 {
