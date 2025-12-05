@@ -22,12 +22,12 @@ class HiashatarModel(nn.Module):
     def __init__(self):
         super(HiashatarModel, self).__init__()
         self.stem = nn.Sequential(
-            nn.Conv2d(101, 128, kernel_size=3, padding=1),
+            nn.Conv2d(16, 128, kernel_size=3, padding=1),
             nn.BatchNorm2d(128),
             nn.ReLU(),
             )
         self.resblocks = nn.Sequential(
-            *[ResidualBlock(128) for _ in range(0, 6)]
+            *[ResidualBlock(128) for _ in range(0, 8)]
         )
         self.policy_head = nn.Sequential(
             nn.Conv2d(128, 32, kernel_size=3, padding=1),
