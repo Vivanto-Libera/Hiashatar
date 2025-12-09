@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://qaudcl1x7mhs" path="res://square.tscn" id="2_8l818"]
 
 [node name="Board" type="Node2D"]
-position = Vector2(320, 320)
 script = ExtResource("1_psm7c")
 
 [node name="0" parent="." instance=ExtResource("2_8l818")]
