@@ -8,7 +8,7 @@ public partial class Piece : Node2D
 	protected int column;
 	protected PieceColor color;
 
-	public void SetRowAndCol(int newRow, int newCol)
+	public virtual void SetRowAndCol(int newRow, int newCol)
 	{
 		row = newRow;
 		column = newCol;
@@ -38,9 +38,12 @@ public partial class Piece : Node2D
 		return row == -1;
 	}
 
-	public virtual void SetColor(PieceColor newColor)
+	public void SetColor(PieceColor newColor)
 	{
 		color = newColor;
+		bool isWhite = color == PieceColor.WHITE;
+		GetNode<TextureRect>("White").SetDeferred(TextureRect.PropertyName.Visible, isWhite);
+		GetNode<TextureRect>("Black").SetDeferred(TextureRect.PropertyName.Visible, !isWhite);
 	}
 	public PieceColor GetColor() 
 	{

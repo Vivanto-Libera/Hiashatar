@@ -1,6 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://ch351hjdvijpi"]
+[gd_scene load_steps=9 format=3 uid="uid://c65nww6tmnevx"]
 
-[ext_resource type="Script" uid="uid://c0pfhxl4s6ocu" path="res://Piece.cs" id="1_3makh"]
+[ext_resource type="Script" uid="uid://c0pfhxl4s6ocu" path="res://Piece.cs" id="1_jmogp"]
+[ext_resource type="Texture2D" uid="uid://cpob053uixckt" path="res://images/WhiteTerge.png" id="2_kpqdw"]
+[ext_resource type="Texture2D" uid="uid://8nxms52uena4" path="res://images/BlackTerge.png" id="3_2cxla"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hkc8k"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -16,14 +18,15 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y1xrd"]
 
-[node name="Piece" type="Node2D"]
-script = ExtResource("1_3makh")
+[node name="Terge" type="Node2D"]
+script = ExtResource("1_jmogp")
 
 [node name="White" type="TextureRect" parent="."]
 offset_left = -29.0
 offset_top = -30.0
 offset_right = 31.0
 offset_bottom = 30.0
+texture = ExtResource("2_kpqdw")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
 
@@ -33,6 +36,7 @@ offset_left = -29.0
 offset_top = -30.0
 offset_right = 31.0
 offset_bottom = 30.0
+texture = ExtResource("3_2cxla")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
 

@@ -1,31 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://84cd3sbeopge"]
+[gd_scene load_steps=4 format=3 uid="uid://84cd3sbeopge"]
 
 [ext_resource type="PackedScene" uid="uid://ch351hjdvijpi" path="res://piece.tscn" id="1_2bhuw"]
-[ext_resource type="Script" uid="uid://dq3l1dmra237n" path="res://Horse.cs" id="2_w18gr"]
 [ext_resource type="Texture2D" uid="uid://cvvql1505tmev" path="res://images/BlackHorse.png" id="3_2bhuw"]
 [ext_resource type="Texture2D" uid="uid://dieuopj7vsa51" path="res://images/WhiteHorse.png" id="3_87efx"]
 
 [node name="Horse" instance=ExtResource("1_2bhuw")]
-script = ExtResource("2_w18gr")
 
-[node name="WhiteHorse" type="TextureRect" parent="." index="0"]
-offset_left = -29.0
-offset_top = -30.0
-offset_right = 31.0
-offset_bottom = 30.0
+[node name="White" parent="." index="0"]
 texture = ExtResource("3_87efx")
-expand_mode = 1
-metadata/_edit_use_anchors_ = true
 
-[node name="BlackHorse" type="TextureRect" parent="." index="1"]
-visible = false
-offset_left = -29.0
-offset_top = -30.0
-offset_right = 31.0
-offset_bottom = 30.0
+[node name="Black" parent="." index="1"]
 texture = ExtResource("3_2bhuw")
-expand_mode = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="Button" parent="." index="2"]
-metadata/_edit_use_anchors_ = true
