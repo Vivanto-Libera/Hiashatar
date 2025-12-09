@@ -3,6 +3,9 @@ using System;
 
 public partial class Square : Node2D
 {
+	[Signal]
+	public delegate void SquarePressedEventHandler(int number);
+
 	private int row;
 	private int column;
 
@@ -39,8 +42,13 @@ public partial class Square : Node2D
 	public void SetCaputure(bool visible) 
 	{
 		GetNode<TextureRect>("Capture").SetDeferred(TextureRect.PropertyName.Visible, visible);
-        GetNode<Button>("Button").SetDeferred(Button.PropertyName.Disabled, !visible);
-    }
+		GetNode<Button>("Button").SetDeferred(Button.PropertyName.Disabled, !visible);
+	}
+
+	private void OnButtonPressed() 
+	{
+		EmitSignal(SignalName.SquarePressed, row * 10 + column);
+	}
 
 	public void Reset() 
 	{

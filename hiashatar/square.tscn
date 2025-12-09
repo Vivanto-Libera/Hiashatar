@@ -5,15 +5,16 @@
 [ext_resource type="Texture2D" uid="uid://cn1dbwwc7o3gx" path="res://images/caputure.png" id="3_n04cd"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xncbd"]
-bg_color = Color(0.6, 0.6, 0.6, 0.19607843)
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vp4b8"]
-bg_color = Color(0.6, 0.6, 0.6, 0.5882353)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n04cd"]
 bg_color = Color(0.6, 0.6, 0.6, 0.39215687)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n04cd"]
+bg_color = Color(0.6, 0.6, 0.6, 0.19607843)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vw7wg"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vp4b8"]
 
@@ -45,3 +46,9 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_vp4b8")
 theme_override_styles/hover = SubResource("StyleBoxFlat_n04cd")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_vw7wg")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_vp4b8")
+disabled = true
+
+[node name="Position" type="Marker2D" parent="."]
+position = Vector2(32, 32)
+
+[connection signal="pressed" from="Button" to="." method="OnButtonPressed"]
