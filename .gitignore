@@ -221,3 +221,20 @@ CMakeUserPresets.json
 extern/
 /Amazons_CPP/.vs
 /Hiashatar_CPP/.vs
+.godot/
+.nomedia
+
+# Godot-specific ignores
+.import/
+export.cfg
+export_credentials.cfg
+
+# Imported translations (automatically generated from CSV files)
+*.translation
+
+# Mono-specific ignores
+.mono/
+data_*/
+mono_crash.*.json
+
+.vs/

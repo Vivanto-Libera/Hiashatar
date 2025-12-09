@@ -1,0 +1,47 @@
+[gd_scene load_steps=9 format=3 uid="uid://qaudcl1x7mhs"]
+
+[ext_resource type="Script" uid="uid://c46fi00xxvstj" path="res://Square.cs" id="1_xncbd"]
+[ext_resource type="Texture2D" uid="uid://dl7u6v051ejl3" path="res://images/round.png" id="2_vp4b8"]
+[ext_resource type="Texture2D" uid="uid://cn1dbwwc7o3gx" path="res://images/caputure.png" id="3_n04cd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xncbd"]
+bg_color = Color(0.6, 0.6, 0.6, 0.19607843)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vp4b8"]
+bg_color = Color(0.6, 0.6, 0.6, 0.5882353)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n04cd"]
+bg_color = Color(0.6, 0.6, 0.6, 0.39215687)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vw7wg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vp4b8"]
+
+[node name="Square" type="Node2D"]
+script = ExtResource("1_xncbd")
+
+[node name="BackGround" type="ColorRect" parent="."]
+offset_right = 64.0
+offset_bottom = 64.0
+color = Color(0.9019608, 0.9411765, 0.98039216, 1)
+
+[node name="LegalMove" type="TextureRect" parent="."]
+visible = false
+offset_right = 64.0
+offset_bottom = 64.0
+texture = ExtResource("2_vp4b8")
+
+[node name="Capture" type="TextureRect" parent="."]
+visible = false
+offset_right = 64.0
+offset_bottom = 64.0
+texture = ExtResource("3_n04cd")
+
+[node name="Button" type="Button" parent="."]
+offset_right = 64.0
+offset_bottom = 64.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_xncbd")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vp4b8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_n04cd")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_vw7wg")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_vp4b8")
