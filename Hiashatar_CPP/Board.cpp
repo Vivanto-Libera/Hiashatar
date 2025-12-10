@@ -753,10 +753,6 @@ Color Board::isTerminal()
 	{
 		for (int i = 0; i < 2; i++)
 		{
-			if (!blackPieces.guards[i].isCaptured() || !whitePieces.guards[i].isCaptured())
-			{
-				return NOTEND;
-			}
 			if (!blackPieces.terges[i].isCaptured() || !whitePieces.terges[i].isCaptured())
 			{
 				return NOTEND;
@@ -785,6 +781,14 @@ Color Board::isTerminal()
 			{
 				materia++;
 			}
+            if (!blackPieces.guards[i].isCaptured())
+            {
+                materia++;
+            }
+            if (!whitePieces.guards[i].isCaptured())
+            {
+                materia++;
+            }
 			if (!blackPieces.camels[i].isCaptured())
 			{
 				if (camelColor != DRAW)

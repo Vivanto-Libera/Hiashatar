@@ -1,8 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://t8hbqsbj3qfu"]
+[gd_scene load_steps=9 format=3 uid="uid://dosq41bxcgrme"]
 
-[ext_resource type="Script" uid="uid://c0pfhxl4s6ocu" path="res://Piece.cs" id="1_ft3hh"]
-[ext_resource type="Texture2D" uid="uid://euwpk1p3gq1l" path="res://images/WhiteLion.png" id="2_pab27"]
-[ext_resource type="Texture2D" uid="uid://bhgtdc3bsop24" path="res://images/BlackLion.png" id="3_anbtb"]
+[ext_resource type="Script" uid="uid://copnlg6dfby6y" path="res://Guard.cs" id="1_aoykg"]
+[ext_resource type="Texture2D" uid="uid://brtthk7imy43f" path="res://images/WhiteGuard.png" id="2_cruxe"]
+[ext_resource type="Texture2D" uid="uid://kdj5tkdfafbj" path="res://images/BlackGuard.png" id="3_lrhy8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hkc8k"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -18,29 +18,30 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y1xrd"]
 
-[node name="Lion" type="Node2D"]
-script = ExtResource("1_ft3hh")
+[node name="Guard" type="Node2D"]
+script = ExtResource("1_aoykg")
 
 [node name="White" type="TextureRect" parent="."]
-offset_left = -30.0
-offset_top = -30.0
-offset_right = 30.0
+offset_left = -20.0
+offset_top = -35.0
+offset_right = 20.0
 offset_bottom = 30.0
-texture = ExtResource("2_pab27")
+texture = ExtResource("2_cruxe")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Black" type="TextureRect" parent="."]
 visible = false
-offset_left = -30.0
+offset_left = -20.0
 offset_top = -30.0
-offset_right = 30.0
+offset_right = 20.0
 offset_bottom = 30.0
-texture = ExtResource("3_anbtb")
+texture = ExtResource("3_lrhy8")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Button" type="Button" parent="."]
+visible = false
 offset_left = -32.0
 offset_top = -32.0
 offset_right = 32.0
