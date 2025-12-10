@@ -38,4 +38,10 @@ public partial class Hound : Piece
 			}
 		}
 	}
+	public override void Reset()
+	{
+		base.Reset();
+		isPromoted = false;
+		canEnPassant = false;
+	}
 }

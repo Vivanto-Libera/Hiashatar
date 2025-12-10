@@ -15,7 +15,14 @@ public partial class Piece : Node2D
 	}
 	public int GetPiecePosition()
 	{
-		return row * 10 + column;
+		if (row != -1)
+		{
+			return row * 10 + column;
+		}
+		else 
+		{
+			return -1;
+		}
 	}
 
 	public void SetPiecePosition(Vector2 newPosition)
@@ -48,5 +55,11 @@ public partial class Piece : Node2D
 	public PieceColor GetColor() 
 	{
 		return color;
+	}
+
+	public virtual void Reset() 
+	{
+		row = -1;
+		column = -1;
 	}
 }

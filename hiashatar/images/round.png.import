@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bk3f3w0ogkjo3"
-path="res://.godot/imported/LegalMove.png-03584b836a767909de568da73285f242.ctex"
+path="res://.godot/imported/round.png-fce1eeabf26f0deaddfed17454a8bffd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/LegalMove.png"
-dest_files=["res://.godot/imported/LegalMove.png-03584b836a767909de568da73285f242.ctex"]
+source_file="res://images/round.png"
+dest_files=["res://.godot/imported/round.png-fce1eeabf26f0deaddfed17454a8bffd.ctex"]
 
 [params]
 

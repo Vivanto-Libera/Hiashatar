@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using static Hiashatar.PieceColor;
 
 namespace Hiashatar
@@ -13,21 +14,78 @@ namespace Hiashatar
         public Piece lion = null;
         public Hound[] hounds = new Hound[10];
 
-        public void SetToBlack() 
+        public List<Piece> GetAllPieces()
         {
-            terges[0].SetColor(BLACK);
-            terges[1].SetColor(BLACK);
-            camels[0].SetColor(BLACK);
-            camels[1].SetColor(BLACK);
-            horses[0].SetColor(BLACK);
-            horses[1].SetColor(BLACK);
-            guards[0].SetColor(BLACK);
-            guards[1].SetColor(BLACK);
-            khan.SetColor(BLACK);
-            lion.SetColor(BLACK);
-            foreach (Hound hound in hounds) 
+            List<Piece> pieces = new List<Piece>();
+            pieces.Add(terges[0]);
+            pieces.Add(terges[1]);
+            pieces.Add(camels[0]);
+            pieces.Add(camels[1]);
+            pieces.Add(horses[0]);
+            pieces.Add(horses[1]);
+            pieces.Add(guards[0]);
+            pieces.Add(guards[1]);
+            pieces.Add(khan);
+            pieces.Add(lion);
+            foreach (Hound hound in hounds)
             {
-                hound.SetColor(BLACK);
+                pieces.Add(hound);
+            }
+            return pieces;
+        }
+
+        public void SetToBlack()
+        {
+            List<Piece> pieces = GetAllPieces();
+            foreach (Piece piece in pieces)
+            {
+                piece.SetColor(BLACK);
+            }
+        }
+
+        public void Reset() 
+        {
+            List<Piece> pieces = GetAllPieces();
+            foreach (Piece piece in pieces) 
+            {
+                piece.Reset();
+            }
+        }
+        public void SetToBoard(PieceColor color) 
+        {
+            if (color == WHITE) 
+            {
+                terges[0].SetRowAndCol(0, 0);
+                terges[1].SetRowAndCol(0, 9);
+                horses[0].SetRowAndCol(0, 1);
+                horses[1].SetRowAndCol(0, 8);
+                camels[0].SetRowAndCol(0, 2);
+                camels[1].SetRowAndCol(0, 7);
+                guards[0].SetRowAndCol(0, 3);
+                guards[1].SetRowAndCol(0, 6);
+                khan.SetRowAndCol(0, 4);
+                lion.SetRowAndCol(0, 5);
+                for(int i = 0; i < 10; i++) 
+                {
+                    hounds[i].SetRowAndCol(1, i);
+                }
+            }
+            else 
+            {
+                terges[0].SetRowAndCol(9, 0);
+                terges[1].SetRowAndCol(9, 9);
+                horses[0].SetRowAndCol(9, 1);
+                horses[1].SetRowAndCol(9, 8);
+                camels[0].SetRowAndCol(9, 2);
+                camels[1].SetRowAndCol(9, 7);
+                guards[0].SetRowAndCol(9, 3);
+                guards[1].SetRowAndCol(9, 6);
+                khan.SetRowAndCol(9, 5);
+                lion.SetRowAndCol(9, 4);
+                for (int i = 0; i < 10; i++)
+                {
+                    hounds[i].SetRowAndCol(8, i);
+                }
             }
         }
 

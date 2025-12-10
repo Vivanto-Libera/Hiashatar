@@ -1,14 +1,59 @@
 using Godot;
 using Hiashatar;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 public partial class Main : Node
 {
 	private Pieces whitePieces = new Pieces();
 	private Pieces blackPieces = new Pieces();
-	public override void _Ready()
+	private Marker2D[] markers = new Marker2D[100];
+	private Board board;
+	private bool inverted = false;
+
+	private Vector2 GetMarkerPositon(int number) 
 	{
-		InitialPieces();
+		if (number == -1) 
+		{
+			return GetNode<Marker2D>("CapturedMarker").Position;
+		}
+		else 
+		{
+			return inverted ? markers[99 - number].Position : markers[number].Position;
+		}
+	}
+
+	private void SetPiecePosition(Piece piece)  
+	{
+		piece.SetPiecePosition(GetMarkerPositon(piece.GetPiecePosition()));
+	}
+
+	private void SetAllPiecesPosition() 
+	{
+		List<Piece> pieces = whitePieces.GetAllPieces();
+		foreach (Piece piece in pieces)
+		{
+			SetPiecePosition(piece);
+		}
+		pieces = blackPieces.GetAllPieces();
+		foreach (Piece piece in pieces)
+		{
+			SetPiecePosition(piece);
+		}
+	}
+
+	private void ResetPieces() 
+	{
+		whitePieces.Reset();
+		blackPieces.Reset();
+		SetAllPiecesPosition();
+	}
+	private void SetPiecesToBoard() 
+	{
+		whitePieces.SetToBoard(PieceColor.WHITE);
+		blackPieces.SetToBoard(PieceColor.BLACK);
+		SetAllPiecesPosition();
 	}
 
 	private void InitialPieces() 
@@ -49,5 +94,17 @@ public partial class Main : Node
 		}
 
 		blackPieces.SetToBlack();
+	}
+
+	public override void _Ready()
+	{
+		for (int i = 0; i < 100; i++)
+		{
+			markers[i] = GetNode<Node>("Markers").GetNode<Marker2D>(i.ToString());
+		}
+		board = GetNode<Board>("Board");
+		InitialPieces();
+		ResetPieces();
+		SetPiecesToBoard();
 	}
 }
