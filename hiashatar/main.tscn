@@ -1,0 +1,77 @@
+[gd_scene load_steps=9 format=3 uid="uid://526hpjlle1x"]
+
+[ext_resource type="PackedScene" uid="uid://c6t33ko0beob6" path="res://board.tscn" id="1_272bh"]
+[ext_resource type="PackedScene" uid="uid://c65nww6tmnevx" path="res://terge.tscn" id="2_5vw27"]
+[ext_resource type="PackedScene" uid="uid://84cd3sbeopge" path="res://horse.tscn" id="3_kek77"]
+[ext_resource type="PackedScene" uid="uid://8q6i1c8gnglg" path="res://camel.tscn" id="4_4c57u"]
+[ext_resource type="PackedScene" uid="uid://dosq41bxcgrme" path="res://guard.tscn" id="5_efxa6"]
+[ext_resource type="PackedScene" uid="uid://d27aoimf3k77l" path="res://khan.tscn" id="6_dg77c"]
+[ext_resource type="PackedScene" uid="uid://t8hbqsbj3qfu" path="res://lion.tscn" id="7_ycdy4"]
+[ext_resource type="PackedScene" uid="uid://bjvk7dxu02hjl" path="res://hound.tscn" id="8_5vw27"]
+
+[node name="Main" type="Node"]
+
+[node name="Board" parent="." instance=ExtResource("1_272bh")]
+position = Vector2(351, 351)
+
+[node name="WhitePieces" type="Node" parent="."]
+
+[node name="Terge0" parent="WhitePieces" instance=ExtResource("2_5vw27")]
+position = Vector2(43, 664)
+
+[node name="Terge1" parent="WhitePieces" instance=ExtResource("2_5vw27")]
+position = Vector2(672, 664)
+
+[node name="Horse0" parent="WhitePieces" instance=ExtResource("3_kek77")]
+position = Vector2(117, 665)
+
+[node name="Horse1" parent="WhitePieces" instance=ExtResource("3_kek77")]
+position = Vector2(608, 666)
+
+[node name="Camel0" parent="WhitePieces" instance=ExtResource("4_4c57u")]
+position = Vector2(176, 666)
+
+[node name="Camel1" parent="WhitePieces" instance=ExtResource("4_4c57u")]
+position = Vector2(516, 665)
+
+[node name="Guard0" parent="WhitePieces" instance=ExtResource("5_efxa6")]
+position = Vector2(246, 667)
+
+[node name="Guard1" parent="WhitePieces" instance=ExtResource("5_efxa6")]
+position = Vector2(455, 665)
+
+[node name="Khan" parent="WhitePieces" instance=ExtResource("6_dg77c")]
+position = Vector2(310, 666)
+
+[node name="Lion" parent="WhitePieces" instance=ExtResource("7_ycdy4")]
+position = Vector2(389, 667)
+
+[node name="Hound0" parent="WhitePieces" instance=ExtResource("8_5vw27")]
+position = Vector2(38, 596)
+
+[node name="Hound1" parent="WhitePieces" instance=ExtResource("8_5vw27")]
+position = Vector2(107, 596)
+
+[node name="Hound2" parent="WhitePieces" instance=ExtResource("8_5vw27")]
+position = Vector2(176, 596)
+
+[node name="Hound3" parent="WhitePieces" instance=ExtResource("8_5vw27")]
+position = Vector2(247, 596)
+
+[node name="Hound4" parent="WhitePieces" instance=ExtResource("8_5vw27")]
+position = Vector2(315, 597)
+
+[node name="Hound5" parent="WhitePieces" instance=ExtResource("8_5vw27")]
+position = Vector2(386, 597)
+
+[node name="Hound6" parent="WhitePieces" instance=ExtResource("8_5vw27")]
+position = Vector2(457, 597)
+
+[node name="Hound7" parent="WhitePieces" instance=ExtResource("8_5vw27")]
+position = Vector2(525, 595)
+
+[node name="Hound8" parent="WhitePieces" instance=ExtResource("8_5vw27")]
+position = Vector2(596, 595)
+
+[node name="Hound9" parent="WhitePieces" instance=ExtResource("8_5vw27")]
+position = Vector2(666, 596)
