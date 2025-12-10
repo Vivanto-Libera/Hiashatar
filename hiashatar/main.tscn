@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://526hpjlle1x"]
+[gd_scene load_steps=10 format=3 uid="uid://526hpjlle1x"]
 
 [ext_resource type="PackedScene" uid="uid://c6t33ko0beob6" path="res://board.tscn" id="1_272bh"]
+[ext_resource type="Script" uid="uid://vwscpsthjss8" path="res://Main.cs" id="1_kek77"]
 [ext_resource type="PackedScene" uid="uid://c65nww6tmnevx" path="res://terge.tscn" id="2_5vw27"]
 [ext_resource type="PackedScene" uid="uid://84cd3sbeopge" path="res://horse.tscn" id="3_kek77"]
 [ext_resource type="PackedScene" uid="uid://8q6i1c8gnglg" path="res://camel.tscn" id="4_4c57u"]
@@ -10,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://bjvk7dxu02hjl" path="res://hound.tscn" id="8_5vw27"]
 
 [node name="Main" type="Node"]
+script = ExtResource("1_kek77")
 
 [node name="Board" parent="." instance=ExtResource("1_272bh")]
 position = Vector2(351, 351)
@@ -75,3 +77,65 @@ position = Vector2(596, 595)
 
 [node name="Hound9" parent="WhitePieces" instance=ExtResource("8_5vw27")]
 position = Vector2(666, 596)
+
+[node name="BlackPieces" type="Node" parent="."]
+
+[node name="Terge0" parent="BlackPieces" instance=ExtResource("2_5vw27")]
+position = Vector2(41, 34)
+
+[node name="Terge1" parent="BlackPieces" instance=ExtResource("2_5vw27")]
+position = Vector2(670, 34)
+
+[node name="Horse0" parent="BlackPieces" instance=ExtResource("3_kek77")]
+position = Vector2(115, 35)
+
+[node name="Horse1" parent="BlackPieces" instance=ExtResource("3_kek77")]
+position = Vector2(606, 36)
+
+[node name="Camel0" parent="BlackPieces" instance=ExtResource("4_4c57u")]
+position = Vector2(174, 36)
+
+[node name="Camel1" parent="BlackPieces" instance=ExtResource("4_4c57u")]
+position = Vector2(514, 35)
+
+[node name="Guard0" parent="BlackPieces" instance=ExtResource("5_efxa6")]
+position = Vector2(244, 37)
+
+[node name="Guard1" parent="BlackPieces" instance=ExtResource("5_efxa6")]
+position = Vector2(453, 35)
+
+[node name="Khan" parent="BlackPieces" instance=ExtResource("6_dg77c")]
+position = Vector2(308, 36)
+
+[node name="Lion" parent="BlackPieces" instance=ExtResource("7_ycdy4")]
+position = Vector2(387, 37)
+
+[node name="Hound0" parent="BlackPieces" instance=ExtResource("8_5vw27")]
+position = Vector2(36, 106)
+
+[node name="Hound1" parent="BlackPieces" instance=ExtResource("8_5vw27")]
+position = Vector2(105, 106)
+
+[node name="Hound2" parent="BlackPieces" instance=ExtResource("8_5vw27")]
+position = Vector2(174, 106)
+
+[node name="Hound3" parent="BlackPieces" instance=ExtResource("8_5vw27")]
+position = Vector2(245, 106)
+
+[node name="Hound4" parent="BlackPieces" instance=ExtResource("8_5vw27")]
+position = Vector2(313, 107)
+
+[node name="Hound5" parent="BlackPieces" instance=ExtResource("8_5vw27")]
+position = Vector2(384, 107)
+
+[node name="Hound6" parent="BlackPieces" instance=ExtResource("8_5vw27")]
+position = Vector2(455, 107)
+
+[node name="Hound7" parent="BlackPieces" instance=ExtResource("8_5vw27")]
+position = Vector2(523, 105)
+
+[node name="Hound8" parent="BlackPieces" instance=ExtResource("8_5vw27")]
+position = Vector2(594, 105)
+
+[node name="Hound9" parent="BlackPieces" instance=ExtResource("8_5vw27")]
+position = Vector2(664, 106)
