@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://qaudcl1x7mhs"]
+[gd_scene load_steps=9 format=3 uid="uid://qaudcl1x7mhs"]
 
 [ext_resource type="Script" uid="uid://c46fi00xxvstj" path="res://Square.cs" id="1_xncbd"]
-[ext_resource type="Texture2D" uid="uid://bk3f3w0ogkjo3" path="res://images/round.png" id="2_vp4b8"]
+[ext_resource type="Texture2D" uid="uid://cl18ye0v4awuf" path="res://images/legalMove.png" id="2_xncbd"]
+[ext_resource type="Texture2D" uid="uid://cevapgxbrl7v1" path="res://images/capture.png" id="3_vp4b8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xncbd"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -27,13 +28,21 @@ offset_right = 35.0
 offset_bottom = 35.0
 color = Color(0.9019608, 0.9411765, 0.98039216, 1)
 
+[node name="Highlight" type="ColorRect" parent="."]
+visible = false
+offset_left = -35.0
+offset_top = -35.0
+offset_right = 35.0
+offset_bottom = 35.0
+color = Color(1, 1, 0.32156864, 0.5568628)
+
 [node name="LegalMove" type="TextureRect" parent="."]
 visible = false
 offset_left = -35.0
 offset_top = -35.0
 offset_right = 35.0
 offset_bottom = 35.0
-texture = ExtResource("2_vp4b8")
+texture = ExtResource("2_xncbd")
 
 [node name="Capture" type="TextureRect" parent="."]
 visible = false
@@ -41,10 +50,11 @@ offset_left = -35.0
 offset_top = -35.0
 offset_right = 35.0
 offset_bottom = 35.0
+texture = ExtResource("3_vp4b8")
 
 [node name="Button" type="Button" parent="."]
 offset_left = -35.0
-offset_top = -36.0
+offset_top = -35.0
 offset_right = 35.0
 offset_bottom = 35.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_xncbd")

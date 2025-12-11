@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://84cd3sbeopge"]
 
 [ext_resource type="Script" uid="uid://c0pfhxl4s6ocu" path="res://Piece.cs" id="1_2bhuw"]
-[ext_resource type="Texture2D" uid="uid://cvvql1505tmev" path="res://images/BlackHorse.png" id="3_2bhuw"]
-[ext_resource type="Texture2D" uid="uid://dieuopj7vsa51" path="res://images/WhiteHorse.png" id="3_87efx"]
+[ext_resource type="Texture2D" uid="uid://bag2bhehyi4xr" path="res://images/BlackHorse.png" id="3_2bhuw"]
+[ext_resource type="Texture2D" uid="uid://d2bmp0cqv7qmp" path="res://images/WhiteHorse.png" id="3_87efx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hkc8k"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -27,10 +27,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -35.0
+offset_left = -32.0
 offset_top = -35.0
-offset_right = 35.0
-offset_bottom = 35.0
+offset_right = 32.0
+offset_bottom = 29.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_87efx")
@@ -43,10 +43,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -35.0
-offset_top = -35.0
-offset_right = 35.0
-offset_bottom = 35.0
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_2bhuw")

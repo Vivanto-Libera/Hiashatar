@@ -1,5 +1,7 @@
 using Godot;
+using Hiashatar;
 using System;
+using System.ComponentModel;
 using static Hiashatar.PieceColor;
 
 public partial class Hound : Piece
@@ -10,6 +12,14 @@ public partial class Hound : Piece
 	public bool Ispromoted()
 	{
 		return isPromoted;
+	}
+	private void Promote() 
+	{
+		bool isWhite = color == WHITE;
+		GetNode<TextureRect>("White").SetDeferred(TextureRect.PropertyName.Visible, false);
+		GetNode<TextureRect>("Black").SetDeferred(TextureRect.PropertyName.Visible, false);
+		GetNode<TextureRect>("WhitePromoted").SetDeferred(TextureRect.PropertyName.Visible, isWhite);
+		GetNode<TextureRect>("BlackPromoted").SetDeferred(TextureRect.PropertyName.Visible, !isWhite);
 	}
 	public bool CanEnPassant()
 	{
@@ -43,5 +53,10 @@ public partial class Hound : Piece
 		base.Reset();
 		isPromoted = false;
 		canEnPassant = false;
+		bool isWhite = color == WHITE;
+		GetNode<TextureRect>("White").SetDeferred(TextureRect.PropertyName.Visible, isWhite);
+		GetNode<TextureRect>("Black").SetDeferred(TextureRect.PropertyName.Visible, !isWhite);
+		GetNode<TextureRect>("WhitePromoted").SetDeferred(TextureRect.PropertyName.Visible, false);
+		GetNode<TextureRect>("BlackPromoted").SetDeferred(TextureRect.PropertyName.Visible, false);
 	}
 }

@@ -16,7 +16,7 @@ public partial class Main : Node
 	{
 		if (number == -1) 
 		{
-			return GetNode<Marker2D>("CapturedMarker").Position;
+			return GetNode<Node>("Markers").GetNode<Marker2D>("CapturedMarker").Position;
 		}
 		else 
 		{

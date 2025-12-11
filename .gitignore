@@ -238,18 +238,3 @@ data_*/
 mono_crash.*.json
 
 .vs/
-/hiashatar/images/BlackCamel.png
-/hiashatar/images/BlackGuard.png
-/hiashatar/images/BlackHorse.png
-/hiashatar/images/BlackHound.png
-/hiashatar/images/BlackKhan.png
-/hiashatar/images/BlackLion.png
-/hiashatar/images/BlackTerge.png
-/hiashatar/images/LegalMove.png
-/hiashatar/images/WhiteCamel.png
-/hiashatar/images/WhiteGuard.png
-/hiashatar/images/WhiteHorse.png
-/hiashatar/images/WhiteHound.png
-/hiashatar/images/WhiteKhan.png
-/hiashatar/images/WhiteLion.png
-/hiashatar/images/WhiteTerge.png
