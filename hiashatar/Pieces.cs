@@ -7,9 +7,9 @@ namespace Hiashatar
     public class Pieces
     {
         public Piece[] terges = new Piece[2];
-        public Camel[] camels = new Camel[2];
+        public Piece[] camels = new Piece[2];
         public Piece[] horses = new Piece[2];
-        public Guard[] guards = new Guard[2];
+        public Piece[] guards = new Piece[2];
         public Piece khan = null;
         public Piece lion = null;
         public Hound[] hounds = new Hound[10];

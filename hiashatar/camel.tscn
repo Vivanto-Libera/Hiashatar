@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://8q6i1c8gnglg"]
 
 [ext_resource type="Texture2D" uid="uid://bnrr4hshoak5u" path="res://images/WhiteCamel.png" id="1_md7wc"]
-[ext_resource type="Script" uid="uid://b45jw23h7wb03" path="res://Camel.cs" id="1_tnfvr"]
+[ext_resource type="Script" uid="uid://c0pfhxl4s6ocu" path="res://Piece.cs" id="1_tnfvr"]
 [ext_resource type="Texture2D" uid="uid://clmdi2w36qhws" path="res://images/BlackCamel.png" id="2_tnfvr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hkc8k"]

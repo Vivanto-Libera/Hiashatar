@@ -40,10 +40,6 @@ public partial class Piece : Node2D
 	{
 		SetRowAndCol(-1, -1);
 	}
-	public bool isCaptured()
-	{
-		return row == -1;
-	}
 
 	public void SetColor(PieceColor newColor)
 	{
@@ -51,10 +47,6 @@ public partial class Piece : Node2D
 		bool isWhite = color == PieceColor.WHITE;
 		GetNode<TextureRect>("White").SetDeferred(TextureRect.PropertyName.Visible, isWhite);
 		GetNode<TextureRect>("Black").SetDeferred(TextureRect.PropertyName.Visible, !isWhite);
-	}
-	public PieceColor GetColor() 
-	{
-		return color;
 	}
 
 	public virtual void Reset() 

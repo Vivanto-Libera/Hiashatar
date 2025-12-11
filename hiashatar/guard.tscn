@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://dosq41bxcgrme"]
 
-[ext_resource type="Script" uid="uid://copnlg6dfby6y" path="res://Guard.cs" id="1_aoykg"]
-[ext_resource type="Texture2D" uid="uid://brtthk7imy43f" path="res://images/WhiteGuard.png" id="2_cruxe"]
-[ext_resource type="Texture2D" uid="uid://kdj5tkdfafbj" path="res://images/BlackGuard.png" id="3_lrhy8"]
+[ext_resource type="Script" uid="uid://c0pfhxl4s6ocu" path="res://Piece.cs" id="1_aoykg"]
+[ext_resource type="Texture2D" uid="uid://1gneb0ibo7sr" path="res://images/WhiteGuard.png" id="2_cruxe"]
+[ext_resource type="Texture2D" uid="uid://ds8y31fytrtf1" path="res://images/BlackGuard.png" id="3_lrhy8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hkc8k"]
 bg_color = Color(0.6, 0.6, 0.6, 0)

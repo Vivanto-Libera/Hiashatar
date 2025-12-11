@@ -68,20 +68,20 @@ public partial class Main : Node
 		whitePieces.terges[1] = whitePiecesNode.GetNode<Piece>("Terge1");
 		blackPieces.terges[1] = blackPiecesNode.GetNode<Piece>("Terge1");
 
-		whitePieces.camels[0] = whitePiecesNode.GetNode<Camel>("Camel0");
-		blackPieces.camels[0] = blackPiecesNode.GetNode<Camel>("Camel0");
-		whitePieces.camels[1] = whitePiecesNode.GetNode<Camel>("Camel1");
-		blackPieces.camels[1] = blackPiecesNode.GetNode<Camel>("Camel1");
+		whitePieces.camels[0] = whitePiecesNode.GetNode<Piece>("Camel0");
+		blackPieces.camels[0] = blackPiecesNode.GetNode<Piece>("Camel0");
+		whitePieces.camels[1] = whitePiecesNode.GetNode<Piece>("Camel1");
+		blackPieces.camels[1] = blackPiecesNode.GetNode<Piece>("Camel1");
 
 		whitePieces.horses[0] = whitePiecesNode.GetNode<Piece>("Horse0");
 		blackPieces.horses[0] = blackPiecesNode.GetNode<Piece>("Horse0");
 		whitePieces.horses[1] = whitePiecesNode.GetNode<Piece>("Horse1");
 		blackPieces.horses[1] = blackPiecesNode.GetNode<Piece>("Horse1");
 
-		whitePieces.guards[0] = whitePiecesNode.GetNode<Guard>("Guard0");
-		blackPieces.guards[0] = blackPiecesNode.GetNode<Guard>("Guard0");
-		whitePieces.guards[1] = whitePiecesNode.GetNode<Guard>("Guard1");
-		blackPieces.guards[1] = blackPiecesNode.GetNode<Guard>("Guard1");
+		whitePieces.guards[0] = whitePiecesNode.GetNode<Piece>("Guard0");
+		blackPieces.guards[0] = blackPiecesNode.GetNode<Piece>("Guard0");
+		whitePieces.guards[1] = whitePiecesNode.GetNode<Piece>("Guard1");
+		blackPieces.guards[1] = blackPiecesNode.GetNode<Piece>("Guard1");
 
 		whitePieces.lion = whitePiecesNode.GetNode<Piece>("Lion");
 		blackPieces.lion = blackPiecesNode.GetNode<Piece>("Lion");
@@ -114,10 +114,10 @@ public partial class Main : Node
 	{
 		Node node = GetNode<Node>("NotStarted");
 		node.GetNode<Button>("PlayBot").SetDeferred(Button.PropertyName.Visible, visible);
-        node.GetNode<Button>("PlayPersonLM").SetDeferred(Button.PropertyName.Visible, visible);
+		node.GetNode<Button>("PlayPersonLM").SetDeferred(Button.PropertyName.Visible, visible);
 		node.GetNode<Button>("PlayPersonLAN").SetDeferred(Button.PropertyName.Visible, visible);
-        node.GetNode<Button>("Tutorial").SetDeferred(Button.PropertyName.Visible, visible);
-    }
+		node.GetNode<Button>("Tutorial").SetDeferred(Button.PropertyName.Visible, visible);
+	}
 
 	private void Reset() 
 	{
