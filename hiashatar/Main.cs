@@ -3,6 +3,7 @@ using Hiashatar;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using static Hiashatar.GameState;
 
 public partial class Main : Node
 {
@@ -11,6 +12,7 @@ public partial class Main : Node
 	private Marker2D[] markers = new Marker2D[100];
 	private Board board;
 	private bool inverted = false;
+	private GameState state = NOTSTARTED;
 
 	private Vector2 GetMarkerPositon(int number) 
 	{
@@ -96,6 +98,34 @@ public partial class Main : Node
 		blackPieces.SetToBlack();
 	}
 
+	private void SetGameState(GameState newState) 
+	{
+		state = newState;
+		//TODO:Set UI.
+		switch (state) 
+		{
+			case NOTSTARTED:
+				SetNotStarted(true);
+				//TODO : Hide other nodes.
+				break;
+		}
+	}
+	private void SetNotStarted(bool visible) 
+	{
+		Node node = GetNode<Node>("NotStarted");
+		node.GetNode<Button>("PlayBot").SetDeferred(Button.PropertyName.Visible, visible);
+        node.GetNode<Button>("PlayPersonLM").SetDeferred(Button.PropertyName.Visible, visible);
+		node.GetNode<Button>("PlayPersonLAN").SetDeferred(Button.PropertyName.Visible, visible);
+        node.GetNode<Button>("Tutorial").SetDeferred(Button.PropertyName.Visible, visible);
+    }
+
+	private void Reset() 
+	{
+		ResetPieces();
+		board.Reset();
+		SetGameState(NOTSTARTED);
+	}
+
 	public override void _Ready()
 	{
 		for (int i = 0; i < 100; i++)
@@ -104,7 +134,7 @@ public partial class Main : Node
 		}
 		board = GetNode<Board>("Board");
 		InitialPieces();
-		ResetPieces();
+		Reset();
 		SetPiecesToBoard();
 	}
 }

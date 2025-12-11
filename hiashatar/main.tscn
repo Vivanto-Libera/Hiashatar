@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://526hpjlle1x"]
+[gd_scene load_steps=13 format=3 uid="uid://526hpjlle1x"]
 
 [ext_resource type="PackedScene" uid="uid://c6t33ko0beob6" path="res://board.tscn" id="1_272bh"]
 [ext_resource type="Script" uid="uid://vwscpsthjss8" path="res://Main.cs" id="1_kek77"]
@@ -9,6 +9,48 @@
 [ext_resource type="PackedScene" uid="uid://d27aoimf3k77l" path="res://khan.tscn" id="6_dg77c"]
 [ext_resource type="PackedScene" uid="uid://t8hbqsbj3qfu" path="res://lion.tscn" id="7_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://bjvk7dxu02hjl" path="res://hound.tscn" id="8_5vw27"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kek77"]
+bg_color = Color(0, 0.4, 0.7019608, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.5019608)
+shadow_size = 4
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4c57u"]
+bg_color = Color(0, 0.2901961, 0.5019608, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.4392157)
+shadow_size = 3
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_efxa6"]
+bg_color = Color(0, 0.3372549, 0.6, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.5019608)
+shadow_size = 6
+shadow_offset = Vector2(0, 2)
 
 [node name="Main" type="Node"]
 script = ExtResource("1_kek77")
@@ -443,3 +485,57 @@ position = Vector2(665, 35)
 
 [node name="CapturedMarker" type="Marker2D" parent="Markers"]
 position = Vector2(-36, 34)
+
+[node name="NotStarted" type="Node" parent="."]
+
+[node name="PlayBot" type="Button" parent="NotStarted"]
+offset_left = 745.0
+offset_top = 68.0
+offset_right = 955.0
+offset_bottom = 158.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+text = "人机对战"
+
+[node name="PlayPersonLM" type="Button" parent="NotStarted"]
+offset_left = 745.0
+offset_top = 226.0
+offset_right = 955.0
+offset_bottom = 316.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+text = "本机对战"
+
+[node name="PlayPersonLAN" type="Button" parent="NotStarted"]
+offset_left = 745.0
+offset_top = 384.0
+offset_right = 955.0
+offset_bottom = 474.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+text = "局网对战"
+
+[node name="Tutorial" type="Button" parent="NotStarted"]
+offset_left = 745.0
+offset_top = 542.0
+offset_right = 955.0
+offset_bottom = 632.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+text = "游戏教程"

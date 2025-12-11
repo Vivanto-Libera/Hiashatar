@@ -42,7 +42,7 @@ public partial class Square : Node2D
 	public void SetCaputure(bool visible) 
 	{
 		GetNode<TextureRect>("Capture").SetDeferred(TextureRect.PropertyName.Visible, visible);
-		GetNode<Button>("Button").SetDeferred(Button.PropertyName.Disabled, false);
+		GetNode<Button>("Button").SetDeferred(Button.PropertyName.Disabled, true);
 	}
 
 	public void SetHighlight(bool visible) 
