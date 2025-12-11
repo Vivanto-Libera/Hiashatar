@@ -1316,5 +1316,46 @@ namespace Hiashatar
             }
         }
 
+        public GameBoard() 
+        {
+            for (int i = 2; i < 8; i++)
+            {
+                for (int j = 0; j < 10; j++) 
+                {
+                    board[i, j] = EMPTY;
+                }
+            }
+            board[0, 0] = board[0, 9] = BLACKTERGE;
+            board[0, 1] = board[0, 8] = BLACKHORSE;
+            board[0, 2] = board[0, 7] = BLACKCAMEL;
+            board[0, 3] = board[0, 6] = BLACKGUARD;
+            board[0, 4] = BLACKLION;
+            board[0, 5] = BLACKKHAN;
+
+            board[9, 0] = board[9, 9] = WHITETERGE;
+            board[9, 1] = board[9, 8] = WHITEHORSE;
+            board[9, 2] = board[9, 7] = WHITECAMEL;
+            board[9, 3] = board[9, 6] = WHITEGUARD;
+            board[9, 5] = WHITELION;
+            board[9, 4] = WHITEKHAN;
+
+            for (int i = 0; i < 10; i++)
+            {
+                board[1, i] = BLACKHOUND;
+                board[8, i] = WHITEHOUND;
+            }
+
+            turn = WHITE;
+            noProgress = 0;
+        }
+        public GameBoard(GameBoard aBoard) 
+        {
+            Array.Copy(aBoard.board, board, board.Length);
+            preBoards = [.. aBoard.preBoards];
+            whitePieces = new Rule_Pieces(aBoard.whitePieces);
+            blackPieces = new Rule_Pieces(aBoard.blackPieces);
+            noProgress = aBoard.noProgress;
+            turn = aBoard.turn;
+        }
     }
 }

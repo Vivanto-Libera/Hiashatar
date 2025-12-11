@@ -4,17 +4,17 @@ using static Hiashatar.PieceColor;
 public partial class Hound : Piece
 {
 	bool isPromoted = false;
-    public override void SetRowAndCol(int newRow, int newCol)
-    {
-        base.SetRowAndCol(newRow, newCol);
-        if (!isPromoted)
-        {
-            if (row == 0 || row == 9)
-            {
+	public override void SetRowAndCol(int newRow, int newCol)
+	{
+		base.SetRowAndCol(newRow, newCol);
+		if (!isPromoted)
+		{
+			if (row == 0 || row == 9)
+			{
 				Promote();
-            }
-        }
-    }
+			}
+		}
+	}
 	private void Promote() 
 	{
 		isPromoted = true;
