@@ -102,6 +102,10 @@ public partial class Main : Node
 		{
 			piece.PieceButtonPressed += playing.OnPiecePressed;
 		}
+		foreach (Piece piece in blackPieces.GetAllPieces())
+		{
+			piece.PieceButtonPressed += playing.OnPiecePressed;
+		}
 	}
 
 	private void SetGameState(GameState newState) 
@@ -139,7 +143,6 @@ public partial class Main : Node
 	private void OnPieceSelected(int number) 
 	{
 		List<int> moves = playing.GetPieceLegalMoves();
-		GD.Print(moves.Count);
 		board.SelectedPiece(number);
 		board.ResetLegalMove();
 		board.ResetCapture();
@@ -161,6 +164,50 @@ public partial class Main : Node
 		SetGameState(LM);
 	}
 
+	public void OnMoved(int number) 
+	{
+		board.MovedPiece(number);
+		int from = Conversion.NumToFromAndTo(number)[0];
+		int to = Conversion.NumToFromAndTo(number)[1];
+		Piece piece = FindPiece(to);
+		if (piece != null)
+		{
+			piece.Capture();
+			piece.SetPiecePosition(GetMarkerPositon(piece.GetPiecePosition()));
+		}
+		piece = FindPiece(from);
+		piece.SetRowAndCol(to / 10, to % 10);
+		piece.MoveToPosition(GetMarkerPositon(to));
+	}
+
+	public void OnSettedCapture(int index, bool canCapture) 
+	{
+		Piece piece = FindPiece(index);
+		if (piece != null)
+		{
+			piece.SetButtonDisable(!canCapture);
+		}
+	}
+
+
+	private Piece FindPiece(int index) 
+	{
+		foreach (Piece piece in whitePieces.GetAllPieces()) 
+		{
+			if(piece.GetPiecePosition() == index) 
+			{
+				return piece;
+			}
+		}
+		foreach (Piece piece in blackPieces.GetAllPieces())
+		{
+			if (piece.GetPiecePosition() == index)
+			{
+				return piece;
+			}
+		}
+		return null;
+	}
 	private void Reset() 
 	{
 		ResetPieces();

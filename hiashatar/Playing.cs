@@ -11,6 +11,8 @@ public partial class Playing : Node
 	public delegate void PieceSelectedEventHandler(int number);
 	[Signal]
 	public delegate void PieceCapturedEventHandler(int number);
+	[Signal]
+	public delegate void MovedEventHandler(int move);
 
 	private GameBoard board = new();
 	private GameState state;
@@ -38,17 +40,25 @@ public partial class Playing : Node
 		}
 		else 
 		{
-			to = number;
 			EmitSignal(SignalName.PieceCaptured, number);
 		}
 	}
+
+	public void OnSquarePressed(int number) 
+	{
+		to = number;
+		board.ApplyMove(Conversion.MoveToIndex(from * 100 + to));
+		legalMoves = board.LegalMoves();
+		SetPiecesButton();
+		EmitSignal(SignalName.Moved, from * 100 + number);
+	}
+
 
 	public List<int> GetPieceLegalMoves() 
 	{
 		List<int> moves = new List<int>();
 		foreach (int move in legalMoves) 
 		{
-			GD.Print(Conversion.NumToFromAndTo(move)[0], Conversion.NumToFromAndTo(move)[1], from);
 			if (from == Conversion.NumToFromAndTo(move)[0]) 
 			{
 				moves.Add(Conversion.NumToFromAndTo(move)[1]);

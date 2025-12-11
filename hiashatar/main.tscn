@@ -544,6 +544,10 @@ text = "游戏教程"
 [node name="Playing" type="Node" parent="."]
 script = ExtResource("10_4c57u")
 
+[connection signal="SettedCapture" from="Board" to="." method="OnSettedCapture"]
+[connection signal="SquarePressed" from="Board" to="Playing" method="OnSquarePressed"]
 [connection signal="pressed" from="NotStarted/PlayPersonLM" to="." method="OnLMPressed"]
+[connection signal="Moved" from="Playing" to="." method="OnMoved"]
+[connection signal="PieceCaptured" from="Playing" to="Board" method="OnSquarePressed"]
 [connection signal="PieceSelected" from="Playing" to="." method="OnPieceSelected"]
 [connection signal="SetPiecesAble" from="Playing" to="." method="OnSetPiecesAble"]

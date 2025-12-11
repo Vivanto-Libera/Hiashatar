@@ -8,6 +8,7 @@ public partial class Square : Node2D
 
 	private int row;
 	private int column;
+	private bool canCapture;
 
 	public int GetRow() 
 	{
@@ -43,6 +44,11 @@ public partial class Square : Node2D
 	{
 		GetNode<TextureRect>("Capture").SetDeferred(TextureRect.PropertyName.Visible, visible);
 		GetNode<Button>("Button").SetDeferred(Button.PropertyName.Disabled, true);
+		canCapture = visible;
+	}
+	public bool CanCapture() 
+	{
+		return canCapture;
 	}
 
 	public void SetHighlight(bool visible) 

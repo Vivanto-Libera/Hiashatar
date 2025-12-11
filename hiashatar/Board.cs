@@ -1,15 +1,21 @@
 using Godot;
+using Hiashatar;
 using System;
 using System.Data.Common;
+using System.Reflection;
 using System.Threading;
 
 public partial class Board : Node2D
 {
 	[Signal]
 	public delegate void SquarePressedEventHandler(int number);
+	[Signal]
+	public delegate void SettedCaptureEventHandler(int number, bool set);
 
 	private Square[] squares = new Square[100];
 	private int selected;
+	private int from;
+	private int to;
 
 	private void SetSquares(bool invert = false) 
 	{
@@ -17,7 +23,6 @@ public partial class Board : Node2D
 		{
 			squares[i] = GetNode<Square>(i.ToString());
 			squares[i].SetRowAndColumn(i / 10, i % 10);
-			squares[i].SquarePressed += OnSquarePressed;
 			squares[i].Reset();
 		}
 		Invert();
@@ -35,9 +40,24 @@ public partial class Board : Node2D
 
 	public void SelectedPiece(int number) 
 	{
-		squares[selected].SetHighlight(false);
+		if (selected != -1)
+		{
+			squares[selected].SetHighlight(false);
+		}
 		squares[number].SetHighlight(true);
 		selected = number;
+	}
+	public void MovedPiece(int number) 
+	{
+		ResetLegalMove();
+		ResetCapture();
+		squares[from].SetHighlight(false);
+		squares[to].SetHighlight(false);
+		from = Conversion.NumToFromAndTo(number)[0];
+		to = Conversion.NumToFromAndTo(number)[1];
+		squares[from].SetHighlight(true);
+		squares[to].SetHighlight(true);
+		selected = -1;
 	}
 	public void SetLegalMove(int index) 
 	{
@@ -53,12 +73,18 @@ public partial class Board : Node2D
 	public void SetCapture(int index)
 	{
 		squares[index].SetCaputure(true);
+		EmitSignal(SignalName.SettedCapture, index, true);
 	}
 	public void ResetCapture()
 	{
 		foreach (Square square in squares)
 		{
-			square.SetCaputure(false);
+			if (square.CanCapture())
+			{
+				square.SetCaputure(false);
+				EmitSignal(SignalName.SettedCapture, square.GetRow() * 10 + square.GetColumn(), false);
+			}
+			
 		}
 	}
 
@@ -70,5 +96,9 @@ public partial class Board : Node2D
 	public override void _Ready()
 	{
 		Reset();
+		for (int i = 0; i < 100; i++)
+		{
+			squares[i].SquarePressed += OnSquarePressed;
+		}
 	}
 }

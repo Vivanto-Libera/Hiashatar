@@ -63,8 +63,8 @@ namespace Hiashatar
                 camels[1].SetRowAndCol(0, 7);
                 guards[0].SetRowAndCol(0, 3);
                 guards[1].SetRowAndCol(0, 6);
-                khan.SetRowAndCol(0, 4);
-                lion.SetRowAndCol(0, 5);
+                khan.SetRowAndCol(0, 5);
+                lion.SetRowAndCol(0, 4);
                 for(int i = 0; i < 10; i++) 
                 {
                     hounds[i].SetRowAndCol(1, i);
@@ -80,8 +80,8 @@ namespace Hiashatar
                 camels[1].SetRowAndCol(9, 7);
                 guards[0].SetRowAndCol(9, 3);
                 guards[1].SetRowAndCol(9, 6);
-                khan.SetRowAndCol(9, 5);
-                lion.SetRowAndCol(9, 4);
+                khan.SetRowAndCol(9, 4);
+                lion.SetRowAndCol(9, 5);
                 for (int i = 0; i < 10; i++)
                 {
                     hounds[i].SetRowAndCol(8, i);
