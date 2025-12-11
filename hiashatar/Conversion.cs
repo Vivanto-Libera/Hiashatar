@@ -15,6 +15,12 @@ namespace Hiashatar
             }
             return move;
         }
+        public static int[] NumToFromAndTo(int num) 
+        {
+            int from = num / 100;
+            int to = num % 10 + ((num / 10) % 10) * 10;
+            return [from, to];
+        }
         public static int MoveToNum(int[] move)
         {
             return move[0] * 1000 + move[1] * 100 + move[2] * 10 + move[3];

@@ -53,7 +53,7 @@ namespace Hiashatar
         }
         public void SetToBoard(PieceColor color) 
         {
-            if (color == WHITE) 
+            if (color == BLACK) 
             {
                 terges[0].SetRowAndCol(0, 0);
                 terges[1].SetRowAndCol(0, 9);
@@ -86,6 +86,15 @@ namespace Hiashatar
                 {
                     hounds[i].SetRowAndCol(8, i);
                 }
+            }
+        }
+
+        public void SetAllPiecesButtonDisable(bool disable) 
+        {
+            List<Piece> pieces = GetAllPieces();
+            foreach (Piece piece in pieces) 
+            {
+                piece.SetButtonDisable(disable);
             }
         }
 

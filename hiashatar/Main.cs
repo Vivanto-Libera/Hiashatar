@@ -7,12 +7,13 @@ using static Hiashatar.GameState;
 
 public partial class Main : Node
 {
-	private Pieces whitePieces = new Pieces();
-	private Pieces blackPieces = new Pieces();
+	private Pieces whitePieces = new();
+	private Pieces blackPieces = new();
 	private Marker2D[] markers = new Marker2D[100];
 	private Board board;
 	private bool inverted = false;
 	private GameState state = NOTSTARTED;
+	private Playing playing;
 
 	private Vector2 GetMarkerPositon(int number) 
 	{
@@ -96,6 +97,11 @@ public partial class Main : Node
 		}
 
 		blackPieces.SetToBlack();
+
+		foreach (Piece piece in whitePieces.GetAllPieces()) 
+		{
+			piece.PieceButtonPressed += playing.OnPiecePressed;
+		}
 	}
 
 	private void SetGameState(GameState newState) 
@@ -108,6 +114,11 @@ public partial class Main : Node
 				SetNotStarted(true);
 				//TODO : Hide other nodes.
 				break;
+			case LM:
+				SetNotStarted(false);
+				SetPiecesToBoard();
+				playing.InitialGame(LM);
+				break;
 		}
 	}
 	private void SetNotStarted(bool visible) 
@@ -117,6 +128,37 @@ public partial class Main : Node
 		node.GetNode<Button>("PlayPersonLM").SetDeferred(Button.PropertyName.Visible, visible);
 		node.GetNode<Button>("PlayPersonLAN").SetDeferred(Button.PropertyName.Visible, visible);
 		node.GetNode<Button>("Tutorial").SetDeferred(Button.PropertyName.Visible, visible);
+	}
+	private void OnSetPiecesAble(int color) 
+	{
+		bool isWhite = (PieceColor)color == PieceColor.WHITE;
+		whitePieces.SetAllPiecesButtonDisable(!isWhite);
+		blackPieces.SetAllPiecesButtonDisable(isWhite);
+	}
+
+	private void OnPieceSelected(int number) 
+	{
+		List<int> moves = playing.GetPieceLegalMoves();
+		GD.Print(moves.Count);
+		board.SelectedPiece(number);
+		board.ResetLegalMove();
+		board.ResetCapture();
+		foreach (int move in moves) 
+		{
+			if (playing.IsSquareEmpty(move)) 
+			{
+				board.SetLegalMove(move);
+			}
+			else 
+			{
+				board.SetCapture(move);
+			}
+		}
+	}
+
+	public void OnLMPressed() 
+	{
+		SetGameState(LM);
 	}
 
 	private void Reset() 
@@ -128,6 +170,7 @@ public partial class Main : Node
 
 	public override void _Ready()
 	{
+		playing = GetNode<Playing>("Playing");
 		for (int i = 0; i < 100; i++)
 		{
 			markers[i] = GetNode<Node>("Markers").GetNode<Marker2D>(i.ToString());
@@ -135,6 +178,5 @@ public partial class Main : Node
 		board = GetNode<Board>("Board");
 		InitialPieces();
 		Reset();
-		SetPiecesToBoard();
 	}
 }
