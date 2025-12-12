@@ -24,7 +24,7 @@ public partial class Square : Node2D
 		column = newColumn;
 
 		Color color;
-		if (row % 2 == column % 2) 
+		if (row % 2 != column % 2) 
 		{
 			color = new Color(0, 102 / 255f, 179 / 255f);
 		}

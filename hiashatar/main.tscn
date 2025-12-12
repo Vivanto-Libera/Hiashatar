@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://526hpjlle1x"]
+[gd_scene load_steps=16 format=3 uid="uid://526hpjlle1x"]
 
 [ext_resource type="PackedScene" uid="uid://c6t33ko0beob6" path="res://board.tscn" id="1_272bh"]
 [ext_resource type="Script" uid="uid://vwscpsthjss8" path="res://Main.cs" id="1_kek77"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://t8hbqsbj3qfu" path="res://lion.tscn" id="7_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://bjvk7dxu02hjl" path="res://hound.tscn" id="8_5vw27"]
 [ext_resource type="Script" uid="uid://cl1xggoa7bbdj" path="res://Playing.cs" id="10_4c57u"]
+[ext_resource type="Script" uid="uid://c5gwobkn5yg1o" path="res://ChooseButton.cs" id="11_efxa6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kek77"]
 bg_color = Color(0, 0.4, 0.7019608, 1)
@@ -501,6 +502,7 @@ position = Vector2(-36, 34)
 [node name="NotStarted" type="Node" parent="."]
 
 [node name="PlayBot" type="Button" parent="NotStarted"]
+visible = false
 offset_left = 745.0
 offset_top = 68.0
 offset_right = 955.0
@@ -514,6 +516,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
 text = "人机对战"
 
 [node name="PlayPersonLM" type="Button" parent="NotStarted"]
+visible = false
 offset_left = 745.0
 offset_top = 226.0
 offset_right = 955.0
@@ -527,6 +530,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
 text = "本机对战"
 
 [node name="PlayPersonLAN" type="Button" parent="NotStarted"]
+visible = false
 offset_left = 745.0
 offset_top = 384.0
 offset_right = 955.0
@@ -540,6 +544,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
 text = "局网对战"
 
 [node name="Tutorial" type="Button" parent="NotStarted"]
+visible = false
 offset_left = 745.0
 offset_top = 542.0
 offset_right = 955.0
@@ -625,8 +630,57 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
 theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
 text = "引擎设置"
 
+[node name="ChooseColor" type="Node" parent="."]
+
+[node name="ChooseWhite" type="Button" parent="ChooseColor"]
+offset_left = 745.0
+offset_top = 107.5
+offset_right = 955.0
+offset_bottom = 197.5
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+text = "执白
+"
+script = ExtResource("11_efxa6")
+color = 1
+
+[node name="ChooseBlack" type="Button" parent="ChooseColor"]
+offset_left = 745.0
+offset_top = 502.5
+offset_right = 955.0
+offset_bottom = 592.5
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+text = "执黑
+"
+script = ExtResource("11_efxa6")
+color = -1
+
+[node name="ChooseRandom" type="Button" parent="ChooseColor"]
+offset_left = 745.0
+offset_top = 305.0
+offset_right = 955.0
+offset_bottom = 395.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+text = "随机"
+script = ExtResource("11_efxa6")
+
 [connection signal="SettedCapture" from="Board" to="." method="OnSettedCapture"]
 [connection signal="SquarePressed" from="Board" to="Playing" method="OnSquarePressed"]
+[connection signal="pressed" from="NotStarted/PlayBot" to="." method="OnPlayBotPressed"]
 [connection signal="pressed" from="NotStarted/PlayPersonLM" to="." method="OnLMPressed"]
 [connection signal="GameOver" from="Playing" to="." method="OnGameOver"]
 [connection signal="Moved" from="Playing" to="." method="OnMoved"]
@@ -635,3 +689,9 @@ text = "引擎设置"
 [connection signal="SetPiecesAble" from="Playing" to="." method="OnSetPiecesAble"]
 [connection signal="pressed" from="Playing/Over" to="Playing" method="OnOverPressed"]
 [connection signal="toggled" from="Playing/Flip" to="." method="OnFlipToggled"]
+[connection signal="ColorChose" from="ChooseColor/ChooseWhite" to="." method="OnColorChosen"]
+[connection signal="pressed" from="ChooseColor/ChooseWhite" to="ChooseColor/ChooseWhite" method="OnPressed"]
+[connection signal="ColorChose" from="ChooseColor/ChooseBlack" to="." method="OnColorChosen"]
+[connection signal="pressed" from="ChooseColor/ChooseBlack" to="ChooseColor/ChooseBlack" method="OnPressed"]
+[connection signal="ColorChose" from="ChooseColor/ChooseRandom" to="." method="OnColorChosen"]
+[connection signal="pressed" from="ChooseColor/ChooseRandom" to="ChooseColor/ChooseRandom" method="OnPressed"]

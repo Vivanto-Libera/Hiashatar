@@ -120,12 +120,19 @@ public partial class Main : Node
 			case NOTSTARTED:
 				SetNotStarted(true);
 				playing.HideAll();
+				SetChoiceColor(false);
 				break;
 			case LM:
 				SetNotStarted(false);
 				SetPiecesToBoard();
 				playing.InitialGame(LM);
+				SetChoiceColor(false);
 				break;
+			case BOT:
+				SetNotStarted(false);
+				SetChoiceColor(true);
+				break;
+
 		}
 	}
 	private void SetNotStarted(bool visible) 
@@ -138,6 +145,11 @@ public partial class Main : Node
 	}
 	private void OnSetPiecesAble(int color) 
 	{
+		if ((PieceColor)color == PieceColor.DRAW) 
+		{
+			SetAllPiecesDisable();
+			return;
+		}
 		bool isWhite = (PieceColor)color == PieceColor.WHITE;
 		whitePieces.SetAllPiecesButtonDisable(!isWhite);
 		blackPieces.SetAllPiecesButtonDisable(isWhite);
@@ -171,7 +183,17 @@ public partial class Main : Node
 	{
 		SetGameState(LM);
 	}
-
+	private void OnPlayBotPressed() 
+	{
+		SetGameState(BOT);
+	}
+	private void SetChoiceColor(bool visible) 
+	{
+		Node node = GetNode<Node>("ChooseColor");
+		node.GetNode<Button>("ChooseWhite").SetDeferred(Button.PropertyName.Visible, visible);
+		node.GetNode<Button>("ChooseBlack").SetDeferred(Button.PropertyName.Visible, visible);
+		node.GetNode<Button>("ChooseRandom").SetDeferred(Button.PropertyName.Visible, visible);
+	}
 	public async void OnMoved(int number) 
 	{
 		board.MovedPiece(number);
@@ -212,24 +234,59 @@ public partial class Main : Node
 		Reset();
 	}
 
+	private void OnColorChosen(int color) 
+	{
+		SetChoiceColor(false);
+		SetPiecesToBoard();
+		playing.InitialGame(BOT);
+		if (state == GameState.BOT) 
+		{
+			playing.playerColor = (PieceColor)color;
+			playing.StartBotGame();
+		}
+		FlipBoard();
+	}
+
 	private void OnFlipToggled(bool toggled) 
 	{
+		if (state == GameState.BOT && playing.playerColor != PieceColor.BLACK) 
+		{
+			inverted = false;
+			return;
+		}
 		inverted = toggled;
 		FlipBoard();
 	}
 	private void FlipBoard() 
 	{
-		if(playing.GetTurn() == PieceColor.BLACK && inverted) 
+		if (state == LM)
 		{
-			needFlip = true;
-			board.Invert(true);
+			if (playing.GetTurn() == PieceColor.BLACK && inverted)
+			{
+				needFlip = true;
+				board.Invert(true);
+			}
+			else
+			{
+				needFlip = false;
+				board.Invert(false);
+			}
+			SetAllPiecesPosition();
 		}
-		else 
+		else if (state == BOT) 
 		{
-			needFlip = false;
-			board.Invert(false);
+			if (playing.playerColor == PieceColor.BLACK && inverted)
+			{
+				needFlip = true;
+				board.Invert(true);
+			}
+			else
+			{
+				needFlip = false;
+				board.Invert(false);
+			}
+			SetAllPiecesPosition();
 		}
-		SetAllPiecesPosition();
 	}
 
 	private Piece FindPiece(int index) 

@@ -2,6 +2,7 @@ using Godot;
 using Hiashatar;
 using System;
 using System.Collections.Generic;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public partial class Playing : Node
 {
@@ -22,6 +23,8 @@ public partial class Playing : Node
 	private int from;
 	private int to;
 	private int enPassant = -1;
+	public PieceColor playerColor;
+	private Agent agent = new(new HiashatarModel());
 
 	public void InitialGame(GameState state) 
 	{
@@ -36,6 +39,11 @@ public partial class Playing : Node
 			GetNode<Button>("Undo").SetDeferred(Button.PropertyName.Visible, false);
 			GetNode<Button>("BotSet").SetDeferred(Button.PropertyName.Visible, false);
 			SetPiecesButton();
+		}
+		else if (state == GameState.BOT) 
+		{
+			GetNode<Button>("Undo").SetDeferred(Button.PropertyName.Visible, true);
+			GetNode<Button>("BotSet").SetDeferred(Button.PropertyName.Visible, true);
 		}
 	}
 
@@ -69,6 +77,10 @@ public partial class Playing : Node
 		{
 			SetPiecesButton();
 		}
+		if (state == GameState.BOT) 
+		{
+			AIMove();
+		}
 	}
 
 
@@ -100,6 +112,39 @@ public partial class Playing : Node
 		return enPassant;
 	}
 
+	public void StartBotGame() 
+	{
+		SetTurnMessage(PieceColor.WHITE);
+		if (playerColor == PieceColor.WHITE) 
+		{
+			SetPiecesButton();
+		}
+		else 
+		{
+			AIMove();
+		}
+	}
+	private void AIMove()
+	{
+		agent.SetBoard(new GameBoard(board));
+		SetTurnMessage(board.turn);
+		EmitSignal(SignalName.SetPiecesAble, (int)PieceColor.DRAW);
+		agent.StartThread();
+	}
+	private void OnAiSelectedMove(int moveIndex) 
+	{
+		board.ApplyMove(moveIndex);
+		enPassant = board.GetEnPassant();
+		legalMoves = board.LegalMoves();
+		EmitSignal(SignalName.Moved, Conversion.IndexTransToMove(moveIndex));
+		PieceColor winner = board.IsTerminal();
+		if (winner != PieceColor.NOTEND)
+		{
+			EmitSignal(SignalName.GameOver, (int)winner);
+			return;
+		}
+		SetPiecesButton();
+	}
 	public void HideAll() 
 	{
 		GetNode<Label>("Message").SetDeferred(Label.PropertyName.Visible, false);
@@ -155,5 +200,9 @@ public partial class Playing : Node
 	public void OnOverPressed() 
 	{
 		EmitSignal(SignalName.GameOver, (int)PieceColor.NOTEND);
+	}
+	public override void _Ready()
+	{
+		agent.AiSelectedMove += OnAiSelectedMove;
 	}
 }
