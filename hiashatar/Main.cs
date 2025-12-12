@@ -118,7 +118,7 @@ public partial class Main : Node
 		{
 			case NOTSTARTED:
 				SetNotStarted(true);
-				//TODO : Hide other nodes.
+				playing.HideAll();
 				break;
 			case LM:
 				SetNotStarted(false);

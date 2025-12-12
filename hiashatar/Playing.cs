@@ -28,8 +28,13 @@ public partial class Playing : Node
 		this.state = state;
 		board = new();
 		legalMoves = board.LegalMoves();
+		GetNode<Label>("Message").SetDeferred(Label.PropertyName.Visible, true);
+		GetNode<Button>("Over").SetDeferred(Button.PropertyName.Visible, true);
+		GetNode<Button>("Flip").SetDeferred(Button.PropertyName.Visible, true);
 		if (state == GameState.LM) 
 		{
+			GetNode<Button>("Undo").SetDeferred(Button.PropertyName.Visible, false);
+			GetNode<Button>("BotSet").SetDeferred(Button.PropertyName.Visible, false);
 			SetPiecesButton();
 		}
 	}
@@ -92,5 +97,14 @@ public partial class Playing : Node
 	public int GetEnPassant() 
 	{
 		return enPassant;
+	}
+
+	public void HideAll() 
+	{
+		GetNode<Label>("Message").SetDeferred(Label.PropertyName.Visible, false);
+		GetNode<Button>("Over").SetDeferred(Button.PropertyName.Visible, false);
+		GetNode<Button>("Flip").SetDeferred(Button.PropertyName.Visible, false);
+		GetNode<Button>("Undo").SetDeferred(Button.PropertyName.Visible, false);
+		GetNode<Button>("BotSet").SetDeferred(Button.PropertyName.Visible, false);
 	}
 }
