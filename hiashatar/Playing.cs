@@ -92,6 +92,7 @@ public partial class Playing : Node
 
 	private void SetPiecesButton() 
 	{
+		SetTurnMessage(board.turn);
 		EmitSignal(SignalName.SetPiecesAble, (int)board.turn);
 	}
 	public int GetEnPassant() 
@@ -106,5 +107,53 @@ public partial class Playing : Node
 		GetNode<Button>("Flip").SetDeferred(Button.PropertyName.Visible, false);
 		GetNode<Button>("Undo").SetDeferred(Button.PropertyName.Visible, false);
 		GetNode<Button>("BotSet").SetDeferred(Button.PropertyName.Visible, false);
+	}
+
+	public void SetTurnMessage(PieceColor turn) 
+	{
+		if (turn == PieceColor.WHITE) 
+		{
+			SetMessage("白方回合");
+		}
+		else 
+		{
+			SetMessage("黑方回合");
+		}
+	}
+	public void SetGameOverMessage(PieceColor winner) 
+	{
+		GetNode<Button>("Over").SetDeferred(Button.PropertyName.Visible, false);
+		GetNode<Button>("Flip").SetDeferred(Button.PropertyName.Visible, false);
+		GetNode<Button>("Undo").SetDeferred(Button.PropertyName.Visible, false);
+		GetNode<Button>("BotSet").SetDeferred(Button.PropertyName.Visible, false);
+		switch (winner) 
+		{
+			case PieceColor.WHITE:
+				SetMessage("白方获胜");
+				break;
+			case PieceColor.BLACK:
+				SetMessage("黑方获胜");
+				break;
+			case PieceColor.DRAW:
+				SetMessage("和棋");
+				break;
+			default:
+				SetMessage("游戏结束");
+				break;
+		}
+	}
+	private void SetMessage(string message)
+	{
+		GetNode<Label>("Message").Text = message;
+
+	}
+
+	public PieceColor GetTurn() 
+	{
+		return board.turn;
+	}
+	public void OnOverPressed() 
+	{
+		EmitSignal(SignalName.GameOver, (int)PieceColor.NOTEND);
 	}
 }

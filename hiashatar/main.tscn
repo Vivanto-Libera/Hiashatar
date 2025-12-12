@@ -632,3 +632,5 @@ text = "引擎设置"
 [connection signal="PieceCaptured" from="Playing" to="Board" method="OnSquarePressed"]
 [connection signal="PieceSelected" from="Playing" to="." method="OnPieceSelected"]
 [connection signal="SetPiecesAble" from="Playing" to="." method="OnSetPiecesAble"]
+[connection signal="pressed" from="Playing/Over" to="Playing" method="OnOverPressed"]
+[connection signal="toggled" from="Playing/Flip" to="." method="OnFlipToggled"]

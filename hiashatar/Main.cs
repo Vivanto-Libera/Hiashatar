@@ -14,6 +14,7 @@ public partial class Main : Node
 	private Marker2D[] markers = new Marker2D[100];
 	private Board board;
 	private bool inverted = false;
+	private bool needFlip = false;
 	private GameState state = NOTSTARTED;
 	private Playing playing;
 
@@ -25,7 +26,7 @@ public partial class Main : Node
 		}
 		else 
 		{
-			return inverted ? markers[99 - number].Position : markers[number].Position;
+			return needFlip ? markers[99 - number].Position : markers[number].Position;
 		}
 	}
 
@@ -171,7 +172,7 @@ public partial class Main : Node
 		SetGameState(LM);
 	}
 
-	public void OnMoved(int number) 
+	public async void OnMoved(int number) 
 	{
 		board.MovedPiece(number);
 		int from = Conversion.NumToFromAndTo(number)[0];
@@ -190,7 +191,8 @@ public partial class Main : Node
 		}
 		piece = FindPiece(from);
 		piece.SetRowAndCol(to / 10, to % 10);
-		piece.MoveToPosition(GetMarkerPositon(to));
+		await piece.MoveToPosition(GetMarkerPositon(to));
+		FlipBoard();
 	}
 
 	public void OnSettedCapture(int index, bool canCapture) 
@@ -205,11 +207,30 @@ public partial class Main : Node
 	private async void OnGameOver(int winner) 
 	{
 		SetAllPiecesDisable();
-		//TODO:Set message.
-		await ToSignal(GetTree().CreateTimer(3), Timer.SignalName.Timeout);
+		playing.SetGameOverMessage((PieceColor)winner);
+		await ToSignal(GetTree().CreateTimer(1.5f), Timer.SignalName.Timeout);
 		Reset();
 	}
 
+	private void OnFlipToggled(bool toggled) 
+	{
+		inverted = toggled;
+		FlipBoard();
+	}
+	private void FlipBoard() 
+	{
+		if(playing.GetTurn() == PieceColor.BLACK && inverted) 
+		{
+			needFlip = true;
+			board.Invert(true);
+		}
+		else 
+		{
+			needFlip = false;
+			board.Invert(false);
+		}
+		SetAllPiecesPosition();
+	}
 
 	private Piece FindPiece(int index) 
 	{
@@ -235,7 +256,6 @@ public partial class Main : Node
 		board.Reset();
 		SetGameState(NOTSTARTED);
 	}
-
 	public override void _Ready()
 	{
 		playing = GetNode<Playing>("Playing");

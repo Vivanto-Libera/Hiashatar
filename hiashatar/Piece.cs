@@ -1,6 +1,7 @@
 using Godot;
 using Hiashatar;
 using System;
+using System.Threading.Tasks;
 
 public partial class Piece : Node2D
 {
@@ -32,11 +33,13 @@ public partial class Piece : Node2D
 	{
 		Position = newPosition;
 	}
-	public void MoveToPosition(Vector2 newPosition)
+	public async Task MoveToPosition(Vector2 newPosition)
 	{
 		Tween tween = CreateTween();
 		tween.TweenProperty(this, "position", newPosition, 0.5);
 		tween.SetEase(Tween.EaseType.Out);
+		await ToSignal(tween, Tween.SignalName.Finished);
+		await ToSignal(GetTree().CreateTimer(0.3), Timer.SignalName.Timeout);
 	}
 
 	public void Capture()

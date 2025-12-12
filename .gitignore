@@ -238,3 +238,4 @@ data_*/
 mono_crash.*.json
 
 .vs/
+/Hiashatar_Py/toCSharp.py
