@@ -147,10 +147,7 @@ std::vector<int> Board::legalMoves()
 							moves.emplace_back(num);
 						}
 					}
-					else
-					{
-						break;
-					}
+					break;
 				}
 				else
 				{
@@ -512,10 +509,7 @@ bool Board::hasLegalMoves()
 							return true;
 						}
 					}
-					else
-					{
-						break;
-					}
+					break;
 				}
 				else
 				{

@@ -3,6 +3,8 @@ using Hiashatar;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Threading.Tasks;
 using static Hiashatar.GameState;
 
 public partial class Main : Node
@@ -139,6 +141,11 @@ public partial class Main : Node
 		whitePieces.SetAllPiecesButtonDisable(!isWhite);
 		blackPieces.SetAllPiecesButtonDisable(isWhite);
 	}
+	private void SetAllPiecesDisable() 
+	{
+		whitePieces.SetAllPiecesButtonDisable(true);
+		blackPieces.SetAllPiecesButtonDisable(true);
+	}
 
 	private void OnPieceSelected(int number) 
 	{
@@ -175,6 +182,12 @@ public partial class Main : Node
 			piece.Capture();
 			piece.SetPiecePosition(GetMarkerPositon(piece.GetPiecePosition()));
 		}
+		if (playing.GetEnPassant() != -1) 
+		{
+			piece = FindPiece(playing.GetEnPassant());
+			piece.Capture();
+			piece.SetPiecePosition(GetMarkerPositon(piece.GetPiecePosition()));
+		}
 		piece = FindPiece(from);
 		piece.SetRowAndCol(to / 10, to % 10);
 		piece.MoveToPosition(GetMarkerPositon(to));
@@ -187,6 +200,14 @@ public partial class Main : Node
 		{
 			piece.SetButtonDisable(!canCapture);
 		}
+	}
+
+	private async void OnGameOver(int winner) 
+	{
+		SetAllPiecesDisable();
+		//TODO:Set message.
+		await ToSignal(GetTree().CreateTimer(3), Timer.SignalName.Timeout);
+		Reset();
 	}
 
 

@@ -13,12 +13,15 @@ public partial class Playing : Node
 	public delegate void PieceCapturedEventHandler(int number);
 	[Signal]
 	public delegate void MovedEventHandler(int move);
+	[Signal]
+	public delegate void GameOverEventHandler(int winner);
 
 	private GameBoard board = new();
 	private GameState state;
 	private List<int> legalMoves = new List<int>();
 	private int from;
 	private int to;
+	private int enPassant = -1;
 
 	public void InitialGame(GameState state) 
 	{
@@ -48,9 +51,19 @@ public partial class Playing : Node
 	{
 		to = number;
 		board.ApplyMove(Conversion.MoveToIndex(from * 100 + to));
+		enPassant = board.GetEnPassant();
 		legalMoves = board.LegalMoves();
-		SetPiecesButton();
 		EmitSignal(SignalName.Moved, from * 100 + number);
+		PieceColor winner = board.IsTerminal();
+		if (winner != PieceColor.NOTEND) 
+		{
+			EmitSignal(SignalName.GameOver, (int)winner);
+			return;
+		}
+		if (state == GameState.LM)
+		{
+			SetPiecesButton();
+		}
 	}
 
 
@@ -75,5 +88,9 @@ public partial class Playing : Node
 	private void SetPiecesButton() 
 	{
 		EmitSignal(SignalName.SetPiecesAble, (int)board.turn);
+	}
+	public int GetEnPassant() 
+	{
+		return enPassant;
 	}
 }

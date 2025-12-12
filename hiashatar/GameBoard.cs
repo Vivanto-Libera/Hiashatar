@@ -17,6 +17,7 @@ namespace Hiashatar
 		public Rule_Pieces blackPieces = new Rule_Pieces(BLACK);
 		private int noProgress = 0;
 		private List<PieceType[,]> preBoards = new List<PieceType[,]>();
+		private int enPassant = -1;
 
 		public List<int> LegalMoves()
 		{
@@ -153,10 +154,7 @@ namespace Hiashatar
 									moves.Add(num);
 								}
 							}
-							else
-							{
-								break;
-							}
+							break;
 						}
 						else
 						{
@@ -505,10 +503,7 @@ namespace Hiashatar
 									return true;
 								}
 							}
-							else
-							{
-								break;
-							}
+							break;
 						}
 						else
 						{
@@ -730,14 +725,16 @@ namespace Hiashatar
 			{
 				preBoards.RemoveAt(0);
 			}
-			preBoards.Add(board);
+			preBoards.Add(board.Clone() as PieceType[,]);
 
 			int[] move = Conversion.NumToMove(Conversion.IndexTransToMove(moveIndex));
+			enPassant = -1;
 			if (board[move[2], move[3]] != EMPTY)
 			{
 				FindPiece(move[2], move[3]).Capture();
 				noProgress = 0;
 			}
+			//En Passant
 			if (board[move[0], move[1]] == WHITEHOUND || board[move[0], move[1]] == BLACKHOUND)
 			{
 				noProgress = 0;
@@ -745,6 +742,7 @@ namespace Hiashatar
 				{
 					FindPiece(move[0], move[3]).Capture();
 					board[move[0], move[3]] = EMPTY;
+					enPassant = move[0] * 10 + move[3];
 				}
 			}
 
@@ -1314,6 +1312,11 @@ namespace Hiashatar
 				default:
 					return null;
 			}
+		}
+
+		public int GetEnPassant() 
+		{
+			return enPassant;
 		}
 
 		public GameBoard() 
