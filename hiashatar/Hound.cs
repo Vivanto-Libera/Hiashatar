@@ -23,6 +23,7 @@ public partial class Hound : Piece
 		GetNode<TextureRect>("Black").SetDeferred(TextureRect.PropertyName.Visible, false);
 		GetNode<TextureRect>("WhitePromoted").SetDeferred(TextureRect.PropertyName.Visible, isWhite);
 		GetNode<TextureRect>("BlackPromoted").SetDeferred(TextureRect.PropertyName.Visible, !isWhite);
+		GetNode<Button>("Button").TooltipText = "狮";
 	}
 	public override void Reset()
 	{
@@ -33,5 +34,6 @@ public partial class Hound : Piece
 		GetNode<TextureRect>("Black").SetDeferred(TextureRect.PropertyName.Visible, !isWhite);
 		GetNode<TextureRect>("WhitePromoted").SetDeferred(TextureRect.PropertyName.Visible, false);
 		GetNode<TextureRect>("BlackPromoted").SetDeferred(TextureRect.PropertyName.Visible, false);
+		GetNode<Button>("Button").TooltipText = "犬";
 	}
 }

@@ -501,7 +501,6 @@ position = Vector2(-36, 34)
 [node name="NotStarted" type="Node" parent="."]
 
 [node name="PlayBot" type="Button" parent="NotStarted"]
-visible = false
 offset_left = 745.0
 offset_top = 68.0
 offset_right = 955.0
@@ -515,7 +514,6 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
 text = "人机对战"
 
 [node name="PlayPersonLM" type="Button" parent="NotStarted"]
-visible = false
 offset_left = 745.0
 offset_top = 226.0
 offset_right = 955.0
@@ -529,7 +527,6 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
 text = "本机对战"
 
 [node name="PlayPersonLAN" type="Button" parent="NotStarted"]
-visible = false
 offset_left = 745.0
 offset_top = 384.0
 offset_right = 955.0
@@ -543,7 +540,6 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
 text = "局网对战"
 
 [node name="Tutorial" type="Button" parent="NotStarted"]
-visible = false
 offset_left = 745.0
 offset_top = 542.0
 offset_right = 955.0
@@ -560,6 +556,7 @@ text = "游戏教程"
 script = ExtResource("10_4c57u")
 
 [node name="Message" type="Label" parent="Playing"]
+visible = false
 offset_left = 710.0
 offset_right = 990.0
 offset_bottom = 200.0
@@ -572,6 +569,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="Over" type="Button" parent="Playing"]
+visible = false
 offset_left = 745.0
 offset_top = 228.0
 offset_right = 955.0
@@ -585,6 +583,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
 text = "结束对局"
 
 [node name="Flip" type="Button" parent="Playing"]
+visible = false
 offset_left = 745.0
 offset_top = 346.0
 offset_right = 955.0
@@ -599,6 +598,7 @@ toggle_mode = true
 text = "执黑翻转"
 
 [node name="Undo" type="Button" parent="Playing"]
+visible = false
 offset_left = 745.0
 offset_top = 582.0
 offset_right = 955.0
@@ -612,6 +612,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
 text = "悔棋"
 
 [node name="BotSet" type="Button" parent="Playing"]
+visible = false
 offset_left = 745.0
 offset_top = 464.0
 offset_right = 955.0

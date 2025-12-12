@@ -98,7 +98,7 @@ namespace Hiashatar
 				int newCol = column + Direction.QUEENLIKECOL[i];
 				if (newRow < 0 || newRow > 9 || newCol < 0 || newCol > 9)
 				{
-					break;
+					continue;
 				}
 				controlZone.Add(newRow * 10 + newCol);
 			}

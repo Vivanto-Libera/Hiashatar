@@ -64,6 +64,7 @@ offset_right = 35.0
 offset_bottom = 35.0
 grow_horizontal = 2
 grow_vertical = 2
+tooltip_text = "卫"
 theme_override_styles/normal = SubResource("StyleBoxFlat_hkc8k")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_3makh")
 theme_override_styles/hover = SubResource("StyleBoxFlat_hisf2")
