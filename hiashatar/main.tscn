@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://526hpjlle1x"]
+[gd_scene load_steps=17 format=3 uid="uid://526hpjlle1x"]
 
 [ext_resource type="PackedScene" uid="uid://c6t33ko0beob6" path="res://board.tscn" id="1_272bh"]
 [ext_resource type="Script" uid="uid://vwscpsthjss8" path="res://Main.cs" id="1_kek77"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://t8hbqsbj3qfu" path="res://lion.tscn" id="7_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://bjvk7dxu02hjl" path="res://hound.tscn" id="8_5vw27"]
 [ext_resource type="Script" uid="uid://cl1xggoa7bbdj" path="res://Playing.cs" id="10_4c57u"]
+[ext_resource type="PackedScene" uid="uid://cp5lgcu6uvj0j" path="res://bot_set_dialog.tscn" id="11_dg77c"]
 [ext_resource type="Script" uid="uid://c5gwobkn5yg1o" path="res://ChooseButton.cs" id="11_efxa6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kek77"]
@@ -561,7 +562,6 @@ text = "游戏教程"
 script = ExtResource("10_4c57u")
 
 [node name="Message" type="Label" parent="Playing"]
-visible = false
 offset_left = 710.0
 offset_right = 990.0
 offset_bottom = 200.0
@@ -574,7 +574,6 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="Over" type="Button" parent="Playing"]
-visible = false
 offset_left = 745.0
 offset_top = 228.0
 offset_right = 955.0
@@ -588,7 +587,6 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
 text = "结束对局"
 
 [node name="Flip" type="Button" parent="Playing"]
-visible = false
 offset_left = 745.0
 offset_top = 346.0
 offset_right = 955.0
@@ -603,7 +601,6 @@ toggle_mode = true
 text = "执黑翻转"
 
 [node name="Undo" type="Button" parent="Playing"]
-visible = false
 offset_left = 745.0
 offset_top = 582.0
 offset_right = 955.0
@@ -617,7 +614,6 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
 text = "悔棋"
 
 [node name="BotSet" type="Button" parent="Playing"]
-visible = false
 offset_left = 745.0
 offset_top = 464.0
 offset_right = 955.0
@@ -630,9 +626,13 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
 theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
 text = "引擎设置"
 
+[node name="BotSetDialog" parent="Playing" instance=ExtResource("11_dg77c")]
+visible = false
+
 [node name="ChooseColor" type="Node" parent="."]
 
 [node name="ChooseWhite" type="Button" parent="ChooseColor"]
+visible = false
 offset_left = 745.0
 offset_top = 107.5
 offset_right = 955.0
@@ -649,6 +649,7 @@ script = ExtResource("11_efxa6")
 color = 1
 
 [node name="ChooseBlack" type="Button" parent="ChooseColor"]
+visible = false
 offset_left = 745.0
 offset_top = 502.5
 offset_right = 955.0
@@ -665,6 +666,7 @@ script = ExtResource("11_efxa6")
 color = -1
 
 [node name="ChooseRandom" type="Button" parent="ChooseColor"]
+visible = false
 offset_left = 745.0
 offset_top = 305.0
 offset_right = 955.0
@@ -689,6 +691,8 @@ script = ExtResource("11_efxa6")
 [connection signal="SetPiecesAble" from="Playing" to="." method="OnSetPiecesAble"]
 [connection signal="pressed" from="Playing/Over" to="Playing" method="OnOverPressed"]
 [connection signal="toggled" from="Playing/Flip" to="." method="OnFlipToggled"]
+[connection signal="pressed" from="Playing/BotSet" to="Playing" method="OnBotSetPressed"]
+[connection signal="SetSaved" from="Playing/BotSetDialog" to="Playing" method="OnSetSaved"]
 [connection signal="ColorChose" from="ChooseColor/ChooseWhite" to="." method="OnColorChosen"]
 [connection signal="pressed" from="ChooseColor/ChooseWhite" to="ChooseColor/ChooseWhite" method="OnPressed"]
 [connection signal="ColorChose" from="ChooseColor/ChooseBlack" to="." method="OnColorChosen"]

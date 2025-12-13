@@ -25,6 +25,7 @@ public partial class Playing : Node
 	private int enPassant = -1;
 	public PieceColor playerColor;
 	private Agent agent = new(new HiashatarModel());
+	private BotSetDialog dialog;
 
 	public void InitialGame(GameState state) 
 	{
@@ -156,13 +157,27 @@ public partial class Playing : Node
 
 	public void SetTurnMessage(PieceColor turn) 
 	{
-		if (turn == PieceColor.WHITE) 
+		if (state == GameState.LM)
 		{
-			SetMessage("白方回合");
+			if (turn == PieceColor.WHITE)
+			{
+				SetMessage("白方回合");
+			}
+			else
+			{
+				SetMessage("黑方回合");
+			}
 		}
-		else 
+		else if(state == GameState.BOT) 
 		{
-			SetMessage("黑方回合");
+			if (turn == playerColor)
+			{
+				SetMessage("玩家回合");
+			}
+			else
+			{
+				SetMessage("AI回合");
+			}
 		}
 	}
 	public void SetGameOverMessage(PieceColor winner) 
@@ -197,7 +212,7 @@ public partial class Playing : Node
 	{
 		return board.turn;
 	}
-	public void OnOverPressed() 
+	private void OnOverPressed() 
 	{
 		if(state == GameState.BOT) 
 		{
@@ -205,8 +220,21 @@ public partial class Playing : Node
 		}
 		EmitSignal(SignalName.GameOver, (int)PieceColor.NOTEND);
 	}
+	private void OnBotSetPressed() 
+	{
+		dialog.SetValues(agent.sims, agent.tau, agent.cPuct);
+		dialog.Show();
+	}
+	private void OnSetSaved(int sims, float tau, float cpuct) 
+	{
+		agent.sims = sims;
+		agent.tau = tau;
+		agent.cPuct = cpuct;
+	}
+
 	public override void _Ready()
 	{
 		agent.AiSelectedMove += OnAiSelectedMove;
+		dialog = GetNode<BotSetDialog>("BotSetDialog");
 	}
 }

@@ -21,13 +21,17 @@ namespace Hiashatar
 		private CancellationTokenSource cts;
 		public HiashatarModel model;
 		private GameBoard board;
+		public float tau = 1;
+		public float cPuct = 2;
+		public int sims = 100;
 		private void SelectMove(CancellationToken token)
 		{
 			MCEdge rootEdge = new MCEdge(null, null);
 			rootEdge.N = 1;
 			MCNode rootNode = new MCNode(new(board), rootEdge);
-			MCTS MctsSearcher = new MCTS(model);
-			float[] moveProb = MctsSearcher.Search(rootNode, token);
+			MCTS mctsSearcher = new MCTS(model);
+			mctsSearcher.SetParameters(tau, cPuct, sims);
+			float[] moveProb = mctsSearcher.Search(rootNode, token);
 			if (token.IsCancellationRequested)
 			{
 				return;
