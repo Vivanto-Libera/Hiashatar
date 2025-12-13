@@ -17,17 +17,6 @@ public partial class Board : Node2D
 	private int from;
 	private int to;
 
-	private void SetSquares(bool invert = false) 
-	{
-		for (int i = 0; i < 100; i++)
-		{
-			squares[i] = GetNode<Square>(i.ToString());
-			squares[i].SetRowAndColumn(i / 10, i % 10);
-			squares[i].Reset();
-		}
-		Invert();
-	}
-
 	public void Invert(bool invert = false) 
 	{
 		RotationDegrees = invert ? 180f : 0f;
@@ -47,37 +36,39 @@ public partial class Board : Node2D
 		squares[number].SetHighlight(true);
 		selected = number;
 	}
-	public void MovedPiece(int number) 
-	{
-		ResetLegalMove();
-		ResetCapture();
-		ResetHighlight();
-		if (number != -1)
-		{
-			from = Conversion.NumToFromAndTo(number)[0];
-			to = Conversion.NumToFromAndTo(number)[1];
-			squares[from].SetHighlight(true);
-			squares[to].SetHighlight(true);
-		}
-		selected = -1;
-	}
 	public void SetLegalMove(int index) 
 	{
 		squares[index].SetLegalMove(true);
-	}
-	public void ResetLegalMove() 
-	{
-		foreach (Square square in squares) 
-		{
-			square.SetLegalMove(false);
-		}
 	}
 	public void SetCapture(int index)
 	{
 		squares[index].SetCaputure(true);
 		EmitSignal(SignalName.SettedCapture, index, true);
 	}
-	public void ResetCapture()
+
+    public void MovedPiece(int number)
+    {
+        ResetLegalMove();
+        ResetCapture();
+        ResetHighlight();
+        if (number != -1)
+        {
+            from = Conversion.NumToFromAndTo(number)[0];
+            to = Conversion.NumToFromAndTo(number)[1];
+            squares[from].SetHighlight(true);
+            squares[to].SetHighlight(true);
+        }
+        selected = -1;
+    }
+
+    public void ResetLegalMove()
+    {
+        foreach (Square square in squares)
+        {
+            square.SetLegalMove(false);
+        }
+    }
+    public void ResetCapture()
 	{
 		foreach (Square square in squares)
 		{
@@ -102,7 +93,17 @@ public partial class Board : Node2D
 		SetSquares();
 	}
 
-	public override void _Ready()
+    private void SetSquares(bool invert = false)
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            squares[i] = GetNode<Square>(i.ToString());
+            squares[i].SetRowAndColumn(i / 10, i % 10);
+            squares[i].Reset();
+        }
+        Invert();
+    }
+    public override void _Ready()
 	{
 		Reset();
 		for (int i = 0; i < 100; i++)

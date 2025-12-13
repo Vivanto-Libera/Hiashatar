@@ -10,7 +10,7 @@ public partial class ChooseButton : Button
 	[Export]
 	public int color;
 
-	public void OnPressed() 
+	private void OnPressed() 
 	{
 		PieceColor choseColor;
 		switch (color) 
