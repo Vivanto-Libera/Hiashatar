@@ -15,6 +15,7 @@ public partial class Main : Node
 	private bool needFlip = false;  //If its true, in function GetMarkerPositon will give the flipped Marker's position.
     private GameState state = NOTSTARTED;
 	private Playing playing;
+	private Tutorial tutorial;
 
 
 	private void OnLMPressed() 
@@ -25,7 +26,10 @@ public partial class Main : Node
 	{
 		SetGameState(BOT);
 	}
-
+	private void OnTutotialPressed() 
+	{
+		SetGameState(TUTORIAL);
+	}
     private void OnSetPiecesAble(int color)
     {
         if ((PieceColor)color == PieceColor.DRAW)
@@ -114,6 +118,7 @@ public partial class Main : Node
 	{
 		board.MovedPiece(move);
 		SetPieceFromBoard(playing.GetBoard());
+		FlipBoard();
 		SetAllPiecesPosition();
 	}
 
@@ -132,96 +137,100 @@ public partial class Main : Node
 
     private Vector2 GetMarkerPositon(int number)
     {
-        //When number == -1, is mean move the piece off the board. So return CapturedMarker's position
-        if (number == -1)
-        {
-            return GetNode<Node>("Markers").GetNode<Marker2D>("CapturedMarker").Position;
-        }
-        else
-        {
-            return needFlip ? markers[99 - number].Position : markers[number].Position;
-        }
-    }
+		//When number == -1, is mean move the piece off the board. So return CapturedMarker's position
+		if (number == -1)
+		{
+			return GetNode<Node>("Markers").GetNode<Marker2D>("CapturedMarker").Position;
+		}
+		else
+		{
+			return needFlip ? markers[99 - number].Position : markers[number].Position;
+		}
+	}
 
-    private void SetPiecePosition(Piece piece)
-    {
-        piece.SetPiecePosition(GetMarkerPositon(piece.GetPiecePosition()));
-    }
-    private void SetAllPiecesPosition()
-    {
-        List<Piece> pieces = whitePieces.GetAllPieces();
-        foreach (Piece piece in pieces)
-        {
-            SetPiecePosition(piece);
-        }
-        pieces = blackPieces.GetAllPieces();
-        foreach (Piece piece in pieces)
-        {
-            SetPiecePosition(piece);
-        }
-    }
-    private void SetPiecesToBoard()
-    {
-        whitePieces.SetToBoard(PieceColor.WHITE);
-        blackPieces.SetToBoard(PieceColor.BLACK);
-        SetAllPiecesPosition();
-    }
-    private void SetAllPiecesDisable()
-    {
-        whitePieces.SetAllPiecesButtonDisable(true);
-        blackPieces.SetAllPiecesButtonDisable(true);
-    }
-    private void SetPieceFromBoard(GameBoard board)
-    {
-        List<Piece> white = whitePieces.GetAllPieces();
-        List<Piece> black = blackPieces.GetAllPieces();
-        List<Rule_Piece> Rule_white = board.whitePieces.GetAllPieces();
-        List<Rule_Piece> Rule_black = board.blackPieces.GetAllPieces();
-        for (int i = 0; i < 20; i++)
-        {
-            white[i].SetRowAndCol(Rule_white[i].GetPosition()[0], Rule_white[i].GetPosition()[1]);
-            black[i].SetRowAndCol(Rule_black[i].GetPosition()[0], Rule_black[i].GetPosition()[1]);
-        }
-    }
-    private void SetGameState(GameState newState)
-    {
-        state = newState;
-        switch (state)
-        {
-            case NOTSTARTED:
-                SetNotStarted(true);
-                playing.HideAll();
-                SetChoiceColor(false);
-                break;
-            case LM:
-                SetNotStarted(false);
-                SetPiecesToBoard();
-                playing.InitialGame(LM);
-                SetChoiceColor(false);
-                break;
-            case BOT:
-                SetNotStarted(false);
-                SetChoiceColor(true);
-                break;
-        }
-    }
-    private void SetNotStarted(bool visible)
-    {
-        Node node = GetNode<Node>("NotStarted");
-        node.GetNode<Button>("PlayBot").SetDeferred(Button.PropertyName.Visible, visible);
-        node.GetNode<Button>("PlayPersonLM").SetDeferred(Button.PropertyName.Visible, visible);
-        node.GetNode<Button>("PlayPersonLAN").SetDeferred(Button.PropertyName.Visible, visible);
-        node.GetNode<Button>("Tutorial").SetDeferred(Button.PropertyName.Visible, visible);
-    }
-    private void SetChoiceColor(bool visible)
-    {
-        Node node = GetNode<Node>("ChooseColor");
-        node.GetNode<Button>("ChooseWhite").SetDeferred(Button.PropertyName.Visible, visible);
-        node.GetNode<Button>("ChooseBlack").SetDeferred(Button.PropertyName.Visible, visible);
-        node.GetNode<Button>("ChooseRandom").SetDeferred(Button.PropertyName.Visible, visible);
-    }
+	private void SetPiecePosition(Piece piece)
+	{
+		piece.SetPiecePosition(GetMarkerPositon(piece.GetPiecePosition()));
+	}
+	private void SetAllPiecesPosition()
+	{
+		List<Piece> pieces = whitePieces.GetAllPieces();
+		foreach (Piece piece in pieces)
+		{
+			SetPiecePosition(piece);
+		}
+		pieces = blackPieces.GetAllPieces();
+		foreach (Piece piece in pieces)
+		{
+			SetPiecePosition(piece);
+		}
+	}
+	private void SetPiecesToBoard()
+	{
+		whitePieces.SetToBoard(PieceColor.WHITE);
+		blackPieces.SetToBoard(PieceColor.BLACK);
+		SetAllPiecesPosition();
+	}
+	private void SetAllPiecesDisable()
+	{
+		whitePieces.SetAllPiecesButtonDisable(true);
+		blackPieces.SetAllPiecesButtonDisable(true);
+	}
+	private void SetPieceFromBoard(GameBoard board)
+	{
+		List<Piece> white = whitePieces.GetAllPieces();
+		List<Piece> black = blackPieces.GetAllPieces();
+		List<Rule_Piece> Rule_white = board.whitePieces.GetAllPieces();
+		List<Rule_Piece> Rule_black = board.blackPieces.GetAllPieces();
+		for (int i = 0; i < 20; i++)
+		{
+			white[i].SetRowAndCol(Rule_white[i].GetPosition()[0], Rule_white[i].GetPosition()[1]);
+			black[i].SetRowAndCol(Rule_black[i].GetPosition()[0], Rule_black[i].GetPosition()[1]);
+		}
+	}
+	private void SetGameState(GameState newState)
+	{
+		state = newState;
+		switch (state)
+		{
+			case NOTSTARTED:
+				SetNotStarted(true);
+				playing.HideAll();
+				tutorial.SetButtonsVisible(false);
+				SetChoiceColor(false);
+				break;
+			case LM:
+				SetNotStarted(false);
+				SetPiecesToBoard();
+				playing.InitialGame(LM);
+				break;
+			case BOT:
+				SetNotStarted(false);
+				SetChoiceColor(true);
+				break;
+			case TUTORIAL:
+				SetNotStarted(false);
+				tutorial.SetButtonsVisible(true);
+				break;
+		}
+	}
+	private void SetNotStarted(bool visible)
+	{
+		Node node = GetNode<Node>("NotStarted");
+		node.GetNode<Button>("PlayBot").SetDeferred(Button.PropertyName.Visible, visible);
+		node.GetNode<Button>("PlayPersonLM").SetDeferred(Button.PropertyName.Visible, visible);
+		node.GetNode<Button>("PlayPersonLAN").SetDeferred(Button.PropertyName.Visible, visible);
+		node.GetNode<Button>("Tutorial").SetDeferred(Button.PropertyName.Visible, visible);
+	}
+	private void SetChoiceColor(bool visible)
+	{
+		Node node = GetNode<Node>("ChooseColor");
+		node.GetNode<Button>("ChooseWhite").SetDeferred(Button.PropertyName.Visible, visible);
+		node.GetNode<Button>("ChooseBlack").SetDeferred(Button.PropertyName.Visible, visible);
+		node.GetNode<Button>("ChooseRandom").SetDeferred(Button.PropertyName.Visible, visible);
+	}
 
-    private void FlipBoard() 
+	private void FlipBoard() 
 	{
 		if (state == LM)
 		{
@@ -271,71 +280,72 @@ public partial class Main : Node
 		return null;
 	}
 
-    private void InitialPieces()
-    {
-        Node whitePiecesNode = GetNode<Node>("WhitePieces");
-        Node blackPiecesNode = GetNode<Node>("BlackPieces");
+	private void InitialPieces()
+	{
+		Node whitePiecesNode = GetNode<Node>("WhitePieces");
+		Node blackPiecesNode = GetNode<Node>("BlackPieces");
 
-        whitePieces.terges[0] = whitePiecesNode.GetNode<Piece>("Terge0");
-        blackPieces.terges[0] = blackPiecesNode.GetNode<Piece>("Terge0");
-        whitePieces.terges[1] = whitePiecesNode.GetNode<Piece>("Terge1");
-        blackPieces.terges[1] = blackPiecesNode.GetNode<Piece>("Terge1");
+		whitePieces.terges[0] = whitePiecesNode.GetNode<Piece>("Terge0");
+		blackPieces.terges[0] = blackPiecesNode.GetNode<Piece>("Terge0");
+		whitePieces.terges[1] = whitePiecesNode.GetNode<Piece>("Terge1");
+		blackPieces.terges[1] = blackPiecesNode.GetNode<Piece>("Terge1");
 
-        whitePieces.camels[0] = whitePiecesNode.GetNode<Piece>("Camel0");
-        blackPieces.camels[0] = blackPiecesNode.GetNode<Piece>("Camel0");
-        whitePieces.camels[1] = whitePiecesNode.GetNode<Piece>("Camel1");
-        blackPieces.camels[1] = blackPiecesNode.GetNode<Piece>("Camel1");
+		whitePieces.camels[0] = whitePiecesNode.GetNode<Piece>("Camel0");
+		blackPieces.camels[0] = blackPiecesNode.GetNode<Piece>("Camel0");
+		whitePieces.camels[1] = whitePiecesNode.GetNode<Piece>("Camel1");
+		blackPieces.camels[1] = blackPiecesNode.GetNode<Piece>("Camel1");
 
-        whitePieces.horses[0] = whitePiecesNode.GetNode<Piece>("Horse0");
-        blackPieces.horses[0] = blackPiecesNode.GetNode<Piece>("Horse0");
-        whitePieces.horses[1] = whitePiecesNode.GetNode<Piece>("Horse1");
-        blackPieces.horses[1] = blackPiecesNode.GetNode<Piece>("Horse1");
+		whitePieces.horses[0] = whitePiecesNode.GetNode<Piece>("Horse0");
+		blackPieces.horses[0] = blackPiecesNode.GetNode<Piece>("Horse0");
+		whitePieces.horses[1] = whitePiecesNode.GetNode<Piece>("Horse1");
+		blackPieces.horses[1] = blackPiecesNode.GetNode<Piece>("Horse1");
 
-        whitePieces.guards[0] = whitePiecesNode.GetNode<Piece>("Guard0");
-        blackPieces.guards[0] = blackPiecesNode.GetNode<Piece>("Guard0");
-        whitePieces.guards[1] = whitePiecesNode.GetNode<Piece>("Guard1");
-        blackPieces.guards[1] = blackPiecesNode.GetNode<Piece>("Guard1");
+		whitePieces.guards[0] = whitePiecesNode.GetNode<Piece>("Guard0");
+		blackPieces.guards[0] = blackPiecesNode.GetNode<Piece>("Guard0");
+		whitePieces.guards[1] = whitePiecesNode.GetNode<Piece>("Guard1");
+		blackPieces.guards[1] = blackPiecesNode.GetNode<Piece>("Guard1");
 
-        whitePieces.lion = whitePiecesNode.GetNode<Piece>("Lion");
-        blackPieces.lion = blackPiecesNode.GetNode<Piece>("Lion");
+		whitePieces.lion = whitePiecesNode.GetNode<Piece>("Lion");
+		blackPieces.lion = blackPiecesNode.GetNode<Piece>("Lion");
 
-        whitePieces.khan = whitePiecesNode.GetNode<Piece>("Khan");
-        blackPieces.khan = blackPiecesNode.GetNode<Piece>("Khan");
+		whitePieces.khan = whitePiecesNode.GetNode<Piece>("Khan");
+		blackPieces.khan = blackPiecesNode.GetNode<Piece>("Khan");
 
-        for (int i = 0; i < 10; i++)
-        {
-            whitePieces.hounds[i] = whitePiecesNode.GetNode<Hound>("Hound" + i.ToString());
-            blackPieces.hounds[i] = blackPiecesNode.GetNode<Hound>("Hound" + i.ToString());
-        }
+		for (int i = 0; i < 10; i++)
+		{
+			whitePieces.hounds[i] = whitePiecesNode.GetNode<Hound>("Hound" + i.ToString());
+			blackPieces.hounds[i] = blackPiecesNode.GetNode<Hound>("Hound" + i.ToString());
+		}
 
-        blackPieces.SetToBlack();
+		blackPieces.SetToBlack();
 
-        foreach (Piece piece in whitePieces.GetAllPieces())
-        {
-            piece.PieceButtonPressed += playing.OnPiecePressed;
-        }
-        foreach (Piece piece in blackPieces.GetAllPieces())
-        {
-            piece.PieceButtonPressed += playing.OnPiecePressed;
-        }
-    }
+		foreach (Piece piece in whitePieces.GetAllPieces())
+		{
+			piece.PieceButtonPressed += playing.OnPiecePressed;
+		}
+		foreach (Piece piece in blackPieces.GetAllPieces())
+		{
+			piece.PieceButtonPressed += playing.OnPiecePressed;
+		}
+	}
 
-    private void Reset() 
+	private void Reset() 
 	{
 		ResetPieces();
 		board.Reset();
 		SetGameState(NOTSTARTED);
 	}
-    private void ResetPieces()
-    {
-        whitePieces.Reset();
-        blackPieces.Reset();
-        SetAllPiecesPosition();
-    }
+	private void ResetPieces()
+	{
+		whitePieces.Reset();
+		blackPieces.Reset();
+		SetAllPiecesPosition();
+	}
 
-    public override void _Ready()
+	public override void _Ready()
 	{
 		playing = GetNode<Playing>("Playing");
+		tutorial = GetNode<Tutorial>("Tutorial");
 		for (int i = 0; i < 100; i++)
 		{
 			markers[i] = GetNode<Node>("Markers").GetNode<Marker2D>(i.ToString());

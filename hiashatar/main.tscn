@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://526hpjlle1x"]
+[gd_scene load_steps=25 format=3 uid="uid://526hpjlle1x"]
 
 [ext_resource type="PackedScene" uid="uid://c6t33ko0beob6" path="res://board.tscn" id="1_272bh"]
 [ext_resource type="Script" uid="uid://vwscpsthjss8" path="res://Main.cs" id="1_kek77"]
@@ -12,6 +12,14 @@
 [ext_resource type="Script" uid="uid://cl1xggoa7bbdj" path="res://Playing.cs" id="10_4c57u"]
 [ext_resource type="PackedScene" uid="uid://cp5lgcu6uvj0j" path="res://bot_set_dialog.tscn" id="11_dg77c"]
 [ext_resource type="Script" uid="uid://c5gwobkn5yg1o" path="res://ChooseButton.cs" id="11_efxa6"]
+[ext_resource type="Script" uid="uid://cu85r74p3s781" path="res://Tutorial.cs" id="13_82xsv"]
+[ext_resource type="Texture2D" uid="uid://cdxllkjiq4vw5" path="res://images/WhiteHound.png" id="13_cegan"]
+[ext_resource type="Texture2D" uid="uid://wjhccm8aa5lc" path="res://images/WhiteTerge.png" id="14_82xsv"]
+[ext_resource type="Texture2D" uid="uid://d2bmp0cqv7qmp" path="res://images/WhiteHorse.png" id="15_getpj"]
+[ext_resource type="Texture2D" uid="uid://bnrr4hshoak5u" path="res://images/WhiteCamel.png" id="16_ryguw"]
+[ext_resource type="Texture2D" uid="uid://1gneb0ibo7sr" path="res://images/WhiteGuard.png" id="17_d13ii"]
+[ext_resource type="Texture2D" uid="uid://5nphj32i6jhv" path="res://images/WhiteLion.png" id="18_1u8w0"]
+[ext_resource type="Texture2D" uid="uid://bmd7tm2xak52d" path="res://images/WhiteKhan.png" id="19_0odxb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kek77"]
 bg_color = Color(0, 0.4, 0.7019608, 1)
@@ -536,6 +544,7 @@ offset_left = 745.0
 offset_top = 384.0
 offset_right = 955.0
 offset_bottom = 474.0
+tooltip_text = "开发中"
 focus_mode = 0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 32
@@ -562,6 +571,7 @@ text = "游戏教程"
 script = ExtResource("10_4c57u")
 
 [node name="Message" type="Label" parent="Playing"]
+visible = false
 offset_left = 710.0
 offset_right = 990.0
 offset_bottom = 200.0
@@ -574,6 +584,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="Over" type="Button" parent="Playing"]
+visible = false
 offset_left = 745.0
 offset_top = 228.0
 offset_right = 955.0
@@ -587,6 +598,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
 text = "结束对局"
 
 [node name="Flip" type="Button" parent="Playing"]
+visible = false
 offset_left = 745.0
 offset_top = 346.0
 offset_right = 955.0
@@ -601,10 +613,11 @@ toggle_mode = true
 text = "执黑翻转"
 
 [node name="Undo" type="Button" parent="Playing"]
+visible = false
 offset_left = 745.0
-offset_top = 582.0
+offset_top = 464.0
 offset_right = 955.0
-offset_bottom = 672.0
+offset_bottom = 554.0
 focus_mode = 0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 32
@@ -614,10 +627,11 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
 text = "悔棋"
 
 [node name="BotSet" type="Button" parent="Playing"]
+visible = false
 offset_left = 745.0
-offset_top = 464.0
+offset_top = 582.0
 offset_right = 955.0
-offset_bottom = 554.0
+offset_bottom = 672.0
 focus_mode = 0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 32
@@ -680,10 +694,189 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
 text = "随机"
 script = ExtResource("11_efxa6")
 
+[node name="Tutorial" type="Node" parent="."]
+script = ExtResource("13_82xsv")
+
+[node name="Introduce" type="Button" parent="Tutorial"]
+visible = false
+offset_left = 705.0
+offset_top = 75.0
+offset_right = 845.0
+offset_bottom = 139.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+text = "背景介绍"
+
+[node name="Author" type="Button" parent="Tutorial"]
+visible = false
+offset_left = 855.0
+offset_top = 75.0
+offset_right = 995.0
+offset_bottom = 139.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+text = "软件作者"
+
+[node name="BasicRule" type="Button" parent="Tutorial"]
+visible = false
+offset_left = 705.0
+offset_top = 194.0
+offset_right = 845.0
+offset_bottom = 258.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+text = "基本规则"
+
+[node name="DrawRule" type="Button" parent="Tutorial"]
+visible = false
+offset_left = 855.0
+offset_top = 194.0
+offset_right = 995.0
+offset_bottom = 258.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+text = "和棋规则"
+
+[node name="HoundRule" type="Button" parent="Tutorial"]
+visible = false
+offset_left = 727.0
+offset_top = 305.0
+offset_right = 807.0
+offset_bottom = 385.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+icon = ExtResource("13_cegan")
+icon_alignment = 1
+
+[node name="TergeRule" type="Button" parent="Tutorial"]
+visible = false
+offset_left = 818.0
+offset_top = 305.0
+offset_right = 898.0
+offset_bottom = 385.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+icon = ExtResource("14_82xsv")
+icon_alignment = 1
+
+[node name="HorseRule" type="Button" parent="Tutorial"]
+visible = false
+offset_left = 909.0
+offset_top = 305.0
+offset_right = 989.0
+offset_bottom = 385.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+icon = ExtResource("15_getpj")
+icon_alignment = 1
+
+[node name="CamelRule" type="Button" parent="Tutorial"]
+visible = false
+offset_left = 727.0
+offset_top = 405.0
+offset_right = 807.0
+offset_bottom = 485.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+icon = ExtResource("16_ryguw")
+icon_alignment = 1
+
+[node name="GuardRule" type="Button" parent="Tutorial"]
+visible = false
+offset_left = 818.0
+offset_top = 405.0
+offset_right = 898.0
+offset_bottom = 485.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+icon = ExtResource("17_d13ii")
+icon_alignment = 1
+
+[node name="LionRule" type="Button" parent="Tutorial"]
+visible = false
+offset_left = 909.0
+offset_top = 405.0
+offset_right = 989.0
+offset_bottom = 485.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+icon = ExtResource("18_1u8w0")
+icon_alignment = 1
+
+[node name="KhanRule" type="Button" parent="Tutorial"]
+visible = false
+offset_left = 818.0
+offset_top = 505.0
+offset_right = 898.0
+offset_bottom = 585.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+icon = ExtResource("19_0odxb")
+icon_alignment = 1
+
+[node name="Exit" type="Button" parent="Tutorial"]
+visible = false
+offset_left = 788.0
+offset_top = 621.0
+offset_right = 928.0
+offset_bottom = 685.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+text = "退出教程"
+
 [connection signal="SettedCapture" from="Board" to="." method="OnSettedCapture"]
 [connection signal="SquarePressed" from="Board" to="Playing" method="OnSquarePressed"]
 [connection signal="pressed" from="NotStarted/PlayBot" to="." method="OnPlayBotPressed"]
 [connection signal="pressed" from="NotStarted/PlayPersonLM" to="." method="OnLMPressed"]
+[connection signal="pressed" from="NotStarted/Tutorial" to="." method="OnTutotialPressed"]
 [connection signal="GameOver" from="Playing" to="." method="OnGameOver"]
 [connection signal="Moved" from="Playing" to="." method="OnMoved"]
 [connection signal="PieceCaptured" from="Playing" to="Board" method="OnSquarePressed"]

@@ -28,9 +28,9 @@ public partial class Playing : Node
 	[Signal]
 	public delegate void UndidEventHandler(int move);
 
-    public PieceColor playerColor;
+	public PieceColor playerColor;
 
-    private GameBoard board = new();
+	private GameBoard board = new();
 	private GameState state;
 	private List<int> legalMoves = [];
 	private int from;
@@ -49,15 +49,16 @@ public partial class Playing : Node
 		GetNode<Label>("Message").SetDeferred(Label.PropertyName.Visible, true);
 		GetNode<Button>("Over").SetDeferred(Button.PropertyName.Visible, true);
 		GetNode<Button>("Flip").SetDeferred(Button.PropertyName.Visible, true);
+		preBoards.Clear();
 		if (state == GameState.LM) 
 		{
-			GetNode<Button>("Undo").SetDeferred(Button.PropertyName.Visible, false);
+			lastBoard = new(board, -1);
+			GetNode<Button>("Undo").SetDeferred(Button.PropertyName.Visible, true);
 			GetNode<Button>("BotSet").SetDeferred(Button.PropertyName.Visible, false);
 			SetPiecesButton();
 		}
 		else if (state == GameState.BOT) 
 		{
-			preBoards.Clear();
 			GetNode<Button>("Undo").SetDeferred(Button.PropertyName.Visible, true);
 			GetNode<Button>("BotSet").SetDeferred(Button.PropertyName.Visible, true);
 		}
@@ -81,6 +82,11 @@ public partial class Playing : Node
 	{
 		to = number;
 		board.ApplyMove(Conversion.MoveToIndex(from * 100 + to));
+		if (state == GameState.LM) 
+		{
+			preBoards.Push(lastBoard);
+			lastBoard = new(board, from * 100 + to);
+		}
 		enPassant = board.GetEnPassant();
 		legalMoves = board.LegalMoves();
 		EmitSignal(SignalName.Moved, from * 100 + number);
@@ -118,7 +124,6 @@ public partial class Playing : Node
 	{
 		return board.board[number / 10, number % 10] == PieceType.EMPTY;
 	}
-
 	public int GetEnPassant() 
 	{
 		return enPassant;
@@ -208,79 +213,79 @@ public partial class Playing : Node
 		preBoards.Clear();
 	}
 
-    private void SetPiecesButton()
-    {
-        SetTurnMessage(board.turn);
-        EmitSignal(SignalName.SetPiecesAble, (int)board.turn);
-    }
+	private void SetPiecesButton()
+	{
+		SetTurnMessage(board.turn);
+		EmitSignal(SignalName.SetPiecesAble, (int)board.turn);
+	}
 
-    private void AIMove()
-    {
-        agent.SetBoard(new GameBoard(board));
-        SetTurnMessage(board.turn);
-        EmitSignal(SignalName.SetPiecesAble, (int)PieceColor.DRAW);
-        agent.StartThread();
-    }
-    private void OnAiSelectedMove(int moveIndex)
-    {
-        board.ApplyMove(moveIndex);
-        enPassant = board.GetEnPassant();
-        legalMoves = board.LegalMoves();
-        lastBoard = new(board, Conversion.IndexTransToMove(moveIndex));
-        EmitSignal(SignalName.Moved, Conversion.IndexTransToMove(moveIndex));
-        PieceColor winner = board.IsTerminal();
-        if (winner != PieceColor.NOTEND)
-        {
-            EmitSignal(SignalName.GameOver, (int)winner);
-        }
-        else
-        {
-            SetPiecesButton();
-        }
-    }
+	private void AIMove()
+	{
+		agent.SetBoard(new GameBoard(board));
+		SetTurnMessage(board.turn);
+		EmitSignal(SignalName.SetPiecesAble, (int)PieceColor.DRAW);
+		agent.StartThread();
+	}
+	private void OnAiSelectedMove(int moveIndex)
+	{
+		board.ApplyMove(moveIndex);
+		enPassant = board.GetEnPassant();
+		legalMoves = board.LegalMoves();
+		lastBoard = new(board, Conversion.IndexTransToMove(moveIndex));
+		EmitSignal(SignalName.Moved, Conversion.IndexTransToMove(moveIndex));
+		PieceColor winner = board.IsTerminal();
+		if (winner != PieceColor.NOTEND)
+		{
+			EmitSignal(SignalName.GameOver, (int)winner);
+		}
+		else
+		{
+			SetPiecesButton();
+		}
+	}
 
-    private void OnUndoPressed()
-    {
-        if (preBoards.Count == 0)
-        {
-            return;
-        }
-        agent.StopThread();
-        lastBoard = preBoards.Pop();
-        board = new(lastBoard.board);
-        enPassant = board.GetEnPassant();
-        legalMoves = board.LegalMoves();
-        SetTurnMessage(playerColor);
-        EmitSignal(SignalName.Undid, lastBoard.move);
-        EmitSignal(SignalName.SetPiecesAble, (int)playerColor);
-    }
-    private void OnOverPressed()
-    {
-        if (state == GameState.BOT)
-        {
-            agent.StopThread();
-        }
-        EmitSignal(SignalName.GameOver, (int)PieceColor.NOTEND);
-    }
-    private void OnBotSetPressed()
-    {
-        dialog.SetValues(agent.sims, agent.tau, agent.cPuct);
-        dialog.Show();
-    }
-    private void OnSetSaved(int sims, float tau, float cpuct)
-    {
-        agent.sims = sims;
-        agent.tau = tau;
-        agent.cPuct = cpuct;
-    }
+	private void OnUndoPressed()
+	{
+		if (preBoards.Count == 0)
+		{
+			return;
+		}
+		agent.StopThread();
+		lastBoard = preBoards.Pop();
+		board = new(lastBoard.board);
+		enPassant = board.GetEnPassant();
+		legalMoves = board.LegalMoves();
+		SetTurnMessage(board.turn);
+		EmitSignal(SignalName.Undid, lastBoard.move);
+		EmitSignal(SignalName.SetPiecesAble, (int)board.turn);
+	}
+	private void OnOverPressed()
+	{
+		if (state == GameState.BOT)
+		{
+			agent.StopThread();
+		}
+		EmitSignal(SignalName.GameOver, (int)PieceColor.NOTEND);
+	}
+	private void OnBotSetPressed()
+	{
+		dialog.SetValues(agent.sims, agent.tau, agent.cPuct);
+		dialog.Show();
+	}
+	private void OnSetSaved(int sims, float tau, float cpuct)
+	{
+		agent.sims = sims;
+		agent.tau = tau;
+		agent.cPuct = cpuct;
+	}
 
-    private void SetMessage(string message)
-    {
-        GetNode<Label>("Message").Text = message;
+	private void SetMessage(string message)
+	{
+		GetNode<Label>("Message").Text = message;
 
-    }
+	}
 
-    public override void _Ready()
+	public override void _Ready()
 	{
 		agent.AiSelectedMove += OnAiSelectedMove;
 		dialog = GetNode<BotSetDialog>("BotSetDialog");

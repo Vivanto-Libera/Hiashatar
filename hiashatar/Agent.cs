@@ -18,11 +18,11 @@ namespace Hiashatar
 		[Signal]
 		public delegate void AiSelectedMoveEventHandler(int moveIndex);
 
-        public float tau = 1;
-        public float cPuct = 2;
-        public int sims = 100;
+		public float tau = 1;
+		public float cPuct = 2;
+		public int sims = 100;
 
-        private Thread aiThread;
+		private Thread aiThread;
 		private CancellationTokenSource cts;
 		private HiashatarModel model = model;
 		private GameBoard board;
@@ -49,24 +49,24 @@ namespace Hiashatar
 			this.board = board;
 		}
 
-        private void SelectMove(CancellationToken token)
-        {
-            MCEdge rootEdge = new MCEdge(null, null);
-            rootEdge.N = 1;
-            MCNode rootNode = new MCNode(new(board), rootEdge);
-            MCTS mctsSearcher = new MCTS(model);
-            mctsSearcher.SetParameters(tau, cPuct, sims);
-            float[] moveProb = mctsSearcher.Search(rootNode, token);
-            if (token.IsCancellationRequested)
-            {
-                return;
-            }
-            Tensor randMove = multinomial(tensor(moveProb), 1);
-            CallDeferred(nameof(EmitMove), randMove.item<long>());
-        }
-        private void EmitMove(int moveIndex)
-        {
-            EmitSignal(SignalName.AiSelectedMove, moveIndex);
-        }
-    }
+		private void SelectMove(CancellationToken token)
+		{
+			MCEdge rootEdge = new MCEdge(null, null);
+			rootEdge.N = 1;
+			MCNode rootNode = new MCNode(new(board), rootEdge);
+			MCTS mctsSearcher = new MCTS(model);
+			mctsSearcher.SetParameters(tau, cPuct, sims);
+			float[] moveProb = mctsSearcher.Search(rootNode, token);
+			if (token.IsCancellationRequested)
+			{
+				return;
+			}
+			Tensor randMove = multinomial(tensor(moveProb), 1);
+			CallDeferred(nameof(EmitMove), randMove.item<long>());
+		}
+		private void EmitMove(int moveIndex)
+		{
+			EmitSignal(SignalName.AiSelectedMove, moveIndex);
+		}
+	}
 }
