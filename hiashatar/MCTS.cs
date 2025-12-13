@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using TorchSharp;
 
 namespace Hiashatar
@@ -54,9 +55,12 @@ namespace Hiashatar
 				edgeNode.edge.P = prob[0, Conversion.MoveToIndex(edgeNode.edge.move.Value)].item<float>();
 				probSum += edgeNode.edge.P;
 			}
-			foreach (EdgeNode edgeNode in childEdgeNodes)
+			if (probSum > 0)
 			{
-				edgeNode.edge.P /= probSum;
+				foreach (EdgeNode edgeNode in childEdgeNodes)
+				{
+					edgeNode.edge.P /= probSum;
+				}
 			}
 			return value[0, 0].item<float>();
 		}
@@ -72,22 +76,69 @@ namespace Hiashatar
 	}
 	public class MCTS
 	{
-		public HiashatarModel model;
+		private HiashatarModel model;
 #nullable enable
-		public MCNode? rootNode = null;
-		public float tau = 1;
-		public float cPuct = 2;
-		int times;
-		public MCTS(HiashatarModel model, int times)
+		private MCNode? rootNode = null;
+		private float tau = 1;
+		private float cPuct = 2;
+		private int sims = 100;
+		public MCTS(HiashatarModel model)
 		{
 			this.model = model;
-			this.times = times;
 		}
-		public float UctValues(MCEdge edge, int ParentN)
+		public void SetParameters(float tau, float cPuct, int sims) 
+		{
+			this.tau = tau;
+			this.cPuct = cPuct;
+			this.sims = sims;
+		}
+		public float[] Search(MCNode rootNode, CancellationToken token)
+		{
+			this.rootNode = rootNode;
+			this.rootNode.Expand(model);
+			if (token.IsCancellationRequested)
+			{
+				return new float[] { 0.0f };
+			}
+			for (int i = 0; i < sims; i++)
+			{
+				if (token.IsCancellationRequested)
+				{
+					return new float[] { 0.0f };
+				}
+				MCNode selectedNode = Select(rootNode);
+				ExpandAndEvaluate(selectedNode);
+			}
+			if (token.IsCancellationRequested)
+			{
+				return new float[] { 0.0f };
+			}
+			int NSum = 0;
+			float[] moveProbs = new float[3516];
+			foreach (EdgeNode edgeNode in rootNode.childEdgeNodes)
+			{
+				if (token.IsCancellationRequested)
+				{
+					return new float[] { 0.0f };
+				}
+				NSum += edgeNode.edge.N;
+			}
+			foreach (EdgeNode edgeNode in rootNode.childEdgeNodes)
+			{
+				if (token.IsCancellationRequested)
+				{
+					return new float[] { 0.0f };
+				}
+				float prob = ((float)Math.Pow(edgeNode.edge.N, (1 / tau))) / (float)Math.Pow(NSum, (1 / tau));
+				moveProbs[Conversion.MoveToIndex(edgeNode.edge.move.Value)] = prob;
+			}
+			return moveProbs;
+		}
+		private float UctValues(MCEdge edge, int ParentN)
 		{
 			return cPuct * edge.P * ((float)Math.Sqrt(ParentN) / (1 + edge.N));
 		}
-		public MCNode Select(MCNode node)
+		private MCNode Select(MCNode node)
 		{
 			if (node.IsLeaf())
 			{
@@ -116,7 +167,7 @@ namespace Hiashatar
 				return Select(maxUctChild);
 			}
 		}
-		public void BackUp(float value, MCEdge edge)
+		private void BackUp(float value, MCEdge edge)
 		{
 			edge.N += 1;
 			edge.W += value;
@@ -129,7 +180,7 @@ namespace Hiashatar
 				}
 			}
 		}
-		public void ExpandAndEvaluate(MCNode node)
+		private void ExpandAndEvaluate(MCNode node)
 		{
 			PieceColor winner = node.board.IsTerminal();
 			float v = 0;
@@ -148,28 +199,6 @@ namespace Hiashatar
 			}
 			v = node.Expand(model);
 			BackUp(v, node.parentEdge);
-		}
-		public float[] Search(MCNode rootNode)
-		{
-			this.rootNode = rootNode;
-			this.rootNode.Expand(model);
-			for (int i = 0; i < times; i++)
-			{
-				MCNode selectedNode = Select(rootNode);
-				ExpandAndEvaluate(selectedNode);
-			}
-			int NSum = 0;
-			float[] moveProbs = new float[3516];
-			foreach (EdgeNode edgeNode in rootNode.childEdgeNodes)
-			{
-				NSum += edgeNode.edge.N;
-			}
-			foreach (EdgeNode edgeNode in rootNode.childEdgeNodes)
-			{
-				float prob = ((float)Math.Pow(edgeNode.edge.N, (1 / tau))) / (float)Math.Pow(NSum, (1 / tau));
-				moveProbs[Conversion.MoveToIndex(edgeNode.edge.move.Value)] = prob;
-			}
-			return moveProbs;
 		}
 	}
 }

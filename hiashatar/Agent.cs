@@ -18,22 +18,39 @@ namespace Hiashatar
 		[Signal]
 		public delegate void AiSelectedMoveEventHandler(int moveIndex);
 		private Thread aiThread;
+		private CancellationTokenSource cts;
 		public HiashatarModel model;
 		private GameBoard board;
-		private void SelectMove()
+		private void SelectMove(CancellationToken token)
 		{
 			MCEdge rootEdge = new MCEdge(null, null);
 			rootEdge.N = 1;
 			MCNode rootNode = new MCNode(new(board), rootEdge);
-			MCTS MctsSearcher = new MCTS(model, 100);
-			float[] moveProb = MctsSearcher.Search(rootNode);
+			MCTS MctsSearcher = new MCTS(model);
+			float[] moveProb = MctsSearcher.Search(rootNode, token);
+			if (token.IsCancellationRequested)
+			{
+				return;
+			}
 			Tensor randMove = multinomial(tensor(moveProb), 1);
 			CallDeferred(nameof(EmitMove), randMove.item<long>());
 		}
 		public void StartThread() 
 		{
-			aiThread = new Thread(SelectMove);
+			cts = new CancellationTokenSource();
+			CancellationToken token = cts.Token;
+			aiThread = new Thread(() => SelectMove(token));
 			aiThread.Start();
+		}
+		public void StopThread() 
+		{
+			if (aiThread != null && aiThread.IsAlive)
+			{
+				cts?.Cancel();
+				aiThread.Join(1000);
+				cts.Dispose();
+				cts = null;
+			}
 		}
 		public void SetBoard(GameBoard board) 
 		{

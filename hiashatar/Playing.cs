@@ -199,6 +199,10 @@ public partial class Playing : Node
 	}
 	public void OnOverPressed() 
 	{
+		if(state == GameState.BOT) 
+		{
+			agent.StopThread();
+		}
 		EmitSignal(SignalName.GameOver, (int)PieceColor.NOTEND);
 	}
 	public override void _Ready()

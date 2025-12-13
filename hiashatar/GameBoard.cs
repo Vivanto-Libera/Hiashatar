@@ -725,7 +725,9 @@ namespace Hiashatar
 			{
 				preBoards.RemoveAt(0);
 			}
-			preBoards.Add(board.Clone() as PieceType[,]);
+			PieceType[,] preBoard = new PieceType[10, 10];
+			Array.Copy(board, preBoard, board.Length);
+			preBoards.Add(preBoard);
 
 			int[] move = Conversion.NumToMove(Conversion.IndexTransToMove(moveIndex));
 			enPassant = -1;
@@ -971,7 +973,7 @@ namespace Hiashatar
 			int preCount = preBoards.Count;
 			if (preCount - 4 >= 0)
 			{
-				if (preBoards[preCount - 4] == board)
+				if (BoardEqual(preBoards[preCount - 4]))
 				{
 					repeats++;
 				}
@@ -982,7 +984,7 @@ namespace Hiashatar
 			}
 			if (preCount - 8 >= 0)
 			{
-				if (preBoards[preCount - 8] == board)
+				if (BoardEqual(preBoards[preCount - 8]))
 				{
 					repeats++;
 				}
@@ -992,6 +994,20 @@ namespace Hiashatar
 				}
 			}
 			return repeats;
+		}
+		private bool BoardEqual(PieceType[,] preBoard) 
+		{
+			for (int i = 0; i < 10; i++) 
+			{
+				for(int j = 0; j < 10; j++) 
+				{
+					if (preBoard[i, j] != board[i, j]) 
+					{
+						return false;
+					}
+				}
+			}
+			return true;
 		}
 		private bool IsChecked(int move)
 		{

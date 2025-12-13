@@ -244,17 +244,19 @@ public partial class Main : Node
 			playing.playerColor = (PieceColor)color;
 			playing.StartBotGame();
 		}
-		FlipBoard();
+		OnFlipToggled(playing.GetNode<Button>("Flip").ButtonPressed);
 	}
 
 	private void OnFlipToggled(bool toggled) 
 	{
-		if (state == GameState.BOT && playing.playerColor != PieceColor.BLACK) 
+		if (state == GameState.BOT && playing.playerColor != PieceColor.BLACK)
 		{
 			inverted = false;
-			return;
 		}
-		inverted = toggled;
+		else 
+		{
+			inverted = toggled; 
+		}
 		FlipBoard();
 	}
 	private void FlipBoard() 
