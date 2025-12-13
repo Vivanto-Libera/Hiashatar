@@ -194,7 +194,7 @@ public partial class Main : Node
 		node.GetNode<Button>("ChooseBlack").SetDeferred(Button.PropertyName.Visible, visible);
 		node.GetNode<Button>("ChooseRandom").SetDeferred(Button.PropertyName.Visible, visible);
 	}
-	public async void OnMoved(int number) 
+	private async void OnMoved(int number) 
 	{
 		board.MovedPiece(number);
 		int from = Conversion.NumToFromAndTo(number)[0];
@@ -217,7 +217,7 @@ public partial class Main : Node
 		FlipBoard();
 	}
 
-	public void OnSettedCapture(int index, bool canCapture) 
+	private void OnSettedCapture(int index, bool canCapture) 
 	{
 		Piece piece = FindPiece(index);
 		if (piece != null)
@@ -230,6 +230,7 @@ public partial class Main : Node
 	{
 		SetAllPiecesDisable();
 		playing.SetGameOverMessage((PieceColor)winner);
+		playing.ClearPreboards();
 		await ToSignal(GetTree().CreateTimer(1.5f), Timer.SignalName.Timeout);
 		Reset();
 	}
@@ -245,6 +246,25 @@ public partial class Main : Node
 			playing.StartBotGame();
 		}
 		OnFlipToggled(playing.GetNode<Button>("Flip").ButtonPressed);
+	}
+
+	private void OnUndid(int move) 
+	{
+		board.MovedPiece(move);
+		SetPieceFromBoard(playing.GetBoard());
+		SetAllPiecesPosition();
+	}
+	private void SetPieceFromBoard(GameBoard board) 
+	{
+		List<Piece> white = whitePieces.GetAllPieces();
+		List<Piece> black = blackPieces.GetAllPieces();
+		List<Rule_Piece> Rule_white = board.whitePieces.GetAllPieces();
+		List<Rule_Piece> Rule_black = board.blackPieces.GetAllPieces();
+		for (int i = 0; i < 20; i++) 
+		{
+			white[i].SetRowAndCol(Rule_white[i].GetPosition()[0], Rule_white[i].GetPosition()[1]);
+			black[i].SetRowAndCol(Rule_black[i].GetPosition()[0], Rule_black[i].GetPosition()[1]);
+		}
 	}
 
 	private void OnFlipToggled(bool toggled) 

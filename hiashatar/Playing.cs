@@ -6,6 +6,17 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public partial class Playing : Node
 {
+	public struct PreBoard 
+	{
+		public GameBoard board;
+		public int move;
+		public PreBoard(GameBoard board, int move) 
+		{
+			this.board = new(board);
+			this.move = move;
+		}
+	}
+
 	[Signal]
 	public delegate void SetPiecesAbleEventHandler(int color);
 	[Signal]
@@ -16,6 +27,8 @@ public partial class Playing : Node
 	public delegate void MovedEventHandler(int move);
 	[Signal]
 	public delegate void GameOverEventHandler(int winner);
+	[Signal]
+	public delegate void UndidEventHandler(int move);
 
 	private GameBoard board = new();
 	private GameState state;
@@ -26,6 +39,8 @@ public partial class Playing : Node
 	public PieceColor playerColor;
 	private Agent agent = new(new HiashatarModel());
 	private BotSetDialog dialog;
+	private Stack<PreBoard> preBoards = new Stack<PreBoard>();
+	private PreBoard lastBoard;
 
 	public void InitialGame(GameState state) 
 	{
@@ -43,6 +58,7 @@ public partial class Playing : Node
 		}
 		else if (state == GameState.BOT) 
 		{
+			preBoards.Clear();
 			GetNode<Button>("Undo").SetDeferred(Button.PropertyName.Visible, true);
 			GetNode<Button>("BotSet").SetDeferred(Button.PropertyName.Visible, true);
 		}
@@ -80,6 +96,7 @@ public partial class Playing : Node
 		}
 		if (state == GameState.BOT) 
 		{
+			preBoards.Push(lastBoard);
 			AIMove();
 		}
 	}
@@ -118,6 +135,7 @@ public partial class Playing : Node
 		SetTurnMessage(PieceColor.WHITE);
 		if (playerColor == PieceColor.WHITE) 
 		{
+			lastBoard = new(board, -1);
 			SetPiecesButton();
 		}
 		else 
@@ -137,15 +155,34 @@ public partial class Playing : Node
 		board.ApplyMove(moveIndex);
 		enPassant = board.GetEnPassant();
 		legalMoves = board.LegalMoves();
+		lastBoard = new(board, Conversion.IndexTransToMove(moveIndex));
 		EmitSignal(SignalName.Moved, Conversion.IndexTransToMove(moveIndex));
 		PieceColor winner = board.IsTerminal();
 		if (winner != PieceColor.NOTEND)
 		{
 			EmitSignal(SignalName.GameOver, (int)winner);
+		}
+		else
+		{
+			SetPiecesButton();
+		}
+	}
+	private void OnUndoPressed() 
+	{
+		if (preBoards.Count == 0) 
+		{
 			return;
 		}
-		SetPiecesButton();
+		agent.StopThread();
+		lastBoard = preBoards.Pop();
+		board = new(lastBoard.board);
+		enPassant = board.GetEnPassant();
+		legalMoves = board.LegalMoves();
+		SetTurnMessage(playerColor);
+		EmitSignal(SignalName.Undid, lastBoard.move);
+		EmitSignal(SignalName.SetPiecesAble, (int)playerColor);
 	}
+
 	public void HideAll() 
 	{
 		GetNode<Label>("Message").SetDeferred(Label.PropertyName.Visible, false);
@@ -231,7 +268,14 @@ public partial class Playing : Node
 		agent.tau = tau;
 		agent.cPuct = cpuct;
 	}
-
+	public GameBoard GetBoard() 
+	{
+		return board;
+	}
+	public void ClearPreboards() 
+	{
+		preBoards.Clear();
+	}
 	public override void _Ready()
 	{
 		agent.AiSelectedMove += OnAiSelectedMove;

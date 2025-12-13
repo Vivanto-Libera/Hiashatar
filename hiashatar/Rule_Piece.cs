@@ -179,6 +179,21 @@ namespace Hiashatar
 		public Rule_Guard[] guards = new Rule_Guard[2];
 		public Rule_Hound[] hounds = new Rule_Hound[10];
 
+		public List<Rule_Piece> GetAllPieces() 
+		{
+			List<Rule_Piece> pieces =
+			[
+				.. terges,
+				.. camels,
+				..horses,
+				..guards,
+				khan,
+				lion,
+				.. hounds,
+			];
+			return pieces;
+		}
+
 		public Rule_Pieces(PieceColor color) 
 		{
 			int row;

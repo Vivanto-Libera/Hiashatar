@@ -51,12 +51,14 @@ public partial class Board : Node2D
 	{
 		ResetLegalMove();
 		ResetCapture();
-		squares[from].SetHighlight(false);
-		squares[to].SetHighlight(false);
-		from = Conversion.NumToFromAndTo(number)[0];
-		to = Conversion.NumToFromAndTo(number)[1];
-		squares[from].SetHighlight(true);
-		squares[to].SetHighlight(true);
+		ResetHighlight();
+		if (number != -1)
+		{
+			from = Conversion.NumToFromAndTo(number)[0];
+			to = Conversion.NumToFromAndTo(number)[1];
+			squares[from].SetHighlight(true);
+			squares[to].SetHighlight(true);
+		}
 		selected = -1;
 	}
 	public void SetLegalMove(int index) 
@@ -85,6 +87,13 @@ public partial class Board : Node2D
 				EmitSignal(SignalName.SettedCapture, square.GetRow() * 10 + square.GetColumn(), false);
 			}
 			
+		}
+	}
+	public void ResetHighlight() 
+	{
+		foreach (Square square in squares)
+		{
+			square.SetHighlight(false);
 		}
 	}
 

@@ -16,21 +16,16 @@ namespace Hiashatar
 
         public List<Piece> GetAllPieces()
         {
-            List<Piece> pieces = new List<Piece>();
-            pieces.Add(terges[0]);
-            pieces.Add(terges[1]);
-            pieces.Add(camels[0]);
-            pieces.Add(camels[1]);
-            pieces.Add(horses[0]);
-            pieces.Add(horses[1]);
-            pieces.Add(guards[0]);
-            pieces.Add(guards[1]);
-            pieces.Add(khan);
-            pieces.Add(lion);
-            foreach (Hound hound in hounds)
-            {
-                pieces.Add(hound);
-            }
+            List<Piece> pieces =
+            [
+                .. terges,
+                .. camels,
+                ..horses,
+                ..guards,
+                khan,
+                lion,
+                .. hounds,
+            ];
             return pieces;
         }
 
