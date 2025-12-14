@@ -135,6 +135,182 @@ public partial class Main : Node
 		FlipBoard();
 	}
 
+    private void OnExitPressed() 
+	{
+		board.Reset();
+		ResetPieces();
+		if (!tutorial.IsInTutorial()) 
+		{
+			SetGameState(NOTSTARTED);
+		}
+		else 
+		{
+			tutorial.SetButtonsVisible(true);
+			tutorial.SetState(false);
+		}
+	}
+	private void OnBasicRule() 
+	{
+		SetPiecesToBoard();
+	}
+	private void OnHoundPressed() 
+	{
+		whitePieces.hounds[0].SetRowAndCol(8, 0);
+		board.SetLegalMoveWithoutButton(70);
+        board.SetLegalMoveWithoutButton(60);
+        board.SetLegalMoveWithoutButton(50);
+        whitePieces.hounds[1].SetRowAndCol(7, 2);
+        board.SetLegalMoveWithoutButton(62);
+        whitePieces.hounds[2].SetRowAndCol(8, 4);
+        blackPieces.hounds[0].SetRowAndCol(7, 5);
+		board.SetCaptureWithoutButton(75);
+		whitePieces.hounds[3].SetRowAndCol(4, 6);
+		blackPieces.hounds[1].SetRowAndCol(4, 7);
+        board.SetLegalMoveWithoutButton(37);
+        board.SetHighlight(47);
+		board.SetHighlight(17);
+		whitePieces.lion.SetRowAndCol(0, 9);
+        board.SetHighlight(9);
+        board.SetHighlight(19);
+		SetAllPiecesPosition();
+    }
+	private void OnTergePressed() 
+	{
+		whitePieces.terges[0].SetRowAndCol(5, 4);
+		blackPieces.hounds[0].SetRowAndCol(3, 4);
+		whitePieces.hounds[0].SetRowAndCol(5, 2);
+		board.SetHighlight(54);
+		board.SetLegalMoveWithoutButton(53);
+        board.SetLegalMoveWithoutButton(44);
+		board.SetCaptureWithoutButton(34);
+        board.SetLegalMoveWithoutButton(55);
+        board.SetLegalMoveWithoutButton(56);
+        board.SetLegalMoveWithoutButton(57);
+        board.SetLegalMoveWithoutButton(58);
+        board.SetLegalMoveWithoutButton(59);
+        board.SetLegalMoveWithoutButton(64);
+        board.SetLegalMoveWithoutButton(74);
+        board.SetLegalMoveWithoutButton(84);
+        board.SetLegalMoveWithoutButton(94);
+        SetAllPiecesPosition();
+	}
+	private void OnHorsePressed() 
+	{
+		whitePieces.horses[0].SetRowAndCol(5, 4);
+		board.SetHighlight(54);
+		blackPieces.hounds[0].SetRowAndCol(3, 3);
+		board.SetCaptureWithoutButton(33);
+        board.SetLegalMoveWithoutButton(35);
+        board.SetLegalMoveWithoutButton(73);
+        board.SetLegalMoveWithoutButton(75);
+        board.SetLegalMoveWithoutButton(42);
+        board.SetLegalMoveWithoutButton(46);
+        board.SetLegalMoveWithoutButton(62);
+        board.SetLegalMoveWithoutButton(66);
+		SetAllPiecesPosition();
+    }
+	private void OnCamelPressed() 
+	{
+		whitePieces.camels[0].SetRowAndCol(5, 4);
+		whitePieces.hounds[0].SetRowAndCol(7, 2);
+		blackPieces.hounds[0].SetRowAndCol(3, 6);
+		board.SetHighlight(54);
+		board.SetCaptureWithoutButton(36);
+		board.SetLegalMoveWithoutButton(45);
+        board.SetLegalMoveWithoutButton(63);
+        board.SetLegalMoveWithoutButton(43);
+        board.SetLegalMoveWithoutButton(32);
+        board.SetLegalMoveWithoutButton(21);
+        board.SetLegalMoveWithoutButton(10);
+        board.SetLegalMoveWithoutButton(65);
+        board.SetLegalMoveWithoutButton(76);
+        board.SetLegalMoveWithoutButton(87);
+        board.SetLegalMoveWithoutButton(98);
+		SetAllPiecesPosition();
+    }
+	private void OnGuardPressed() 
+	{
+		whitePieces.guards[0].SetRowAndCol(7, 2);
+		blackPieces.hounds[0].SetRowAndCol(6, 1);
+		board.SetCaptureWithoutButton(61);
+		board.SetLegalMoveWithoutButton(62);
+		board.SetLegalMoveWithoutButton(52);
+		board.SetLegalMoveWithoutButton(82);
+        board.SetLegalMoveWithoutButton(92);
+        board.SetLegalMoveWithoutButton(71);
+        board.SetLegalMoveWithoutButton(70);
+        board.SetLegalMoveWithoutButton(73);
+        board.SetLegalMoveWithoutButton(74);
+        board.SetLegalMoveWithoutButton(63);
+        board.SetLegalMoveWithoutButton(54);
+        board.SetLegalMoveWithoutButton(81);
+        board.SetLegalMoveWithoutButton(90);
+        board.SetLegalMoveWithoutButton(83);
+        board.SetLegalMoveWithoutButton(94);
+        whitePieces.guards[1].SetRowAndCol(7, 7);
+		board.SetHighlight(72);
+        board.SetHighlight(78);
+        board.SetHighlight(76);
+        board.SetHighlight(87);
+        board.SetHighlight(67);
+        board.SetHighlight(66);
+        board.SetHighlight(88);
+        board.SetHighlight(68);
+        board.SetHighlight(86);
+		blackPieces.terges[0].SetRowAndCol(4, 8);
+		board.SetLegalMoveWithoutButton(58);
+        board.SetLegalMoveWithoutButton(68);
+        SetAllPiecesPosition();
+    }
+	private void OnLionPressed() 
+	{
+		whitePieces.lion.SetRowAndCol(5, 4);
+        whitePieces.hounds[0].SetRowAndCol(7, 2);
+        blackPieces.hounds[0].SetRowAndCol(3, 6);
+        board.SetHighlight(54);
+        board.SetCaptureWithoutButton(36);
+        board.SetLegalMoveWithoutButton(45);
+        board.SetLegalMoveWithoutButton(63);
+        board.SetLegalMoveWithoutButton(43);
+        board.SetLegalMoveWithoutButton(32);
+        board.SetLegalMoveWithoutButton(21);
+        board.SetLegalMoveWithoutButton(10);
+        board.SetLegalMoveWithoutButton(65);
+        board.SetLegalMoveWithoutButton(76);
+        board.SetLegalMoveWithoutButton(87);
+        board.SetLegalMoveWithoutButton(98);
+        blackPieces.hounds[1].SetRowAndCol(3, 4);
+        whitePieces.hounds[1].SetRowAndCol(5, 2);
+        board.SetLegalMoveWithoutButton(53);
+        board.SetLegalMoveWithoutButton(44);
+        board.SetCaptureWithoutButton(34);
+        board.SetLegalMoveWithoutButton(55);
+        board.SetLegalMoveWithoutButton(56);
+        board.SetLegalMoveWithoutButton(57);
+        board.SetLegalMoveWithoutButton(58);
+        board.SetLegalMoveWithoutButton(59);
+        board.SetLegalMoveWithoutButton(64);
+        board.SetLegalMoveWithoutButton(74);
+        board.SetLegalMoveWithoutButton(84);
+        board.SetLegalMoveWithoutButton(94);
+        SetAllPiecesPosition();
+    }
+	private void OnKhanPressed() 
+	{
+		whitePieces.khan.SetRowAndCol(8, 5);
+		board.SetHighlight(85);
+		blackPieces.hounds[0].SetRowAndCol(7, 5);
+		board.SetCaptureWithoutButton(75);
+		board.SetLegalMoveWithoutButton(74);
+        board.SetLegalMoveWithoutButton(76);
+        board.SetLegalMoveWithoutButton(84);
+        board.SetLegalMoveWithoutButton(86);
+        board.SetLegalMoveWithoutButton(94);
+        board.SetLegalMoveWithoutButton(95);
+        board.SetLegalMoveWithoutButton(96);
+		SetAllPiecesPosition();
+    }
+
     private Vector2 GetMarkerPositon(int number)
     {
 		//When number == -1, is mean move the piece off the board. So return CapturedMarker's position

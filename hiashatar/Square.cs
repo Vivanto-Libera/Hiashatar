@@ -40,6 +40,10 @@ public partial class Square : Node2D
 		GetNode<TextureRect>("LegalMove").SetDeferred(TextureRect.PropertyName.Visible, visible);
 		GetNode<Button>("Button").SetDeferred(Button.PropertyName.Disabled, !visible);
 	}
+	public void SetLegalMoveWithoutButton(bool visible) 
+	{
+		GetNode<TextureRect>("LegalMove").SetDeferred(TextureRect.PropertyName.Visible, visible);
+	}
 	public void SetCaputure(bool visible) 
 	{
 		GetNode<TextureRect>("Capture").SetDeferred(TextureRect.PropertyName.Visible, visible);

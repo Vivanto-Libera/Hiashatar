@@ -40,10 +40,22 @@ public partial class Board : Node2D
 	{
 		squares[index].SetLegalMove(true);
 	}
+	public void SetLegalMoveWithoutButton(int index) 
+	{
+		squares[index].SetLegalMoveWithoutButton(true);
+	}
 	public void SetCapture(int index)
 	{
 		squares[index].SetCaputure(true);
 		EmitSignal(SignalName.SettedCapture, index, true);
+	}
+	public void SetCaptureWithoutButton(int index) 
+	{
+		squares[index].SetCaputure(true);
+	}
+	public void SetHighlight(int index)
+	{
+		squares[index].SetHighlight(true);
 	}
 
 	public void MovedPiece(int number)
@@ -90,7 +102,9 @@ public partial class Board : Node2D
 
 	public void Reset() 
 	{
-		SetSquares();
+		ResetCapture();
+		ResetHighlight();
+		ResetLegalMove();
 	}
 
 	private void SetSquares(bool invert = false)
@@ -105,7 +119,7 @@ public partial class Board : Node2D
 	}
 	public override void _Ready()
 	{
-		Reset();
+		SetSquares();
 		for (int i = 0; i < 100; i++)
 		{
 			squares[i].SquarePressed += OnSquarePressed;
