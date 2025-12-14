@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://526hpjlle1x"]
+[gd_scene load_steps=26 format=3 uid="uid://526hpjlle1x"]
 
 [ext_resource type="PackedScene" uid="uid://c6t33ko0beob6" path="res://board.tscn" id="1_272bh"]
 [ext_resource type="Script" uid="uid://vwscpsthjss8" path="res://Main.cs" id="1_kek77"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://cl1xggoa7bbdj" path="res://Playing.cs" id="10_4c57u"]
 [ext_resource type="PackedScene" uid="uid://cp5lgcu6uvj0j" path="res://bot_set_dialog.tscn" id="11_dg77c"]
 [ext_resource type="Script" uid="uid://c5gwobkn5yg1o" path="res://ChooseButton.cs" id="11_efxa6"]
+[ext_resource type="PackedScene" uid="uid://fohfuhrxird" path="res://bot_set_dialog_themee.tscn" id="12_ryguw"]
 [ext_resource type="Script" uid="uid://cu85r74p3s781" path="res://Tutorial.cs" id="13_82xsv"]
 [ext_resource type="Texture2D" uid="uid://cdxllkjiq4vw5" path="res://images/WhiteHound.png" id="13_cegan"]
 [ext_resource type="Texture2D" uid="uid://wjhccm8aa5lc" path="res://images/WhiteTerge.png" id="14_82xsv"]
@@ -643,6 +644,41 @@ text = "引擎设置"
 [node name="BotSetDialog" parent="Playing" instance=ExtResource("11_dg77c")]
 visible = false
 
+[node name="BotSetDialogThemee" parent="Playing" instance=ExtResource("12_ryguw")]
+visible = false
+
+[node name="ChooseEngine" type="Node" parent="."]
+
+[node name="ChooseMorii" type="Button" parent="ChooseEngine"]
+offset_left = 720.0
+offset_top = 120.0
+offset_right = 980.0
+offset_bottom = 260.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+text = "Morii引擎
+神经网络模型
+训练中（不推荐）"
+
+[node name="ChooseThemee" type="Button" parent="ChooseEngine"]
+offset_left = 720.0
+offset_top = 440.0
+offset_right = 980.0
+offset_bottom = 580.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kek77")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4c57u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
+text = "Temtee引擎
+α-β算法
+推荐"
+
 [node name="ChooseColor" type="Node" parent="."]
 
 [node name="ChooseWhite" type="Button" parent="ChooseColor"]
@@ -698,6 +734,7 @@ script = ExtResource("11_efxa6")
 script = ExtResource("13_82xsv")
 
 [node name="Introduce" type="Button" parent="Tutorial"]
+visible = false
 offset_left = 705.0
 offset_top = 75.0
 offset_right = 845.0
@@ -711,6 +748,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
 text = "背景介绍"
 
 [node name="Author" type="Button" parent="Tutorial"]
+visible = false
 offset_left = 855.0
 offset_top = 75.0
 offset_right = 995.0
@@ -724,6 +762,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
 text = "软件作者"
 
 [node name="BasicRule" type="Button" parent="Tutorial"]
+visible = false
 offset_left = 705.0
 offset_top = 194.0
 offset_right = 845.0
@@ -737,6 +776,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
 text = "基本规则"
 
 [node name="DrawRule" type="Button" parent="Tutorial"]
+visible = false
 offset_left = 855.0
 offset_top = 194.0
 offset_right = 995.0
@@ -750,6 +790,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_efxa6")
 text = "和棋规则"
 
 [node name="HoundRule" type="Button" parent="Tutorial"]
+visible = false
 offset_left = 727.0
 offset_top = 305.0
 offset_right = 807.0
@@ -764,6 +805,7 @@ icon = ExtResource("13_cegan")
 icon_alignment = 1
 
 [node name="TergeRule" type="Button" parent="Tutorial"]
+visible = false
 offset_left = 818.0
 offset_top = 305.0
 offset_right = 898.0
@@ -778,6 +820,7 @@ icon = ExtResource("14_82xsv")
 icon_alignment = 1
 
 [node name="HorseRule" type="Button" parent="Tutorial"]
+visible = false
 offset_left = 909.0
 offset_top = 305.0
 offset_right = 989.0
@@ -792,6 +835,7 @@ icon = ExtResource("15_getpj")
 icon_alignment = 1
 
 [node name="CamelRule" type="Button" parent="Tutorial"]
+visible = false
 offset_left = 727.0
 offset_top = 405.0
 offset_right = 807.0
@@ -806,6 +850,7 @@ icon = ExtResource("16_ryguw")
 icon_alignment = 1
 
 [node name="GuardRule" type="Button" parent="Tutorial"]
+visible = false
 offset_left = 818.0
 offset_top = 405.0
 offset_right = 898.0
@@ -820,6 +865,7 @@ icon = ExtResource("17_d13ii")
 icon_alignment = 1
 
 [node name="LionRule" type="Button" parent="Tutorial"]
+visible = false
 offset_left = 909.0
 offset_top = 405.0
 offset_right = 989.0
@@ -834,6 +880,7 @@ icon = ExtResource("18_1u8w0")
 icon_alignment = 1
 
 [node name="KhanRule" type="Button" parent="Tutorial"]
+visible = false
 offset_left = 818.0
 offset_top = 505.0
 offset_right = 898.0
@@ -848,6 +895,7 @@ icon = ExtResource("19_0odxb")
 icon_alignment = 1
 
 [node name="Exit" type="Button" parent="Tutorial"]
+visible = false
 offset_left = 788.0
 offset_top = 621.0
 offset_right = 928.0
@@ -888,6 +936,9 @@ autowrap_mode = 2
 [connection signal="pressed" from="Playing/Undo" to="Playing" method="OnUndoPressed"]
 [connection signal="pressed" from="Playing/BotSet" to="Playing" method="OnBotSetPressed"]
 [connection signal="SetSaved" from="Playing/BotSetDialog" to="Playing" method="OnSetSaved"]
+[connection signal="SetThemeeSaved" from="Playing/BotSetDialogThemee" to="Playing" method="OnBotSetSavedThemee"]
+[connection signal="pressed" from="ChooseEngine/ChooseMorii" to="." method="OnMoriiChosen"]
+[connection signal="pressed" from="ChooseEngine/ChooseThemee" to="." method="OnThemeeChosen"]
 [connection signal="ColorChose" from="ChooseColor/ChooseWhite" to="." method="OnColorChosen"]
 [connection signal="pressed" from="ChooseColor/ChooseWhite" to="ChooseColor/ChooseWhite" method="OnPressed"]
 [connection signal="ColorChose" from="ChooseColor/ChooseBlack" to="." method="OnColorChosen"]

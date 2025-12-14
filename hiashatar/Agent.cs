@@ -1,40 +1,26 @@
 using Godot;
-using Hiashatar;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using Tensorboard;
-using TorchSharp;
-using TorchSharp.Modules;
 using static TorchSharp.torch;
 
 namespace Hiashatar
 {
-	public partial class Agent(HiashatarModel model) : Node
+	public abstract partial class Agent() : Node 
 	{
 		[Signal]
 		public delegate void AiSelectedMoveEventHandler(int moveIndex);
 
-		public float tau = 1;
-		public float cPuct = 2;
-		public int sims = 100;
+		protected Thread aiThread;
+		protected CancellationTokenSource cts;
+		protected GameBoard board;
 
-		private Thread aiThread;
-		private CancellationTokenSource cts;
-		private HiashatarModel model = model;
-		private GameBoard board;
-
-		public void StartThread() 
+		public void StartThread()
 		{
 			cts = new CancellationTokenSource();
 			CancellationToken token = cts.Token;
 			aiThread = new Thread(() => SelectMove(token));
 			aiThread.Start();
 		}
-		public void StopThread() 
+		public void StopThread()
 		{
 			if (aiThread != null && aiThread.IsAlive)
 			{
@@ -44,12 +30,28 @@ namespace Hiashatar
 				cts = null;
 			}
 		}
-		public void SetBoard(GameBoard board) 
+		public void SetBoard(GameBoard board)
 		{
 			this.board = board;
 		}
 
-		private void SelectMove(CancellationToken token)
+		protected abstract void SelectMove(CancellationToken token);
+
+		protected void EmitMove(int moveIndex)
+		{
+			EmitSignal(SignalName.AiSelectedMove, moveIndex);
+		}
+	}
+
+	public partial class Morii() : Agent
+	{
+		public float tau = 1;
+		public float cPuct = 2;
+		public int sims = 100;
+
+		private HiashatarModel model = new();
+
+		protected override void SelectMove(CancellationToken token)
 		{
 			MCEdge rootEdge = new MCEdge(null, null);
 			rootEdge.N = 1;
@@ -64,9 +66,25 @@ namespace Hiashatar
 			Tensor randMove = multinomial(tensor(moveProb), 1);
 			CallDeferred(nameof(EmitMove), randMove.item<long>());
 		}
-		private void EmitMove(int moveIndex)
+	}
+	public partial class Themee : Agent 
+	{
+		public int depth = 3;
+
+		protected override void SelectMove(CancellationToken token)
 		{
-			EmitSignal(SignalName.AiSelectedMove, moveIndex);
+			ABPruning ab = new ABPruning(depth);
+			if (token.IsCancellationRequested)
+			{
+				return;
+			}
+			int selectedMove = ab.SelectMove(board, token);
+			if (token.IsCancellationRequested)
+			{
+				return;
+			}
+			CallDeferred(nameof(EmitMove), selectedMove);
 		}
 	}
+
 }

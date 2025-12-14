@@ -1,0 +1,113 @@
+[gd_scene load_steps=5 format=3 uid="uid://fohfuhrxird"]
+
+[ext_resource type="Script" uid="uid://fl80b24knatv" path="res://BotSetDialogThemee.cs" id="1_f2b0x"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f2b0x"]
+bg_color = Color(0, 0.4, 0.7019608, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.5019608)
+shadow_size = 4
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_knha4"]
+bg_color = Color(0, 0.2901961, 0.5019608, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.4392157)
+shadow_size = 3
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_celxo"]
+bg_color = Color(0, 0.3372549, 0.6, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.5019608)
+shadow_size = 6
+shadow_offset = Vector2(0, 2)
+
+[node name="BotSetDialogThemee" type="Window"]
+oversampling_override = 1.0
+title = "引擎设置"
+initial_position = 2
+size = Vector2i(400, 100)
+transient = true
+exclusive = true
+min_size = Vector2i(400, 100)
+max_size = Vector2i(400, 100)
+script = ExtResource("1_f2b0x")
+
+[node name="Depth" type="SpinBox" parent="."]
+offset_left = 144.0
+offset_top = 29.0
+offset_right = 384.0
+offset_bottom = 60.0
+min_value = 1.0
+value = 10.0
+rounded = true
+alignment = 1
+
+[node name="DepthLabel" type="Label" parent="."]
+offset_left = 64.0
+offset_top = 32.0
+offset_right = 128.0
+offset_bottom = 56.0
+tooltip_text = "越深越强，但是更耗时。似乎奇数次数效果更好。"
+mouse_filter = 1
+text = "搜索深度"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Save" type="Button" parent="."]
+anchors_preset = -1
+anchor_top = 0.056
+anchor_bottom = 0.056
+offset_left = 90.0
+offset_top = 60.4
+offset_right = 154.0
+offset_bottom = 87.40002
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_f2b0x")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_knha4")
+theme_override_styles/hover = SubResource("StyleBoxFlat_celxo")
+text = "保存"
+
+[node name="Cancel" type="Button" parent="."]
+anchors_preset = -1
+anchor_top = 0.056
+anchor_bottom = 0.056
+offset_left = 245.0
+offset_top = 60.4
+offset_right = 309.0
+offset_bottom = 87.40002
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_f2b0x")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_knha4")
+theme_override_styles/hover = SubResource("StyleBoxFlat_celxo")
+text = "取消"
+
+[connection signal="close_requested" from="." to="." method="OnCancelPressed"]
+[connection signal="pressed" from="Save" to="." method="OnSavePressed"]
+[connection signal="pressed" from="Cancel" to="." method="OnCancelPressed"]

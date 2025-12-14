@@ -16,7 +16,7 @@ namespace Hiashatar
         }
         public HiashatarModel()
         {
-            model = jit.load("Mandal.pt");
+            model = jit.load("Morii.pt");
             model.eval();
         }
     }

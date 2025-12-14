@@ -36,8 +36,11 @@ public partial class Playing : Node
 	private int from;
 	private int to;
 	private int enPassant = -1;
-	private Agent agent = new(new HiashatarModel());
+	private Morii morii = new();
+	private Themee themee = new();
+	public bool isMorii = false;
 	private BotSetDialog dialog;
+	private BotSetDialogThemee dialogThemee;
 	private Stack<PreBoard> preBoards = new();
 	private PreBoard lastBoard;
 
@@ -221,17 +224,32 @@ public partial class Playing : Node
 
 	private void AIMove()
 	{
-		agent.SetBoard(new GameBoard(board));
+		if (isMorii)
+		{
+			morii.SetBoard(new GameBoard(board));
+		}
+		else
+		{
+			themee.SetBoard(new GameBoard(board));
+		}
 		SetTurnMessage(board.turn);
 		EmitSignal(SignalName.SetPiecesAble, (int)PieceColor.DRAW);
-		agent.StartThread();
+		if (isMorii)
+		{
+			morii.StartThread();
+		}
+		else 
+		{
+			themee.StartThread();
+		}
 	}
-	private void OnAiSelectedMove(int moveIndex)
+	private async void OnAiSelectedMove(int moveIndex)
 	{
 		board.ApplyMove(moveIndex);
 		enPassant = board.GetEnPassant();
 		legalMoves = board.LegalMoves();
 		lastBoard = new(board, Conversion.IndexTransToMove(moveIndex));
+		await ToSignal(GetTree().CreateTimer(0.5f), Timer.SignalName.Timeout);
 		EmitSignal(SignalName.Moved, Conversion.IndexTransToMove(moveIndex));
 		PieceColor winner = board.IsTerminal();
 		if (winner != PieceColor.NOTEND)
@@ -250,7 +268,14 @@ public partial class Playing : Node
 		{
 			return;
 		}
-		agent.StopThread();
+		if (isMorii)
+		{
+			morii.StopThread();
+		}
+		else 
+		{
+			themee.StopThread();
+		}
 		lastBoard = preBoards.Pop();
 		board = new(lastBoard.board);
 		enPassant = board.GetEnPassant();
@@ -263,31 +288,46 @@ public partial class Playing : Node
 	{
 		if (state == GameState.BOT)
 		{
-			agent.StopThread();
+			morii.StopThread();
 		}
 		EmitSignal(SignalName.GameOver, (int)PieceColor.NOTEND);
 	}
 	private void OnBotSetPressed()
 	{
-		dialog.SetValues(agent.sims, agent.tau, agent.cPuct);
-		dialog.Show();
+		if (isMorii)
+		{
+			dialog.SetValues(morii.sims, morii.tau, morii.cPuct);
+			dialog.Show();
+		}
+		else 
+		{
+			dialogThemee.SetValues(themee.depth);
+			dialogThemee.Show();
+		}
 	}
+
 	private void OnSetSaved(int sims, float tau, float cpuct)
 	{
-		agent.sims = sims;
-		agent.tau = tau;
-		agent.cPuct = cpuct;
+		morii.sims = sims;
+		morii.tau = tau;
+		morii.cPuct = cpuct;
 	}
+	private void OnBotSetSavedThemee(int depth) 
+	{
+		themee.depth = depth;
+	}
+
 
 	private void SetMessage(string message)
 	{
 		GetNode<Label>("Message").Text = message;
-
 	}
 
 	public override void _Ready()
 	{
-		agent.AiSelectedMove += OnAiSelectedMove;
+		morii.AiSelectedMove += OnAiSelectedMove;
+		themee.AiSelectedMove += OnAiSelectedMove;
 		dialog = GetNode<BotSetDialog>("BotSetDialog");
+		dialogThemee = GetNode<BotSetDialogThemee>("BotSetDialogThemee");
 	}
 }
