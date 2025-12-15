@@ -69,7 +69,7 @@ namespace Hiashatar
 	}
 	public partial class Themee : Agent 
 	{
-		public int depth = 3;
+		public int depth = 4;
 
 		protected override void SelectMove(CancellationToken token)
 		{

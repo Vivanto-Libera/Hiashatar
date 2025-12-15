@@ -106,7 +106,7 @@ namespace Hiashatar
         public int SelectMove(GameBoard board, CancellationToken token) 
         {
             botColor = board.turn;
-            MaxValue(-100000000, 100000000, board, 0, token,  true);
+            MaxValue(-1000000000, 1000000000, board, 0, token);
             if (token.IsCancellationRequested)
             {
                 return 0;
@@ -342,9 +342,9 @@ namespace Hiashatar
                             score -= 5;
                             break;
                     }
-                    if (board.whitePieces.terges[i].GetPosition()[0] == 1) 
+                    if (isOpen[board.whitePieces.terges[i].GetPosition()[1]])
                     {
-                        score += 40;
+                        score += 25;
                     }
                     score += 525;
                     materials += 525;
@@ -386,10 +386,6 @@ namespace Hiashatar
                     if (isOpen[board.blackPieces.terges[i].GetPosition()[1]])
                     {
                         score -= 25;
-                    }
-                    if (board.blackPieces.terges[i].GetPosition()[0] == 8)
-                    {
-                        score -= 40;
                     }
                     score -= 525;
                     materials += 525;
@@ -436,8 +432,7 @@ namespace Hiashatar
                         score -= 20;
                     }
                     int[] khanPosition = board.whitePieces.khan.GetPosition();
-                    int distance = position[0] - khanPosition[0] + position[1] - khanPosition[1];
-                    distance = distance < 0 ? -distance : distance;
+                    int distance = Math.Abs(position[0] - khanPosition[0]) + Math.Abs(position[1] - khanPosition[1]);
                     score -= 10 * distance;
                     score += 725;
                     materials += 725;
@@ -454,8 +449,7 @@ namespace Hiashatar
                         score += 20;
                     }
                     int[] khanPosition = board.blackPieces.khan.GetPosition();
-                    int distance = position[0] - khanPosition[0] + position[1] - khanPosition[1];
-                    distance = distance < 0 ? -distance : distance;
+                    int distance = Math.Abs(position[0] - khanPosition[0]) + Math.Abs(position[1] - khanPosition[1]);
                     score += 10 * distance;
                     score -= 725;
                 }
@@ -471,70 +465,62 @@ namespace Hiashatar
 
             if (!board.whitePieces.terges[0].IsCaptured() && !board.whitePieces.terges[1].IsCaptured()) 
             {
-                int[] terge1 = board.whitePieces.terges[0].GetPosition();
-                int[] terge2 = board.whitePieces.terges[1].GetPosition();
-                for (int i = 0; i < 2; i++)
+                int[] terge = board.whitePieces.terges[0].GetPosition();
+                for (int j = 0; j < 8; j += 2)
                 {
-                    for (int j = 0; j < 8; j += 2)
+                    int newRow = terge[0];
+                    int newCol = terge[1];
+                    while (true)
                     {
-                        int newRow = terge1[i];
-                        int newCol = terge1[i];
-                        while (true)
+                        newRow += Direction.QUEENLIKEROW[j];
+                        newCol += Direction.QUEENLIKECOL[j];
+                        if (newRow < 0 || newRow > 9 || newCol < 0 || newCol > 9)
                         {
-                            newRow += Direction.QUEENLIKEROW[j];
-                            newCol += Direction.QUEENLIKECOL[j];
-                            if (newRow < 0 || newRow > 9 || newCol < 0 || newCol > 9)
-                            {
-                                break; ;
-                            }
-                            if (board.board[newRow, newCol] == PieceType.EMPTY)
-                            {
-                                score += 2;
-                            }
-                            else if (board.board[newRow, newCol] == PieceType.WHITETERGE)
-                            {
-                                score += 15;
-                                break; ;
-                            }
-                            else 
-                            {
-                                break;
-                            }
+                            break;
+                        }
+                        if (board.board[newRow, newCol] == PieceType.EMPTY)
+                        {
+                        score += 2;
+                        }
+                        else if (board.board[newRow, newCol] == PieceType.WHITETERGE)
+                        {
+                            score += 15;
+                            break; ;
+                        }
+                        else 
+                        {
+                            break;
                         }
                     }
                 }
             }
             if (!board.blackPieces.terges[0].IsCaptured() && !board.blackPieces.terges[1].IsCaptured())
             {
-                int[] terge1 = board.blackPieces.terges[0].GetPosition();
-                int[] terge2 = board.blackPieces.terges[1].GetPosition();
-                for (int i = 0; i < 2; i++)
+                int[] terge = board.blackPieces.terges[0].GetPosition();
+                for (int j = 0; j < 8; j += 2)
                 {
-                    for (int j = 0; j < 8; j += 2)
+                    int newRow = terge[0];
+                    int newCol = terge[1];
+                    while (true)
                     {
-                        int newRow = terge1[i];
-                        int newCol = terge1[i];
-                        while (true)
+                        newRow += Direction.QUEENLIKEROW[j];
+                        newCol += Direction.QUEENLIKECOL[j];
+                        if (newRow < 0 || newRow > 9 || newCol < 0 || newCol > 9)
                         {
-                            newRow += Direction.QUEENLIKEROW[j];
-                            newCol += Direction.QUEENLIKECOL[j];
-                            if (newRow < 0 || newRow > 9 || newCol < 0 || newCol > 9)
-                            {
-                                break; ;
-                            }
-                            if (board.board[newRow, newCol] == PieceType.EMPTY)
-                            {
-                                score -= 2;
-                            }
-                            else if (board.board[newRow, newCol] == PieceType.BLACKTERGE)
-                            {
-                                score -= 15;
-                                break; ;
-                            }
-                            else
-                            {
-                                break;
-                            }
+                            break;
+                        }
+                        if (board.board[newRow, newCol] == PieceType.EMPTY)
+                        {
+                            score -= 2;
+                        }
+                        else if (board.board[newRow, newCol] == PieceType.BLACKTERGE)
+                        {
+                            score -= 15;
+                            break; ;
+                        }
+                        else
+                        {
+                            break;
                         }
                     }
                 }
@@ -558,17 +544,17 @@ namespace Hiashatar
                     }
                     else if (board.board[newRow, newCol] == PieceType.WHITETERGE && i % 2 == 0) 
                     {
-                        score += 25;
+                        score += 30;
                         break;
                     }
                     else if (board.board[newRow, newCol] == PieceType.WHITECAMEL && i % 2 == 1)
                     {
-                        score += 20;
+                        score += 25;
                         break;
                     }
                     else if (board.board[newRow, newCol] == PieceType.WHITELION)
                     {
-                        score += 30;
+                        score += 40;
                         break;
                     }
                     else 
@@ -595,17 +581,17 @@ namespace Hiashatar
                     }
                     else if (board.board[newRow, newCol] == PieceType.BLACKTERGE && i % 2 == 0)
                     {
-                        score -= 25;
+                        score -= 30;
                         break;
                     }
                     else if (board.board[newRow, newCol] == PieceType.BLACKCAMEL && i % 2 == 1)
                     {
-                        score -= 20;
+                        score -= 25;
                         break;
                     }
                     else if (board.board[newRow, newCol] == PieceType.BLACKLION)
                     {
-                        score -= 30;
+                        score -= 40;
                         break;
                     }
                     else
@@ -632,7 +618,7 @@ namespace Hiashatar
             return score;
         }
 
-        private int MaxValue(int alpha, int beta, GameBoard board, int dep, CancellationToken token, bool isFirst = false) 
+        private int MaxValue(int alpha, int beta, GameBoard board, int dep, CancellationToken token) 
         {
             if (token.IsCancellationRequested)
             {
@@ -657,7 +643,7 @@ namespace Hiashatar
                 return botColor == PieceColor.WHITE ? value : -value;
             }
             List<int> legalMoves = board.LegalMoves();
-            int maxValue = -100000000;
+            int maxValue = -1000000000;
             foreach (int move in legalMoves) 
             {
                 int moveIndex = Conversion.MoveToIndex(move);
@@ -665,22 +651,22 @@ namespace Hiashatar
                 {
                     return 0;
                 }
-                GameBoard newBoard = new GameBoard(board);
+                GameBoard newBoard = new(board);
                 newBoard.ApplyMove(moveIndex);
                 int newValue = MinValue(alpha, beta, newBoard, dep + 1, token);
-                if (isFirst)
+                if (dep == 0)
                 {
                     if (newValue > maxValue)
                     {
                         selectedMove = moveIndex;
                     }
-                    else if(newValue == maxValue) 
+                    /*else if(newValue == maxValue) 
                     {
                         if (GD.Randi() % 2 == 0) 
                         {
                             selectedMove = moveIndex;
                         }
-                    }
+                    }*/
                 }
                 if (newValue >= beta)
                 {
@@ -717,7 +703,7 @@ namespace Hiashatar
                 return botColor == PieceColor.WHITE ? value : -value;
             }
             List<int> legalMoves = board.LegalMoves();
-            int minValue = 100000000;
+            int minValue = 1000000000;
             foreach (int move in legalMoves)
             {
                 int moveIndex = Conversion.MoveToIndex(move);
@@ -725,7 +711,7 @@ namespace Hiashatar
                 {
                     return 0;
                 }
-                GameBoard newBoard = new GameBoard(board);
+                GameBoard newBoard = new(board);
                 newBoard.ApplyMove(moveIndex);
                 int newValue = MaxValue(alpha, beta, newBoard, dep + 1, token);
                 if (newValue <= alpha)
