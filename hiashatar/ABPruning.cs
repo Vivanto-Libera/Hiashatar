@@ -276,7 +276,6 @@ namespace Hiashatar
                 score += 1000;
                 materials += 1000;
             }
-            materials += 100;
             if (!board.blackPieces.lion.IsCaptured())
             {
                 int[] position = board.blackPieces.lion.GetPosition();
