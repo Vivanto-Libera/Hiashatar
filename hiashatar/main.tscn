@@ -918,8 +918,7 @@ theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_dg77c")
 text = "你好"
 vertical_alignment = 1
-autowrap_mode = 2
-autowrap_trim_flags = 0
+autowrap_mode = 3
 
 [connection signal="SettedCapture" from="Board" to="." method="OnSettedCapture"]
 [connection signal="SquarePressed" from="Board" to="Playing" method="OnSquarePressed"]
